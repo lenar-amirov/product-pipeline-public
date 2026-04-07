@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Инструкция — Pipeline{% endblock %}
+
+{% block content %}
+<a href="/{{ pm }}/" class="back-link">&larr; Все инициативы</a>
+
+<div class="onboarding-content markdown-body">
+  {{ content | safe }}
+</div>
+{% endblock %}

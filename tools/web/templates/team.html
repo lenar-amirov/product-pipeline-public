@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% from "_macros.html" import progress_segments, phase_label, pending_inline, empty_state %}
+
+{% block title %}Инициативы группы — Pipeline{% endblock %}
+
+{% block content %}
+<a href="/{{ pm }}/" class="back-link">&larr; Мои инициативы</a>
+
+<h1 class="page-title page-title--detail">Инициативы группы</h1>
+
+{% if groups %}
+  {% for group in groups %}
+  <div class="team-group">
+    <div class="team-group__header">
+      <span class="team-group__name">{{ group.pm }}</span>
+      <span class="team-group__count">{{ group.initiatives | length }}</span>
+    </div>
+    <ul class="initiative-list">
+      {% for ini in group.initiatives %}
+      <li>
+        <a href="/{{ pm }}/team/{{ group.pm }}/{{ ini.name }}" class="initiative-card">
+          <div class="initiative-card__header">
+            <span class="initiative-card__name">{{ ini.name }}</span>
+          </div>
+          {{ progress_segments(ini.steps) }}
+          {{ phase_label(ini) }}
+          {% if ini.pending %}
+            {% for item in ini.pending %}
+              {{ pending_inline(item) }}
+            {% endfor %}
+          {% endif %}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endfor %}
+{% else %}
+  {{ empty_state(
+    "Нет инициатив",
+    "Ни у одного продакта пока нет инициатив."
+  ) }}
+{% endif %}
+{% endblock %}

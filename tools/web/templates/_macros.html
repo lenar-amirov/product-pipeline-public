@@ -1,0 +1,158 @@
+{# Reusable Jinja2 macros for PM Pipeline #}
+
+{# ---- Progress segments (15 segments with gate gaps) ---- #}
+{% macro progress_segments(steps) %}
+<div class="progress-segments">
+  {% for step in steps %}
+    <div class="progress-segment progress-segment--{{ step.status }}"></div>
+    {# Gate 1 gap after step 10, Gate 2 gap after step 15 #}
+    {% if step.num == 10 %}
+      <div class="progress-segments__gate-gap"></div>
+    {% endif %}
+  {% endfor %}
+</div>
+{% endmacro %}
+
+{# ---- Phase label with current step ---- #}
+{% macro phase_label(initiative) %}
+<div class="phase-label">
+  {{ initiative.current_phase }}
+  {% if initiative.current_cmd %}
+    · <span class="phase-label__step">/{{ initiative.current_cmd }}</span>
+    {% if initiative.current_status == 'paused' %} · Пауза{% endif %}
+  {% endif %}
+</div>
+{% endmacro %}
+
+{# ---- Pending item inline (for cards) ---- #}
+{% macro pending_inline(item) %}
+{% set severity = 'critical' if item.days > 14 else ('warning' if item.days > 0 else 'warning') %}
+<div class="pending-inline pending-inline--{{ severity }}">
+  <span class="pending-dot"></span>
+  <span>{{ item.label }}</span>
+  {% if item.days > 0 %}
+    <span style="margin-left: auto; font-family: var(--font-mono); font-size: 12px;">{{ item.days }} дн.</span>
+  {% endif %}
+</div>
+{% endmacro %}
+
+{# ---- Pending task card (for detail page) ---- #}
+{% macro pending_card(item, url_base) %}
+{% set overdue = item.days > 14 %}
+<div class="pending-task {{ 'pending-task--overdue' if overdue }}">
+  <div class="pending-task__label">{{ item.label }}</div>
+  <div class="pending-task__meta">
+    {% if item.days > 0 %}
+      {% set severity = 'critical' if item.days > 14 else 'warning' %}
+      <span class="pending-task__days pending-task__days--{{ severity }}">{{ item.days }} дн.</span>
+    {% else %}
+      <span class="pending-task__days">Сегодня</span>
+    {% endif %}
+    {% if item.date %}
+      <span>с {{ item.date }}</span>
+    {% endif %}
+    {% if item.brief_path %}
+      <button class="artifact-link"
+              onclick="event.stopPropagation(); openArtifact('{{ url_base }}', '{{ item.brief_path }}', '{{ item.label }}')">
+        Открыть бриф
+      </button>
+    {% endif %}
+  </div>
+</div>
+{% endmacro %}
+
+{# ---- Step row ---- #}
+{% macro step_row(step, url_base, screens=None, cjm_files=None, readonly=False) %}
+<li class="step step--{{ step.status }}">
+  <span class="step__number">{{ step.num }}</span>
+  <span class="step__indicator"></span>
+  <div class="step__body">
+    <div style="display: flex; align-items: baseline; gap: 8px;">
+      {% if readonly %}
+        <span class="step__label">/{{ step.command }}</span>
+      {% else %}
+        <a class="step__label step__label--link" href="javascript:void(0)"
+           onclick="event.stopPropagation(); openClaudeStep('{{ step.command }}')"
+           title="Открыть в Claude Code с командой /{{ step.command }}">/{{ step.command }}</a>
+      {% endif %}
+      {% if step.status != 'pending' %}
+        <span class="step__command">{{ step.label }}</span>
+      {% endif %}
+    </div>
+    {% if step.summary %}
+      <div class="step__summary">{{ step.summary }}</div>
+    {% endif %}
+    {% if step.artifacts %}
+      <div class="step__artifacts">
+        {% for art in step.artifacts %}
+          {% if art.exists %}
+            <button class="artifact-link"
+                    onclick="event.stopPropagation(); openArtifact('{{ url_base }}', '{{ art.path }}', '{{ art.label }}')"
+                    data-path="{{ art.path }}"
+                    data-title="{{ art.label }}">
+              {{ art.label }} ↗
+            </button>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% if screens %}
+      <div class="screens-grid screens-grid--inline">
+        {% for screen in screens %}
+          <div class="screen-thumb" onclick="openScreenModal(this.querySelector('img').src, '{{ screen.label }}')">
+            <img src="{{ url_base }}/screen/{{ screen.filename }}"
+                 alt="{{ screen.label }}" loading="lazy">
+            <div class="screen-thumb__label">{{ screen.label }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% if cjm_files %}
+      <div class="screens-grid screens-grid--inline">
+        {% for f in cjm_files %}
+          <div class="screen-thumb" onclick="openScreenModal(this.querySelector('img').src, '{{ f.label }}')">
+            <img src="{{ url_base }}/cjm/{{ f.filename }}"
+                 alt="{{ f.label }}" loading="lazy">
+            <div class="screen-thumb__label">{{ f.label }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+  <div class="step__right">
+    {% if step.date %}
+      <span class="step__date">{{ step.date }}</span>
+    {% endif %}
+  </div>
+</li>
+{% endmacro %}
+
+{# ---- Gate divider ---- #}
+{% macro gate_divider(label) %}
+<li>
+  <div class="gate-divider">
+    <div class="gate-divider__line"></div>
+    <span class="gate-divider__label">{{ label }}</span>
+    <div class="gate-divider__line"></div>
+  </div>
+</li>
+{% endmacro %}
+
+{# ---- Decision entry ---- #}
+{% macro decision_entry(entry) %}
+<div class="decision-entry">
+  <div class="decision-entry__header">{{ entry.date }} — {{ entry.title }}</div>
+  <div class="decision-entry__body">{{ entry.body | md | safe }}</div>
+</div>
+{% endmacro %}
+
+{# ---- Empty state ---- #}
+{% macro empty_state(title, desc, cta_text=None, cta_url=None) %}
+<div class="empty-state">
+  <div class="empty-state__title">{{ title }}</div>
+  <div class="empty-state__desc">{{ desc }}</div>
+  {% if cta_text and cta_url %}
+    <a href="{{ cta_url }}" class="btn-outline">{{ cta_text }}</a>
+  {% endif %}
+</div>
+{% endmacro %}

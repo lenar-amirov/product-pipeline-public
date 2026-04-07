@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}PM Pipeline{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Onest:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/{{ 'share' if shared|default(false) else pm }}/static/style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header__inner">
+    <a href="/{{ pm }}/" class="header__logo">Pipeline</a>
+    <div class="header__right">
+      {% if not shared|default(false) %}
+        {% if is_admin|default(false) %}<a href="/{{ pm }}/team" class="header__link" title="Инициативы группы">Группа</a>{% endif %}
+        <a href="/{{ pm }}/archive" class="header__link" title="Архив">Архив</a>
+        <a href="/{{ pm }}/onboarding" class="help-btn" title="Инструкция">?</a>
+        <span class="header__pm">{{ pm }}</span>
+      {% endif %}
+      <button class="theme-toggle" id="theme-toggle" aria-label="Сменить тему">◐</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<!-- Artifact modal -->
+<div class="modal" id="artifact-modal" hidden>
+  <div class="modal__backdrop"></div>
+  <div class="modal__container">
+    <div class="modal__header">
+      <h2 class="modal__title"></h2>
+      <button class="modal__close" aria-label="Закрыть">&times;</button>
+    </div>
+    <div class="modal__body markdown-body"></div>
+  </div>
+</div>
+
+
+<!-- Screen image modal -->
+<div class="modal" id="screen-modal" hidden>
+  <div class="modal__backdrop"></div>
+  <div class="modal__container modal__container--image">
+    <div class="modal__header">
+      <h2 class="modal__title"></h2>
+      <button class="modal__close" aria-label="Закрыть">&times;</button>
+    </div>
+    <div class="modal__body modal__body--image">
+      <img src="" alt="" class="screen-modal-img">
+    </div>
+  </div>
+</div>
+
+<script>
+  /* Theme toggle */
+  (function() {
+    const toggle = document.getElementById('theme-toggle');
+    const root = document.documentElement;
+    const saved = localStorage.getItem('pm-theme');
+    if (saved) root.setAttribute('data-theme', saved);
+
+    toggle.addEventListener('click', function() {
+      const current = root.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      if (next === 'light') {
+        root.removeAttribute('data-theme');
+      } else {
+        root.setAttribute('data-theme', next);
+      }
+      localStorage.setItem('pm-theme', next);
+    });
+  })();
+
+  /* Modal */
+  (function() {
+    const modal = document.getElementById('artifact-modal');
+    if (!modal) return;
+    const title = modal.querySelector('.modal__title');
+    const body = modal.querySelector('.modal__body');
+    const closeBtn = modal.querySelector('.modal__close');
+    const backdrop = modal.querySelector('.modal__backdrop');
+
+    window.openArtifact = function(urlBase, path, label) {
+      title.textContent = label;
+      body.innerHTML = '<span class="loading">Загрузка…</span>';
+      modal.hidden = false;
+      requestAnimationFrame(function() { modal.classList.add('is-open'); });
+
+      fetch(urlBase + '/artifact?path=' + encodeURIComponent(path))
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.error) {
+            body.innerHTML = '<p class="error">' + data.error + '</p>';
+          } else {
+            body.innerHTML = data.html;
+          }
+        })
+        .catch(function() {
+          body.innerHTML = '<p class="error">Не удалось загрузить документ</p>';
+        });
+    };
+
+    function closeModal() {
+      modal.classList.remove('is-open');
+      setTimeout(function() { modal.hidden = true; }, 250);
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    backdrop.addEventListener('click', closeModal);
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeModal();
+    });
+  })();
+</script>
+
+<script>
+  /* Screen image modal */
+  (function() {
+    var modal = document.getElementById('screen-modal');
+    if (!modal) return;
+    var title = modal.querySelector('.modal__title');
+    var img = modal.querySelector('.screen-modal-img');
+    var closeBtn = modal.querySelector('.modal__close');
+    var backdrop = modal.querySelector('.modal__backdrop');
+
+    window.openScreenModal = function(src, label) {
+      title.textContent = label;
+      img.src = src;
+      modal.hidden = false;
+      requestAnimationFrame(function() { modal.classList.add('is-open'); });
+    };
+
+    function closeModal() {
+      modal.classList.remove('is-open');
+      setTimeout(function() { modal.hidden = true; }, 250);
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    backdrop.addEventListener('click', closeModal);
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && !modal.hidden) closeModal();
+    });
+  })();
+</script>
+
+{% block scripts %}{% endblock %}
+
+</body>
+</html>

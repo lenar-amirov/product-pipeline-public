@@ -1,0 +1,6 @@
+.DS_Store
+**/.DS_Store
+config/telegram.json
+logs/
+.claude/settings.local.json
+**/settings.local.json

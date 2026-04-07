@@ -1,0 +1,37 @@
+{
+  "pm": "",
+  "initiative": "",
+  "created": "",
+  "stitch_project_id": null,
+  "steps": {
+    "1":  { "status": "pending", "date": null, "summary": null },
+    "2":  { "status": "pending", "date": null, "summary": null },
+    "3":  { "status": "pending", "date": null, "summary": null },
+    "4":  { "status": "pending", "date": null, "summary": null },
+    "5":  { "status": "pending", "date": null, "summary": null },
+    "6":  { "status": "pending", "date": null, "summary": null },
+    "7":  { "status": "pending", "date": null, "summary": null },
+    "8":  { "status": "pending", "date": null, "summary": null },
+    "9":  { "status": "pending", "date": null, "summary": null },
+    "10": { "status": "pending", "date": null, "summary": null },
+    "11": { "status": "pending", "date": null, "summary": null },
+    "12": { "status": "pending", "date": null, "summary": null },
+    "13": { "status": "pending", "date": null, "summary": null },
+    "14": { "status": "pending", "date": null, "summary": null },
+    "15": { "status": "pending", "date": null, "summary": null },
+    "16": { "status": "pending", "date": null, "summary": null },
+    "17": { "status": "pending", "date": null, "summary": null },
+    "18": { "status": "pending", "date": null, "summary": null }
+  },
+  "pending": {
+    "analytics_brief": null,
+    "survey_brief": null,
+    "audience_brief": null,
+    "analytics_results": null,
+    "survey_results": null,
+    "design_brief": null,
+    "gate1_challenge": null,
+    "gate2_challenge": null,
+    "support_brief": null
+  }
+}

@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% from "_macros.html" import progress_segments, phase_label, pending_inline, empty_state %}
+
+{% block title %}Pipeline — {{ pm }}{% endblock %}
+
+{% block content %}
+<div class="top-row">
+  <h1 class="page-title">Инициативы</h1>
+  <a href="/{{ pm }}/new" class="link-new">+ Новая</a>
+</div>
+
+{% if initiatives %}
+<ul class="initiative-list">
+  {% for ini in initiatives %}
+  <li>
+    <a href="/{{ pm }}/initiative/{{ ini.name }}" class="initiative-card">
+      <div class="initiative-card__header">
+        <span class="initiative-card__name">{{ ini.name }}</span>
+        <div class="initiative-card__actions">
+          <button class="initiative-card__claude tooltip"
+                  data-tooltip="Откроет терминал с контекстом"
+                  onclick="event.preventDefault(); event.stopPropagation(); openClaude('{{ pm }}', '{{ ini.name }}')">
+            Claude Code ↗
+          </button>
+          <button class="initiative-card__archive tooltip"
+                  data-tooltip="В архив"
+                  onclick="event.preventDefault(); event.stopPropagation(); confirmArchive('{{ ini.name }}')">
+            &#x2715;
+          </button>
+        </div>
+      </div>
+
+      {{ progress_segments(ini.steps) }}
+      {{ phase_label(ini) }}
+
+      {% if ini.pending %}
+        {% for item in ini.pending %}
+          {{ pending_inline(item) }}
+        {% endfor %}
+      {% endif %}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+
+{% else %}
+  {{ empty_state(
+    "Нет инициатив",
+    "Создайте первую инициативу, чтобы начать работу с пайплайном.",
+    "+ Создать инициативу",
+    "/" ~ pm ~ "/new"
+  ) }}
+{% endif %}
+
+{# Archive confirmation modal #}
+<div class="modal" id="archive-modal" hidden>
+  <div class="modal__backdrop"></div>
+  <div class="modal__container modal__container--small">
+    <div class="modal__header">
+      <h2 class="modal__title">Архивировать инициативу</h2>
+      <button class="modal__close" aria-label="Закрыть">&times;</button>
+    </div>
+    <div class="modal__body">
+      <p>Инициатива <strong id="archive-name"></strong> будет перемещена в архив. Вы сможете восстановить её позже.</p>
+      <div class="modal__actions">
+        <button class="btn-outline" id="archive-cancel">Отмена</button>
+        <button class="btn-danger" id="archive-confirm">Архивировать</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  var PM = '{{ pm }}';
+  var archiveName = '';
+
+  function openClaude(pm, name) {
+    fetch('/' + pm + '/open/' + name, { method: 'POST' });
+    window.open('/' + pm + '/terminal/', '_blank');
+  }
+
+  /* Archive modal */
+  (function() {
+    var modal = document.getElementById('archive-modal');
+    var nameEl = document.getElementById('archive-name');
+    var closeBtn = modal.querySelector('.modal__close');
+    var backdrop = modal.querySelector('.modal__backdrop');
+    var cancelBtn = document.getElementById('archive-cancel');
+    var confirmBtn = document.getElementById('archive-confirm');
+
+    function openModal() {
+      modal.hidden = false;
+      requestAnimationFrame(function() { modal.classList.add('is-open'); });
+    }
+    function closeModal() {
+      modal.classList.remove('is-open');
+      setTimeout(function() { modal.hidden = true; }, 250);
+    }
+
+    window.confirmArchive = function(name) {
+      archiveName = name;
+      nameEl.textContent = name;
+      openModal();
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    backdrop.addEventListener('click', closeModal);
+    cancelBtn.addEventListener('click', closeModal);
+
+    confirmBtn.addEventListener('click', function() {
+      confirmBtn.disabled = true;
+      confirmBtn.textContent = 'Архивируем...';
+      fetch('/' + PM + '/initiative/' + archiveName + '/archive', { method: 'POST' })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.ok) {
+            location.reload();
+          } else {
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = 'Архивировать';
+            alert(data.error || 'Ошибка');
+          }
+        })
+        .catch(function() {
+          confirmBtn.disabled = false;
+          confirmBtn.textContent = 'Архивировать';
+        });
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && !modal.hidden) closeModal();
+    });
+  })();
+</script>
+{% endblock %}

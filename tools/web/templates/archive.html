@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% from "_macros.html" import progress_segments, phase_label, empty_state %}
+
+{% block title %}Архив — Pipeline{% endblock %}
+
+{% block content %}
+<a href="/{{ pm }}/" class="back-link">&larr; Все инициативы</a>
+
+<h1 class="page-title page-title--detail">Архив</h1>
+
+{% if initiatives %}
+<ul class="initiative-list">
+  {% for ini in initiatives %}
+  <li>
+    <div class="initiative-card initiative-card--archived">
+      <div class="initiative-card__header">
+        <span class="initiative-card__name">{{ ini.name }}</span>
+        <button class="btn-outline btn-outline--small"
+                onclick="restoreInitiative('{{ ini.name }}', this)">
+          Восстановить
+        </button>
+      </div>
+
+      {{ progress_segments(ini.steps) }}
+      {{ phase_label(ini) }}
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+  {{ empty_state(
+    "Архив пуст",
+    "Здесь будут инициативы, которые вы убрали из основного списка."
+  ) }}
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+  var PM = '{{ pm }}';
+
+  function restoreInitiative(name, btn) {
+    btn.disabled = true;
+    btn.textContent = 'Восстанавливаем...';
+    fetch('/' + PM + '/initiative/' + name + '/restore', { method: 'POST' })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.ok) {
+          location.reload();
+        } else {
+          btn.disabled = false;
+          btn.textContent = 'Восстановить';
+          alert(data.error || 'Ошибка');
+        }
+      })
+      .catch(function() {
+        btn.disabled = false;
+        btn.textContent = 'Восстановить';
+      });
+  }
+</script>
+{% endblock %}

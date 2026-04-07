@@ -1,0 +1,378 @@
+{% extends "base.html" %}
+{% from "_macros.html" import progress_segments, step_row, gate_divider, pending_card, decision_entry, empty_state, phase_label %}
+
+{% block title %}{{ initiative.name }} — Pipeline{% endblock %}
+
+{% block content %}
+{% set ro = readonly|default(false) %}
+{% if shared|default(false) %}
+  {% set url_base = share_base %}
+{% elif owner_pm is defined %}
+  {% set url_base = '/' ~ pm ~ '/team/' ~ owner_pm ~ '/' ~ initiative.name %}
+{% else %}
+  {% set url_base = '/' ~ pm ~ '/initiative/' ~ initiative.name %}
+{% endif %}
+
+{% if shared|default(false) %}
+{# no back link for public share view #}
+{% elif ro %}
+<a href="/{{ pm }}/team" class="back-link">&larr; Инициативы группы</a>
+{% else %}
+<a href="/{{ pm }}/" class="back-link">&larr; Все инициативы</a>
+{% endif %}
+
+<div class="title-row">
+  <div>
+    <h1 class="page-title page-title--detail">{{ initiative.context.title if initiative.context.title != '—' else initiative.name }}</h1>
+    {% if ro and owner_pm is defined %}
+      <span class="owner-badge">{{ owner_pm }}</span>
+    {% endif %}
+  </div>
+  {% if not ro %}
+  <div class="title-row__actions">
+    <div class="share-widget" id="share-widget">
+      <button class="btn-outline" onclick="toggleShare()">Поделиться</button>
+      <div class="share-popover" id="share-popover" hidden>
+        <div class="share-popover__content" id="share-content"></div>
+      </div>
+    </div>
+    <button class="btn-outline tooltip"
+            data-tooltip="Откроет терминал с контекстом инициативы"
+            onclick="openClaude('{{ pm }}', '{{ initiative.name }}')">
+      Claude Code ↗
+    </button>
+  </div>
+  {% endif %}
+</div>
+
+{# Context grid #}
+<div class="context-row">
+  <div class="context-cell">
+    <div class="context-cell__label">Метрика</div>
+    <div class="context-cell__value" id="ctx-val-metric">{{ initiative.context.metric }}</div>
+  </div>
+  <div class="context-cell">
+    <div class="context-cell__label">Сегмент</div>
+    <div class="context-cell__value" id="ctx-val-segment">{{ initiative.context.segment }}</div>
+  </div>
+  <div class="context-cell">
+    <div class="context-cell__label">Прогресс</div>
+    <div class="context-cell__value">{{ initiative.steps_done }} из {{ initiative.total_steps }}
+      {% if not ro %}
+      <button class="context-edit-btn" onclick="openContextModal()" title="Редактировать контекст">&#9998;</button>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{# CJM section #}
+<div class="cjm-section" id="cjm-section">
+  {% if cjm_files %}
+  <div class="cjm-gallery" id="cjm-gallery">
+    {% for f in cjm_files %}
+    <div class="screen-thumb" data-filename="{{ f.filename }}"
+         onclick="openScreenModal(this.querySelector('img').src, '{{ f.label }}')">
+      <img src="{{ url_base }}/cjm/{{ f.filename }}"
+           alt="{{ f.label }}" loading="lazy">
+      <div class="screen-thumb__label">{{ f.label }}</div>
+      {% if not ro %}
+      <button class="cjm-gallery__delete" onclick="event.stopPropagation(); deleteCjm('{{ f.filename }}')">&times;</button>
+      {% endif %}
+    </div>
+    {% endfor %}
+    {% if not ro %}
+    <label class="cjm-gallery__add" for="cjm-upload-input">+</label>
+    {% endif %}
+  </div>
+  {% elif not ro %}
+  <div class="cjm-dropzone cjm-dropzone--section" id="cjm-dropzone-section">
+    <div class="cjm-dropzone__text">Перетащите скриншоты CJM сюда</div>
+    <div class="cjm-dropzone__hint">PNG, JPG, PDF — в порядке пути пользователя.
+      <label class="cjm-dropzone__browse" for="cjm-upload-input">Выбрать файлы</label>
+    </div>
+  </div>
+  {% endif %}
+  {% if not ro %}
+  <input type="file" id="cjm-upload-input" multiple accept=".png,.jpg,.jpeg,.webp,.pdf" hidden>
+  {% endif %}
+</div>
+
+{# Progress bar #}
+{{ progress_segments(initiative.steps) }}
+{{ phase_label(initiative) }}
+
+{# Pending tasks #}
+{% if initiative.pending %}
+<div class="pending-section">
+  <div class="section-label">Активные задачи</div>
+  {% for item in initiative.pending %}
+    {{ pending_card(item, url_base) }}
+  {% endfor %}
+</div>
+{% endif %}
+
+{# Pipeline steps #}
+<div class="section-label">Phase 1 — Исследование</div>
+<ul class="steps-list">
+  {% for step in initiative.steps %}
+    {{ step_row(step, url_base, screens=screens if step.num == 8 else None, cjm_files=cjm_files if step.num == 1 else None, readonly=ro) }}
+    {% if step.num == 10 %}
+      {{ gate_divider("Gate 1") }}
+      </ul>
+      <div class="section-label">Phase 2 — Проработка</div>
+      <ul class="steps-list">
+    {% endif %}
+    {% if step.num == 15 %}
+      {{ gate_divider("Gate 2") }}
+      </ul>
+      <div class="section-label">Phase 3 — Запуск</div>
+      <ul class="steps-list">
+    {% endif %}
+  {% endfor %}
+</ul>
+
+{# Decisions #}
+{% if decisions %}
+<div class="decisions-section">
+  <div class="section-label">Решения</div>
+
+  {# Show latest 2 expanded #}
+  {% for entry in decisions[:2] %}
+    {{ decision_entry(entry) }}
+  {% endfor %}
+
+  {# Collapse older ones #}
+  {% if decisions | length > 2 %}
+  <details class="decisions-collapsed">
+    <summary>Показать все ({{ decisions | length }})</summary>
+    {% for entry in decisions[2:] %}
+      {{ decision_entry(entry) }}
+    {% endfor %}
+  </details>
+  {% endif %}
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% if not readonly|default(false) %}
+{# Context edit modal #}
+<div class="modal" id="context-modal" hidden>
+  <div class="modal__backdrop"></div>
+  <div class="modal__container">
+    <div class="modal__header">
+      <h2 class="modal__title">Редактировать контекст</h2>
+      <button class="modal__close" aria-label="Закрыть">&times;</button>
+    </div>
+    <div class="modal__body">
+      <form id="context-form">
+        <div class="form-group">
+          <label class="form-label">Заголовок</label>
+          <input class="form-input" name="title" value="{{ context_full.title }}">
+        </div>
+        <div class="form-group">
+          <label class="form-label">О чём инициатива</label>
+          <textarea class="form-input form-input--textarea" name="description" rows="3" placeholder="Опиши своими словами: что происходит, в чём проблема, какой результат хочется получить">{{ context_full.description }}</textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group form-group--half">
+            <label class="form-label">Метрика</label>
+            <input class="form-input" name="metric" value="{{ context_full.metric }}">
+          </div>
+          <div class="form-group form-group--half">
+            <label class="form-label">Горизонт</label>
+            <input class="form-input" name="horizon" value="{{ context_full.horizon }}">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group form-group--half">
+            <label class="form-label">Baseline</label>
+            <input class="form-input" name="baseline" value="{{ context_full.baseline }}">
+          </div>
+          <div class="form-group form-group--half">
+            <label class="form-label">Target</label>
+            <input class="form-input" name="target" value="{{ context_full.target }}">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group form-group--half">
+            <label class="form-label">Сегмент</label>
+            <input class="form-input" name="segment" value="{{ context_full.segment }}">
+          </div>
+          <div class="form-group form-group--half">
+            <label class="form-label">Размер сегмента</label>
+            <input class="form-input" name="segment_size" value="{{ context_full.segment_size }}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Платформа</label>
+          <select class="form-input form-input--select" name="platform">
+            <option value="">—</option>
+            <option value="web" {{ 'selected' if context_full.platform == 'web' }}>Web</option>
+            <option value="iOS" {{ 'selected' if context_full.platform == 'iOS' }}>iOS</option>
+            <option value="Android" {{ 'selected' if context_full.platform == 'Android' }}>Android</option>
+            <option value="все" {{ 'selected' if context_full.platform == 'все' }}>Все платформы</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Почему сейчас</label>
+          <textarea class="form-input form-input--textarea" name="why_now" rows="2">{{ context_full.why_now }}</textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Ограничения</label>
+          <textarea class="form-input form-input--textarea" name="constraints" rows="2">{{ context_full.constraints }}</textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="margin-top: var(--space-4);">Сохранить</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% block scripts %}
+<script>
+  var PM = '{{ pm }}';
+  var INIT_NAME = '{{ initiative.name }}';
+  var URL_BASE = '{{ share_base if shared|default(false) else ("/" ~ pm ~ "/team/" ~ owner_pm ~ "/" ~ initiative.name if owner_pm is defined else "/" ~ pm ~ "/initiative/" ~ initiative.name) }}';
+  var READONLY = {{ 'true' if readonly|default(false) else 'false' }};
+
+  function openClaude(pm, name) {
+    fetch('/' + pm + '/open/' + name, { method: 'POST' });
+    window.open('/' + pm + '/terminal/', '_blank');
+  }
+
+  function openClaudeStep(cmd) {
+    fetch('/' + PM + '/open/' + INIT_NAME + '?cmd=' + encodeURIComponent(cmd), { method: 'POST' });
+    window.open('/' + PM + '/terminal/', '_blank');
+  }
+
+  /* Context modal */
+  (function() {
+    if (READONLY) return;
+    var modal = document.getElementById('context-modal');
+    if (!modal) return;
+    var closeBtn = modal.querySelector('.modal__close');
+    var backdrop = modal.querySelector('.modal__backdrop');
+    var form = document.getElementById('context-form');
+
+    window.openContextModal = function() {
+      modal.hidden = false;
+      requestAnimationFrame(function() { modal.classList.add('is-open'); });
+    };
+    function closeModal() {
+      modal.classList.remove('is-open');
+      setTimeout(function() { modal.hidden = true; }, 250);
+    }
+    closeBtn.addEventListener('click', closeModal);
+    backdrop.addEventListener('click', closeModal);
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var fd = new FormData(form);
+      fetch('/' + PM + '/initiative/' + INIT_NAME + '/context', { method: 'POST', body: fd })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.ok) {
+            var ctx = data.context;
+            var m = document.getElementById('ctx-val-metric');
+            var s = document.getElementById('ctx-val-segment');
+            if (m && ctx.metric) m.textContent = ctx.metric;
+            if (s && ctx.segment) s.textContent = ctx.segment;
+            closeModal();
+          }
+        });
+    });
+  })();
+
+  /* CJM upload on initiative page */
+  (function() {
+    if (READONLY) return;
+    var uploadInput = document.getElementById('cjm-upload-input');
+    if (!uploadInput) return;
+    var dropzone = document.getElementById('cjm-dropzone-section');
+
+    if (dropzone) {
+      dropzone.addEventListener('dragover', function(e) { e.preventDefault(); dropzone.classList.add('cjm-dropzone--active'); });
+      dropzone.addEventListener('dragleave', function() { dropzone.classList.remove('cjm-dropzone--active'); });
+      dropzone.addEventListener('drop', function(e) {
+        e.preventDefault();
+        dropzone.classList.remove('cjm-dropzone--active');
+        uploadCjmFiles(e.dataTransfer.files);
+      });
+    }
+
+    uploadInput.addEventListener('change', function() {
+      uploadCjmFiles(uploadInput.files);
+      uploadInput.value = '';
+    });
+
+    function uploadCjmFiles(fileList) {
+      var fd = new FormData();
+      var labels = [];
+      for (var i = 0; i < fileList.length; i++) {
+        fd.append('files', fileList[i]);
+        var name = fileList[i].name.replace(/\.[^.]+$/, '');
+        labels.push(name);
+      }
+      fd.append('labels', JSON.stringify(labels));
+      fetch('/' + PM + '/initiative/' + INIT_NAME + '/cjm/upload', { method: 'POST', body: fd })
+        .then(function() { location.reload(); });
+    }
+
+    window.deleteCjm = function(filename) {
+      fetch('/' + PM + '/initiative/' + INIT_NAME + '/cjm/' + filename, { method: 'DELETE' })
+        .then(function() { location.reload(); });
+    };
+  })();
+
+  /* Share */
+  (function() {
+    if (READONLY) return;
+    var popover = document.getElementById('share-popover');
+    var content = document.getElementById('share-content');
+    if (!popover) return;
+
+    window.toggleShare = function() {
+      if (!popover.hidden) { popover.hidden = true; return; }
+      popover.hidden = false;
+      content.innerHTML = '<span class="share-popover__loading">Загрузка...</span>';
+      fetch('/' + PM + '/initiative/' + INIT_NAME + '/share', { method: 'POST' })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (!data.ok) return;
+          var url = location.origin + '/share/' + data.token;
+          content.innerHTML =
+            '<div class="share-popover__link-row">' +
+              '<input class="share-popover__input" id="share-url" value="' + url + '" readonly onclick="this.select()">' +
+              '<button class="btn-outline btn-outline--small" onclick="copyShare()">Копировать</button>' +
+            '</div>' +
+            '<button class="share-popover__revoke" onclick="revokeShare()">Отключить ссылку</button>';
+        });
+    };
+
+    window.copyShare = function() {
+      var input = document.getElementById('share-url');
+      navigator.clipboard.writeText(input.value).then(function() {
+        input.style.borderColor = 'var(--color-done)';
+        setTimeout(function() { input.style.borderColor = ''; }, 1000);
+      });
+    };
+
+    window.revokeShare = function() {
+      fetch('/' + PM + '/initiative/' + INIT_NAME + '/share?action=revoke', { method: 'POST' })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.ok) {
+            content.innerHTML = '<span class="share-popover__loading">Ссылка отключена</span>';
+            setTimeout(function() { popover.hidden = true; }, 1200);
+          }
+        });
+    };
+
+    document.addEventListener('click', function(e) {
+      var widget = document.getElementById('share-widget');
+      if (widget && !widget.contains(e.target)) popover.hidden = true;
+    });
+  })();
+</script>
+{% endblock %}
