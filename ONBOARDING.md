@@ -1,34 +1,32 @@
-# PM Pipeline — Инструкция для продакт-менеджера
+# PM Pipeline — Onboarding Guide
 
-## Быстрый старт
+## Quick start
 
-У тебя есть 3 инструмента:
+You have 3 tools:
 
-| Инструмент | Для чего | Ссылка |
+| Tool | Purpose | Link |
 |---|---|---|
-| **Дашборд** | Обзор инициатив, прогресс, создание новых | `https://your-server/{твой-логин}/` |
-| **Терминал** | Работа с Claude Code — он ведёт тебя по пайплайну | `https://your-server/{твой-логин}/terminal/` |
-| **Telegram-бот** | Подтверждения и напоминания | (настраивается) |
+| **Dashboard** | Initiative overview, progress, create new | `https://your-server/{your-login}/` |
+| **Terminal** | Work with Claude Code — it guides you through the pipeline | `https://your-server/{your-login}/terminal/` |
+| **Telegram bot** | Confirmations and reminders | (configured separately) |
 
-> ⚠️ Браузер покажет предупреждение о сертификате. Нажми «Дополнительные» → «Перейти на сайт» — это нормально, соединение зашифровано.
+> Browser may show a certificate warning. Click "Advanced" -> "Proceed" — this is normal, connection is encrypted.
 
-Логин и пароль для дашборда и терминала выдаёт администратор.
+Login and password are provided by the administrator.
 
 ---
 
-## 0. Настройка Claude Code (первый запуск)
+## 0. Claude Code setup (first run)
 
-При **первом** открытии терминала Claude Code попросит авторизацию. Это делается один раз.
+On **first** terminal open, Claude Code will ask for authorization. This is done once.
 
-### Шаг 1: Открой терминал
+### Step 1: Open terminal
 
-Перейди по ссылке `https://your-server/{твой-логин}/terminal/` или нажми **«Claude Code ↗»** на карточке инициативы в дашборде.
+Go to `https://your-server/{your-login}/terminal/` or click **"Claude Code"** on an initiative card in the dashboard.
 
-Введи логин и пароль (выдаёт администратор).
+### Step 2: Authorization
 
-### Шаг 2: Авторизация
-
-В терминале появится приветствие Claude Code и ссылка для авторизации:
+In the terminal you'll see a sign-in URL:
 
 ```
 Welcome to Claude Code v2.x.x
@@ -38,316 +36,330 @@ Browser didn't open? Use the url below to sign in (c to copy)
 https://claude.ai/oauth/authorize?code=true&client_id=...
 ```
 
-Что делать:
-1. **Скопируй ссылку** — выдели мышкой или нажми `c`
-2. **Открой её в браузере** на своём компьютере (не в терминале)
-3. **Войди** в свой аккаунт Claude (claude.ai)
-4. После авторизации страница покажет **код** — скопируй его
-5. **Вернись в терминал** и вставь код в поле `Paste code here if prompted >`
+1. **Copy the link** — select with mouse or press `c`
+2. **Open in your browser** (not in the terminal)
+3. **Sign in** to your Claude account (claude.ai)
+4. Copy the **code** shown after authorization
+5. **Return to terminal** and paste the code
 
-> После успешной авторизации Claude Code запомнит тебя. Повторная авторизация понадобится только если токен истечёт (раз в несколько месяцев).
+> After successful auth, Claude Code remembers you. Re-authorization is needed only when the token expires (every few months).
 
-### Шаг 3: Проверь что работает
+### Step 3: Verify it works
 
-После авторизации Claude поприветствует тебя и предложит начать работу. Напиши что-нибудь — например:
+After auth, Claude will greet you. Type something like:
 
 ```
-привет, покажи статус
+show status
 ```
 
-Если Claude ответил — всё работает.
-
-### Если что-то пошло не так
-
-| Проблема | Решение |
-|---|---|
-| Ссылка не открывается | Скопируй её вручную и вставь в адресную строку браузера |
-| «Invalid bearer token» | Токен истёк — закрой терминал, открой заново, появится новая ссылка |
-| Терминал показывает bash вместо Claude | Напиши `claude` и нажми Enter |
-| Пустой экран в терминале | Подожди 5-10 секунд, если не загрузилось — обнови страницу (F5) |
+If Claude responds — you're all set.
 
 ---
 
-## 1. Дашборд
+## 1. Dashboard
 
-Открой `https://your-server/{твой-логин}/` — увидишь все свои инициативы.
+Open `https://your-server/{your-login}/` to see all your initiatives.
 
-### Что видно на главной
+### Main page
 
-Каждая инициатива — карточка с информацией:
-- **Прогресс**: сколько из 18 шагов завершено (например, 5/18)
-- **Текущая фаза и шаг**: Phase 1 — Исследование · /validate-problems
-- **Pending-задачи**: что ждёт от тебя действий (передать бриф, запросить данные и т.д.)
-- **Claude Code ↗**: кнопка для запуска Claude Code с контекстом инициативы
-- **Архив**: кнопка для перемещения инициативы в архив
+Each initiative is a card showing:
+- **Progress**: how many steps completed (e.g., 5/21)
+- **Current phase and step**: Phase 1 — Problem Research - /validate-problems
+- **Pending tasks**: what needs your action
+- **Claude Code**: button to launch Claude Code with initiative context
+- **Archive**: button to move initiative to archive
 
-### Создать новую инициативу
+### Create new initiative
 
-1. Нажми кнопку **«Новая инициатива»** вверху
-2. **Шаг 1 — Название**: введи латиницей через дефис (например: `checkout-redesign`)
-3. **Шаг 2 — Контекст**: заполни поля — метрика, сегмент, baseline, target и другие. Все поля опциональны, но чем больше заполнишь сейчас, тем лучше Claude начнёт работу
-4. **Шаг 3 — CJM**: перетащи скриншоты пользовательского пути (PNG, JPG, PDF). Можно пропустить и добавить позже
+1. Click **"New Initiative"** at top
+2. **Step 1 — Name**: enter in lowercase with dashes (e.g., `checkout-redesign`)
+3. **Step 2 — Context**: fill fields — metric, segment, baseline, target, etc. All fields are optional, but the more you fill now, the better Claude starts
+4. **Step 3 — CJM**: drag & drop user journey screenshots (PNG, JPG, PDF). Can skip and add later
 
-> Контекст и CJM можно дополнить и отредактировать в любой момент на странице инициативы.
+> Context and CJM can be edited anytime on the initiative page.
 
-### Навигация в хедере
+### Initiative page
 
-- **Архив** — раздел с архивированными инициативами. Оттуда можно восстановить инициативу обратно
-
-### Страница инициативы
-
-Кликни на название инициативы — откроется детальная страница:
-- **Контекст**: метрика, сегмент, прогресс + кнопка-карандаш для редактирования всех полей
-- **CJM-галерея**: загруженные скриншоты пути пользователя. Можно добавлять, удалять, просматривать в увеличенном виде
-- **Таблица шагов**: все 18 шагов с статусами. Каждый шаг — кликабельная ссылка, которая открывает Claude Code сразу с командой этого шага
-- **Pending-задачи**: что ждёт от тебя с датой активации
-- **Последние решения**: записи из лога решений (что обсуждали, что решили)
-- **Claude Code ↗**: кнопка в строке заголовка — открывает Claude Code с контекстом инициативы
+Click an initiative name for the detail view:
+- **Context**: metric, segment, progress + edit button
+- **CJM gallery**: uploaded user journey screenshots
+- **Step table**: all steps with statuses. Each step is clickable — opens Claude Code with that command
+- **Pending tasks**: what needs your action
+- **Recent decisions**: log entries
+- **Pipeline config**: which template is active, which steps are enabled/disabled
 
 ---
 
-## 2. Терминал — работа с Claude Code
+## 2. Terminal — working with Claude Code
 
-### Как это работает
+### How it works
 
-Когда ты открываешь терминал через дашборд:
-1. Система автоматически переходит в папку твоей инициативы
-2. Запускается Claude Code — ИИ-ассистент, который ведёт тебя по пайплайну
-3. Claude читает контекст: CONTEXT.md, status.json, последние решения
-4. Предлагает следующий шаг
+When you open terminal from the dashboard:
+1. System navigates to your initiative folder
+2. Claude Code launches — AI assistant that guides you through the pipeline
+3. Claude reads context: CONTEXT.md, status.json, recent decisions
+4. Suggests next step (respecting your pipeline configuration)
 
-### Как запустить шаг
+### How to run a step
 
-**Через дашборд** (рекомендуется): на странице инициативы кликни на название шага (например, `/analyze-cjm`) — Claude Code откроется сразу с нужной командой.
+**Via dashboard** (recommended): click a step name (e.g., `/analyze-cjm`) — Claude Code opens with that command.
 
-**Через терминал**: напиши команду вручную:
+**Via terminal**: type the command manually:
 
 ```
 /analyze-cjm
 ```
 
-Или проси своими словами:
+Or ask in natural language:
 
 ```
-продолжи с того места где остановились
-покажи статус
-давай обсудим результаты аналитики
+continue where we left off
+show status
+let's discuss the analytics results
 ```
 
-### Как заканчивается сессия
+### Session end
 
-После каждого шага или обсуждения Claude **автоматически**:
-1. Обновляет `status.json` — какой шаг завершён, краткое резюме
-2. Записывает в `decisions.md` — что обсуждали, какие решения, открытые вопросы
-3. Делает git commit — всё сохраняется
+After each step or discussion, Claude **automatically**:
+1. Updates `status.json` — which step completed, brief summary
+2. Writes to `decisions.md` — what was discussed, decisions made, open questions
+3. Git commits — everything is saved
 
-**Если закроешь вкладку** — данные не потеряются. В следующий раз Claude прочитает сохранённое состояние и продолжит.
+**If you close the tab** — data isn't lost. Next time Claude reads the saved state and continues.
 
 ---
 
-## 3. Контекст и CJM
+## 3. Context and CJM
 
-### Контекст инициативы (CONTEXT.md)
+### Initiative context (CONTEXT.md)
 
-Контекст заполняется при создании инициативы (шаг 2 визарда) или через кнопку-карандаш на странице инициативы.
+Context is filled during initiative creation (step 2) or via the edit button on the initiative page.
 
-#### Поля контекста
+#### Context fields
 
-| Поле | Пример | Зачем |
+| Field | Example | Why it matters |
 |---|---|---|
-| **Заголовок** | Редизайн чекаута | Человекочитаемое название |
-| **О чём инициатива** | Пользователи не находят билеты... | Свободное описание проблемы и цели |
-| **Метрика** | Конверсия в покупку билета | Что именно улучшаем |
-| **Baseline** | 2.3% | Текущее значение (можно анонимизированное) |
-| **Target** | 3.5% | Целевое значение |
-| **Горизонт** | Квартал | Срок достижения |
-| **Сегмент** | Покупатели 18-35, мобайл | Кто наши пользователи |
-| **Размер сегмента** | 12M MAU | Масштаб аудитории |
-| **Платформа** | Web / iOS / Android / Все | На какой платформе |
-| **Почему сейчас** | Конкурент запустил аналог | Что изменилось |
-| **Ограничения** | Не трогаем плеер | Что нельзя менять |
+| **Metric** | Conversion to purchase | What we're improving |
+| **Baseline** | 2.3% | Current value (can be anonymized) |
+| **Target** | 3.5% | Goal value |
+| **Horizon** | Quarter | Timeframe |
+| **Segment** | Buyers 18-35, mobile | Who our users are |
+| **Segment size** | 12M MAU | Audience scale |
+| **Platform** | Web / iOS / Android / All | Which platform |
+| **Why now** | Competitor launched similar | What changed |
+| **Constraints** | Don't touch the player | What can't be changed |
+| **Stakeholders** | VP Product (approver) | Who's involved |
+| **OKR** | Increase retention 15% | Strategic alignment |
+| **Kill criteria** | <5% users affected | When to stop |
 
-> ⛔ Без метрики, baseline и сегмента Claude откажется начинать шаг 1 — и правильно сделает. Без них гипотезы не привязаны к реальности.
+> Without metric, baseline, and segment, Claude will refuse to start step 1 — and rightfully so. Without them, hypotheses aren't grounded in reality.
 
-### CJM — скриншоты пути пользователя
+### CJM — user journey screenshots
 
-CJM загружается при создании инициативы (шаг 3 визарда) или на странице инициативы через CJM-секцию.
+Upload via dashboard: drag files or click "Choose files". Formats: PNG, JPG, PDF.
 
-**Через дашборд**: перетащи файлы в область загрузки или нажми «Выбрать файлы». Форматы: PNG, JPG, PDF.
-
-**Что загружать**: скриншоты текущего пути пользователя в порядке шагов — главная, карточка, оплата и т.д.
-
-> CJM отображается в галерее на странице инициативы и в шаге 1 (`/analyze-cjm`) — Claude анализирует эти материалы при формулировке гипотез.
+**What to upload**: screenshots of the current user journey in order — home, card, payment, etc.
 
 ---
 
-## 4. Telegram-бот
+## 4. Configurable Pipeline
 
-Бот нужен для двух вещей:
-1. **Ты подтверждаешь** что передал задачу (бриф аналитику, опрос, дизайн)
-2. **Бот напоминает** когда пора запросить результаты
+### Templates
 
-### Команды подтверждения
+When creating an initiative (step 0), you choose a pipeline template:
 
-Когда **передал бриф** кому-то:
+| Template | Steps | Best for |
+|----------|-------|----------|
+| **Quick Discovery** | ~6 core steps | Have data, need structure |
+| **Full Discovery** | All steps | New problem, need full research |
+| **Problem Only** | 5 steps | Just understand the problem |
+| **Solution Only** | 7 steps | Problem known, design solution |
+| **Custom** | Your choice | You know what's needed |
 
-| Ситуация | Команда боту |
-|---|---|
-| Передал бриф аналитику | `/analytics-brief-sent` |
-| Передал бриф на опрос | `/survey-brief-sent` |
-| Передал бриф на выгрузку аудитории | `/audience-brief-sent` |
-| Передал бриф дизайнеру | `/design-brief-sent` |
-| Передал бриф в поддержку | `/support-brief-sent` |
+### Step types
 
-Когда **получил результаты**:
+- **Core** — can't be disabled, pipeline breaks without them
+- **Recommended** — improves results, can be disabled with a warning
+- **Optional** — useful in specific contexts, off by default in most templates
 
-| Ситуация | Команда боту |
-|---|---|
-| Получил данные от аналитика | `/confirm-analytics-results` |
-| Получил результаты опроса | `/confirm-survey-results` |
-| Прошёл Gate 1 Challenge | `/confirm-gate1-challenge` |
-| Прошёл Gate 2 Challenge | `/confirm-gate2-challenge` |
-
-> Бот спросит выбрать инициативу (если их несколько) и попросит описать результат.
-
-### Когда бот напомнит
-
-- **Брифы** (аналитика, опрос, аудитория, дизайн) → напомнит на следующий день, если не передал
-- **Результаты аналитики** → напомнит через неделю, потом каждую неделю
-- **Результаты опроса** → напомнит через 2 недели, потом каждую неделю
-- **Gate Challenge** → напомнит в ближайший понедельник
-- **Пятничный дайджест** → сводка всех открытых задач
+You can reconfigure at any time by telling Claude: "reconfigure pipeline" or "enable competitor research".
 
 ---
 
-## 5. Пайплайн — 18 шагов
+## 5. Pipeline — all steps
 
-### Phase 1: Исследование проблемы + Образ решения → Gate 1
+### Phase 0: Setup
+| # | Command | Type | What it does |
+|---|---------|------|-------------|
+| 0 | `/setup-initiative` | Core | Alignment: metric, stakeholders, OKR, constraints, kill criteria, pipeline config |
 
-| # | Команда | Тип | Что делает |
-|---|---------|-----|-----------|
-| 1 | `/analyze-cjm` | 🤖 автоматически | Анализирует CJM, формулирует гипотезы проблем |
-| 2 | `/synthetic-research` | 🤖 автоматически | Синтетические интервью для проверки гипотез |
-| 3 | `/competitor-research` | 🤖 автоматически | Поиск аналогов и конкурентных решений |
-| 4 | `/generate-research` | 🤖 автоматически | Создаёт бриф для аналитика + вопросы опроса |
-| 5 | `/create-survey-audience` | 🤖 автоматически | Бриф на выгрузку аудитории для опроса |
-| 6 | `/validate-problems` | ⏸ ждём данные | Валидация гипотез по данным аналитики и опроса |
-| 7 | `/solution-hypotheses` | 👤 ты выбираешь | Гипотезы решений с ICE-скорингом |
-| 8 | `/sketch-solution` | 👤 ты комментируешь | Эскиз решения: экраны, user flow |
-| 9 | `/review-design` | 👤 ты комментируешь | Ревью и доработка эскиза |
-| 10 | `/create-presentation` | 🤖 автоматически | Презентация для Gate 1 Challenge |
+### Phase 1: Problem Research -> Gate 1
+| # | Command | Type | What it does |
+|---|---------|------|-------------|
+| 1 | `/analyze-cjm` | Core | Analyze CJM, formulate problem hypotheses |
+| 2 | `/synthetic-research` | Recommended | Synthetic interviews for pre-validation |
+| 3 | `/competitor-research` | Recommended | Scenario analogues and competitive analysis |
+| 4 | `/generate-research` | Recommended | Analytics brief + survey design |
+| 5 | `/create-survey-audience` | Optional | SQL for survey audience |
+| 5.5 | Research pause | Recommended | Real research: analytics, survey, 5-8 interviews |
+| 6 | `/validate-problems` | Core | Validate hypotheses (3 sub-steps: quick/survey/interviews) |
+| 7 | `/solution-hypotheses` | Core | Solution hypotheses with ICE + business viability |
+| 8 | `/sketch-solution` | Core | Wireframes, screens, user flow |
+| 8.5 | `/user-test-concept` | Optional | Concept test with 3-5 real users |
+| 9 | `/review-design` | Recommended | Heuristic evaluation + iteration |
+| 10 | `/create-presentation` | Core | Gate 1 presentation |
 
-### Phase 2: Проработка решения → Gate 2
+### Phase 2: Solution Development -> Gate 2
+| # | Command | Type | What it does |
+|---|---------|------|-------------|
+| 11 | `/create-design-brief` | Recommended | Brief for designer |
+| 12 | `/estimate-with-dev` | Core | Dev estimate and tech spec |
+| 13 | `/finalize-prd` | Core | Complete PRD with user stories |
+| 14 | `/design-ab-test` | Recommended | AB test: baseline, MDE, sample, guardrails |
+| 15 | `/create-gate2-presentation` | Core | Gate 2 presentation |
 
-| # | Команда | Тип | Что делает |
-|---|---------|-----|-----------|
-| 11 | `/create-design-brief` | 🤖 → ⏸ пауза | Бриф для дизайнера |
-| 12 | `/estimate-with-dev` | ⏸ заполняет лид | Оценка от разработки |
-| 13 | `/finalize-prd` | 🤖 автоматически | Финализация PRD |
-| 14 | `/design-ab-test` | 👤 с аналитиком | Дизайн AB-теста |
-| 15 | `/create-gate2-presentation` | 🤖 автоматически | Презентация для Gate 2 Challenge |
+After Gate 2: `/create-jira` for dev tickets.
 
-После Gate 2: `/create-jira` → тикеты для разработки.
+### Phase 3: Launch Preparation
+| # | Command | Type | What it does |
+|---|---------|------|-------------|
+| 16 | `/support-task` | Optional | Support brief: FAQ, scenarios |
+| 17 | `/announce-ab-test` | Optional | AB test announcement |
+| 18 | `/announce-release` | Optional | Release announcement |
 
-### Phase 3: Подготовка к запуску
+### Step types explained
 
-| # | Команда | Тип | Что делает |
-|---|---------|-----|-----------|
-| 16 | `/support-task` | 🤖 → ⏸ пауза | Бриф для поддержки: FAQ, сценарии обращений |
-| 17 | `/announce-ab-test` | 🤖 → 👤 публикуешь | Анонс запуска AB-теста в корпоративный канал |
-| 18 | `/announce-release` | 🤖 → 👤 публикуешь | Анонс релиза на всех пользователей |
+- **Core** — Claude does it automatically or guides you through it. Can't skip.
+- **Recommended** — Claude suggests it. You can skip, but Claude will note the risk.
+- **Optional** — Available on demand. Disabled by default in most templates.
+- **Pause** — waiting for external data (analytics, survey, interviews). Claude tracks what's pending.
 
-### Типы шагов
+### What if hypotheses aren't confirmed (step 6)
 
-- 🤖 **Автоматически** — Claude делает сам, ты проверяешь результат
-- 👤 **Ты участвуешь** — Claude предлагает, ты выбираешь и комментируешь
-- ⏸ **Пауза** — ждём данные от аналитика / дизайнера / результаты опроса
-
-### Что если гипотезы не подтвердились (шаг 6)
-
-Возможные исходы валидации:
-- ✅ Подтверждены → переход к шагу 7
-- ⚠️ Частично подтверждены → сузить фокус и перейти к шагу 7
-- ❌ Ни одна не подтверждена → вернуться к шагу 1 с новыми данными
-- 🔍 Недостаточно данных → повторить сбор данных
+Possible outcomes:
+- Confirmed -> proceed to step 7
+- Partially confirmed -> narrow focus, proceed to step 7
+- None confirmed -> return to step 1 with new data
+- Insufficient data -> repeat data collection
 
 ---
 
-## 6. Что создаёт пайплайн
+## 6. What the pipeline creates
 
-По ходу работы в папке инициативы появляются артефакты:
+As you work, artifacts appear in the initiative folder:
 
 ```
 my-initiative/
-├── CONTEXT.md                     ← заполняется через дашборд
-├── CJM/                           ← загружается через дашборд
-│   ├── 01_главная.png
-│   └── 02_карточка.png
-├── research/                      ← исследования
-│   ├── synthetic-interviews.md    ← шаг 2
-│   ├── competitive-analysis.md    ← шаг 3
-│   ├── analytics-brief.md         ← шаг 4
-│   ├── survey-questions.md        ← шаг 4
-│   ├── survey-audience-brief.md   ← шаг 5
-│   ├── analytics-data.md          ← от аналитика
-│   └── survey-results.md          ← от исследователя
-├── output/                        ← результаты
-│   ├── status.json                ← статус пайплайна
-│   ├── decisions.md               ← лог решений
-│   ├── hypotheses.md              ← шаг 1
-│   ├── validated-hypotheses.md    ← шаг 6
-│   ├── solution-hypotheses.md     ← шаг 7
-│   ├── solution-sketch.md         ← шаг 8
-│   ├── PRD.md                     ← наполняется по шагам
-│   ├── presentation.md            ← шаг 10
-│   ├── presentation.pptx          ← шаг 10
-│   ├── design-brief.md            ← шаг 11
-│   ├── dev-estimate.md            ← шаг 12
-│   ├── ab-test-design.md          ← шаг 14
-│   ├── gate2-presentation.md      ← шаг 15
-│   ├── gate2-presentation.pptx    ← шаг 15
-│   ├── support-brief.md           ← шаг 16
-│   ├── announce-ab-test.md        ← шаг 17
-│   └── announce-release.md        ← шаг 18
-└── CLAUDE.md                      ← инструкции для Claude
+├── CONTEXT.md                     <- filled via dashboard or step 0
+├── CJM/                           <- uploaded via dashboard
+│   ├── 01_home.png
+│   └── 02_card.png
+├── research/                      <- research artifacts
+│   ├── synthetic-interviews.md    <- step 2
+│   ├── competitive-analysis.md    <- step 3
+│   ├── analytics-brief.md         <- step 4
+│   ├── survey-questions.md        <- step 4
+│   ├── survey-audience-brief.md   <- step 5
+│   ├── analytics-data.md          <- from analyst
+│   ├── survey-results.md          <- from researcher
+│   ├── interview-notes.md         <- from PM (step 5.5)
+│   └── concept-test-results.md    <- step 8.5
+├── output/                        <- results
+│   ├── status.json                <- pipeline status + config
+│   ├── decisions.md               <- decision log
+│   ├── hypotheses.md              <- step 1
+│   ├── validated-hypotheses.md    <- step 6
+│   ├── solution-hypotheses.md     <- step 7
+│   ├── solution-sketch.md         <- step 8
+│   ├── PRD.md                     <- built incrementally
+│   ├── presentation.md            <- step 10
+│   ├── presentation.pptx          <- step 10
+│   ├── design-brief.md            <- step 11
+│   ├── dev-estimate.md            <- step 12
+│   ├── ab-test-design.md          <- step 14
+│   ├── gate2-presentation.md      <- step 15
+│   ├── gate2-presentation.pptx    <- step 15
+│   ├── support-brief.md           <- step 16
+│   ├── announce-ab-test.md        <- step 17
+│   └── announce-release.md        <- step 18
+└── CLAUDE.md                      <- instructions for Claude
 ```
 
 ---
 
-## 7. Архив
+## 7. Telegram bot
 
-Инициативы, которые больше не актуальны, можно убрать в архив:
-1. На главной странице дашборда нажми кнопку архивации на карточке инициативы
-2. Подтверди в модальном окне
-3. Инициатива переместится в раздел **«Архив»** (доступен через хедер)
+The bot handles two things:
+1. **You confirm** you've handed off a task (brief to analyst, survey, design)
+2. **Bot reminds** you when it's time to check for results
 
-Из архива инициативу можно **восстановить** — она вернётся на главную.
+### Confirmation commands
+
+When you've **sent a brief**:
+
+| Situation | Bot command |
+|---|---|
+| Sent brief to analyst | `/analytics-brief-sent` |
+| Sent survey brief | `/survey-brief-sent` |
+| Sent audience brief | `/audience-brief-sent` |
+| Sent brief to designer | `/design-brief-sent` |
+| Sent brief to support | `/support-brief-sent` |
+
+When you've **received results**:
+
+| Situation | Bot command |
+|---|---|
+| Got analytics data | `/confirm-analytics-results` |
+| Got survey results | `/confirm-survey-results` |
+| Passed Gate 1 | `/confirm-gate1-challenge` |
+| Passed Gate 2 | `/confirm-gate2-challenge` |
+
+### Reminder schedule
+
+- **Briefs** (analytics, survey, audience, design) -> reminder next day if not sent
+- **Analytics results** -> reminder after 1 week, then weekly
+- **Survey results** -> reminder after 2 weeks, then weekly
+- **Gate Challenge** -> reminder next Monday
+- **Friday digest** -> summary of all open tasks
+
+---
+
+## 8. Archive
+
+Initiatives that are no longer active can be archived:
+1. On the main dashboard page, click the archive button on the initiative card
+2. Confirm in the modal
+3. Initiative moves to **"Archive"** section (accessible via header)
+
+From the archive, you can **restore** an initiative back to the main page.
 
 ---
 
 ## FAQ
 
-**Я закрыл вкладку — всё пропало?**
-Нет. Claude сохраняет прогресс в git после каждой сессии. Открой инициативу заново — он продолжит с того же места.
+**I closed the tab — is everything lost?**
+No. Claude saves progress in git after every session. Reopen the initiative — it continues from the same place.
 
-**Как продолжить работу?**
-Открой инициативу через дашборд → нажми **«Claude Code ↗»** или кликни на нужный шаг. Claude прочитает status.json и продолжит.
+**How to continue working?**
+Open initiative via dashboard -> click **"Claude Code"** or click a step. Claude reads status.json and continues.
 
-**Бот не отвечает на команду**
-Проверь: (1) команда написана точно как в таблице, с `/` в начале; (2) ты писал именно боту, а не в другой чат.
+**How to change pipeline configuration?**
+Tell Claude: "reconfigure pipeline" or "enable step 5" or "switch to quick template".
 
-**Как загрузить CJM-материалы?**
-Через дашборд: при создании инициативы (шаг 3 визарда) или на странице инициативы — перетащи файлы в область загрузки.
+**Bot doesn't respond to a command?**
+Check: (1) command is typed exactly as in the table, with `/` prefix; (2) you're messaging the bot, not another chat.
 
-**Как отредактировать контекст инициативы?**
-На странице инициативы нажми кнопку-карандаш рядом с «Прогресс» — откроется форма редактирования всех полей.
+**Can I work on multiple initiatives?**
+Yes. Each initiative is a separate folder with its own status. Switch via dashboard.
 
-**Можно работать с нескольких инициатив параллельно?**
-Да. Каждая инициатива — отдельная папка с отдельным статусом. Переключайся через дашборд.
+**What are Gate 1 and Gate 2?**
+Reviews with your team/leadership:
+- **Gate 1** (after step 10): problem validated + solution sketch
+- **Gate 2** (after step 15): solution designed (design, PRD, AB test plan)
 
-**Что такое Gate 1 и Gate 2?**
-Это защиты перед командой/руководством:
-- **Gate 1** (после шага 10): проблема валидирована + есть образ решения
-- **Gate 2** (после шага 15): решение проработано (дизайн, PRD, план AB-теста)
+After Gate 2 -> Phase 3: launch preparation.
 
-После Gate 2 — Phase 3: подготовка к запуску (поддержка, анонсы).
+**What's the difference between step types?**
+- **Core**: mandatory, pipeline breaks without them
+- **Recommended**: strongly suggested, skipping may reduce quality
+- **Optional**: use when relevant to your context

@@ -1,29 +1,47 @@
-# Инициатива: [НАЗВАНИЕ]
+# Initiative: [NAME]
 
-**Продакт**: [ИМЯ]
+**Product Manager**: [NAME]
 
-## Цель
-**Метрика, которую улучшаем**: [конверсия в оплату / retention D7 / NPS / время до первого действия / ...]
-**Текущий baseline**: [X%] (анонимизированный — можно сдвиг)
-**Целевой результат**: [Y%]
-**Горизонт**: [квартал / 6 недель / ...]
+## Outcome
+**Metric we're improving**: [conversion to payment / retention D7 / NPS / time to first action / ...]
+**Current baseline**: [X%] (can be anonymized — use relative shift)
+**Target result**: [Y%]
+**Horizon**: [quarter / 6 weeks / ...]
 
-## Пользователь
-**Сегмент**: [новые пользователи / платящие / churned / ...]
-**Размер сегмента**: [DAU / MAU + доля от всех пользователей — для слайда "Проблема" на Gate]
-**Платформа**: [web / iOS / Android / все]
-**Ключевой сценарий на CJM**: [регистрация / онбординг / оформление заказа / ...]
+## User
+**Segment**: [new users / paying / churned / ...]
+**Segment size**: [DAU / MAU + share of total users — for "Problem" slide at Gate]
+**Platform**: [web / iOS / Android / all]
+**Key CJM scenario**: [registration / onboarding / checkout / ...]
 
-## Контекст
-**Почему сейчас**: [что изменилось — жалобы, конкурент, данные, ...]
-**Что уже пробовали**: [что делали раньше с этим сценарием]
-**Ограничения**: [нельзя трогать X / нет бюджета на Y / релиз через Z недель]
-**Связи с другими инициативами**: [что аффектит / от чего зависит]
+## Context
+**Why now**: [what changed — complaints, competitor, data, ...]
+**What we tried before**: [previous attempts with this scenario]
+**Constraints**: [can't touch X / no budget for Y / release in Z weeks]
+**Related initiatives**: [what it affects / what it depends on]
+
+## Stakeholders
+**Decision-maker**: [who approves at Gate]
+**Influencers**: [who to align with before Gate]
+**Blockers**: [who might block and why]
+
+## OKR Alignment
+**Company OKR**: [which company-level OKR this serves]
+**Team OKR**: [which team OKR this maps to]
+
+## Success & Kill Criteria
+**Success**: [what does "initiative succeeded" mean — specific, measurable]
+**Kill criteria**: [under what conditions do we stop — e.g. "validation shows <5% of users affected"]
+
+## Available Data
+**Analytics**: [do we have event tracking? funnels? what's missing?]
+**Research**: [existing interviews, surveys, NPS comments, support tickets]
+**CJM**: [where from — Miro, Figma, screenshots, team knowledge]
 
 ## CJM
-Материалы в папке `/CJM/`. Поддерживаемые форматы:
-- **PNG/JPG скрины**: `01_шаг-название.png`, `02_шаг-название.png` — экспорт из Miro/Figma
-- **Figma файл**: `*.fig` — читать через Figma MCP
-- **PDF**: `*.pdf` — экспорт из Miro/Notion
+Materials in `/CJM/`. Supported formats:
+- **PNG/JPG screenshots**: `01_step-name.png`, `02_step-name.png` — export from Miro/Figma
+- **Figma file**: `*.fig` — read via Figma MCP
+- **PDF**: `*.pdf` — export from Miro/Notion
 
-Если шаг имеет состояния — отдельные файлы: `03a_form-empty.png`, `03b_form-error.png`
+If a step has states — separate files: `03a_form-empty.png`, `03b_form-error.png`
