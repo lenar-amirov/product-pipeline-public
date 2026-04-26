@@ -85,10 +85,9 @@ Skills are in `.claude/skills/` relative to repo root. Each skill: `.claude/skil
 | `ui-pattern-library` | UI patterns for wireframes |
 | `system-design-doc` | Tech dependencies and architecture |
 | `technical-spec-document` | Technical specification |
-| `strategic-narrative-generator` | Strategic narrative for presentations |
-| `multi-source-signal-synthesiser` | Cross-source signal synthesis |
-| `retro-analysis` | Retrospective analysis |
-| `ambiguity-resolver` | Resolving ambiguities |
+| `strategic-narrative-generator` | Strategic narratives + Gate presentation structure |
+| `multi-source-signal-synthesiser` | Cross-source signal synthesis with evidence typing |
+| `ambiguity-resolver` | Resolving ambiguities (utility — use at any step) |
 | `ab-test-announcement-wizard` | AB test / release announcements |
 | `user-test-concept` | Concept testing with real users |
 
@@ -122,7 +121,7 @@ Version: 1.0 | Date: | Author: | Status: Draft
 ### STEP 0 — `/setup-initiative` **Core**
 **Type**: PM fills with AI guidance
 **Output**: filled `CONTEXT.md` + `pipeline_config` in status.json
-**Skill**: read `setup-initiative`
+**Skills**: read `setup-initiative` + `ambiguity-resolver` (if brief is vague)
 
 Alignment checklist: Outcome, Stakeholders, OKR, Constraints, Success/Kill criteria, Segment, Available data, Pipeline config.
 
@@ -189,7 +188,7 @@ Recommended: 5-8 customer interviews (Teresa Torres).
 ### STEP 6 — `/validate-problems` **Core**
 **Type**: Autonomous (when data arrives)
 **Output**: `output/validated-hypotheses.md`, PRD S3-S4
-**Skills**: `funnel-analysis-builder` + `consulting-problem-solving`
+**Skills**: `funnel-analysis-builder` + `consulting-problem-solving` + `multi-source-signal-synthesiser`
 
 Sub-steps: 6a Quick signal (Core), 6b Survey (Recommended), 6c Interviews (Optional).
 Branching: confirmed -> 7 | partial -> narrow | none -> step 1 | insufficient -> repeat.
@@ -236,6 +235,7 @@ Heuristic evaluation + changelog.
 ### STEP 10 — `/create-presentation` **Core** (Gate 1)
 **Type**: Autonomous
 **Output**: `output/presentation.md` + `output/presentation.pptx`
+**Skills**: `strategic-narrative-generator` (Gate 1 narrative structure)
 
 7-slide Gate 1 structure. Every claim with source reference.
 Tracking: `pending.gate1_challenge`.
@@ -277,6 +277,7 @@ Fill S8, S11. Check consistency. Status -> Review.
 ### STEP 15 — `/create-gate2-presentation` **Core** (Gate 2)
 **Type**: Autonomous
 **Output**: `output/gate2-presentation.md` + `output/gate2-presentation.pptx`
+**Skills**: `strategic-narrative-generator` (Gate 2 narrative structure)
 
 Tracking: `pending.gate2_challenge`.
 
@@ -363,4 +364,5 @@ Tracking: `pending.support_brief`.
 - PRD is a living document — update after each step
 - Evidence typing: REAL/SYNTHETIC/INFERRED/AMBIGUOUS
 - Respect pipeline_config: skip disabled steps
+- **Use `ambiguity-resolver`** when PM input is vague or contradictory at any step
 - **After every session — SESSION END (status.json + decisions.md + git commit)**

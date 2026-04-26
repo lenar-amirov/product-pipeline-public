@@ -154,6 +154,69 @@ Include evolving characteristics:
 - Validate assumptions through ongoing user testing
 - Retire outdated personas that no longer represent significant user segments
 
+## Early-Stage Personas (Synthetic Research — Step 2)
+
+When real user interviews aren't available yet, build personas from secondary data as a starting point. Mark all outputs as **SYNTHETIC** evidence.
+
+### Secondary Data Sources
+- **App store reviews**: Pain points in competitors' products
+- **Support tickets**: Common complaints and feature requests (if available)
+- **Market reports**: Segment demographics, behavior patterns
+- **Competitor UX**: Who are competitors designing for?
+- **Community forums**: Reddit, ProductHunt, industry Slack groups
+- **Analytics data**: Behavioral clusters from existing product usage
+
+### Persona Confidence Scorecard
+
+Rate confidence for each persona trait:
+
+```markdown
+| Trait | Value | Confidence | Source |
+|-------|-------|-----------|--------|
+| Age range | 25-35 | Medium | Market report + app reviews |
+| Primary goal | Save time on X | High | 15+ reviews mention this |
+| Pain point | Can't do Y on mobile | Low | Only 2 anecdotal mentions |
+| Behavior | Uses tool daily | Medium | Competitor analytics blog |
+```
+
+- **High**: 3+ independent sources confirm
+- **Medium**: 1-2 sources, logically consistent
+- **Low**: Single source or inference — needs validation
+
+### Synthetic Interview Template
+
+For each persona, simulate a problem-focused interview (5-7 questions):
+
+```markdown
+## Persona: [Name], [Role]
+**Background**: [2-3 sentences from secondary data]
+
+### Interview Simulation
+Q1: "Walk me through the last time you [relevant scenario]."
+> "[Simulated response based on secondary data patterns]"
+
+Q2: "What was most frustrating about that experience?"
+> "[Response grounded in identified pain points]"
+
+Q3: "What did you try before giving up / finding a workaround?"
+> "[Response based on competitor usage and support ticket patterns]"
+
+[Continue 5-7 questions]
+
+### Synthesis
+- **Confirmed patterns**: [What multiple sources agree on]
+- **Hypothesized patterns**: [Inferred from limited data — mark as LOW confidence]
+- **Blind spots**: [What we can't know without real interviews]
+```
+
+### Upgrading to REAL
+
+After step 5.5 (customer research pause), update personas:
+- Replace SYNTHETIC traits with interview-backed REAL evidence
+- Adjust confidence scores based on actual user data
+- Retire personas that don't match real user segments
+- Add new personas discovered in interviews
+
 ## Common Pitfalls to Avoid
 
 - **Generic Demographics**: Avoid surface-level descriptions without behavioral insights

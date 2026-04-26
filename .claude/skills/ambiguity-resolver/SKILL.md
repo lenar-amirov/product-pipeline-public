@@ -65,3 +65,35 @@ more meetings.
 
 **Proposed check-in:** After [activity], regroup to decide whether to proceed
 or pivot.
+
+## Pipeline Integration
+
+This skill is a **utility** — use it at any pipeline step when input is vague or contradictory.
+
+### Common Triggers
+
+| Step | Trigger | Output |
+|------|---------|--------|
+| **0. setup-initiative** | PM provides vague brief: "we need to do something about retention" | Full 3-stage process -> feeds into CONTEXT.md |
+| **1. analyze-cjm** | CJM is incomplete or contradictory | Quick reframe -> clarify scope before hypothesis generation |
+| **6. validate-problems** | Data partially confirms, partially contradicts | Scope stage -> define what's in/out for solution phase |
+| **7. solution-hypotheses** | Multiple valid directions, PM can't choose | Reframe stage -> surface the real decision criteria |
+| **Any step** | PM says "I'm not sure what we should do here" | Quick mode (below) |
+
+### Quick Mode (3-Question Reframe)
+
+For mid-step ambiguity when the full 3-stage process is too heavy:
+
+1. **What specifically is unclear?** (Name the ambiguity — don't accept "everything")
+2. **What would you do if you knew the answer?** (Reveals the real decision this feeds)
+3. **What's the smallest thing we could do to get enough signal?** (Minimum viable research)
+
+Write the answers to `output/decisions.md` as an ambiguity resolution entry:
+```markdown
+## YYYY-MM-DD — Ambiguity Resolution at Step N
+
+**Ambiguity**: [What was unclear]
+**Real decision**: [What knowing the answer enables]
+**Resolution**: [What we decided / what we'll do to find out]
+**Next step**: [Specific action]
+```

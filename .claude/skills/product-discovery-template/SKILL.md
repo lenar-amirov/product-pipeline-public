@@ -118,6 +118,65 @@ You are an expert in product discovery methodologies, user research, and validat
 8. What concerns would you have about changing your current approach?
 ```
 
+## Business Viability Check (Step 7)
+
+For each solution hypothesis, assess business viability before committing to design:
+
+```markdown
+## Business Viability: [Solution Hypothesis]
+
+### Unit Economics Estimate
+- **Customer Acquisition Cost (CAC)**: [How will users discover this? Cost per channel]
+- **Lifetime Value (LTV)**: [Revenue per user × retention period]
+- **LTV:CAC ratio**: [Target: >3:1 for sustainable business]
+- **Payback period**: [Months to recover CAC]
+
+### Cannibalization Risk
+- **Existing features affected**: [Does this compete with or degrade existing functionality?]
+- **Revenue impact**: [Could this reduce revenue from existing streams?]
+- **User migration**: [Will users shift from paid feature to free alternative?]
+
+### Dependencies
+- **Teams required**: [Backend / Frontend / Data / Design / Legal / ...]
+- **External systems**: [Third-party APIs, vendors, partnerships]
+- **Timeline blockers**: [What must happen first?]
+
+### Compliance & Legal
+- **Data privacy**: [GDPR, CCPA implications]
+- **Regulatory**: [Industry-specific regulations]
+- **Terms of service**: [User agreement changes needed?]
+
+### Effort Estimate
+- **Size**: S / M / L
+- **Justification**: [Why this size? Key technical considerations]
+```
+
+### Viability Decision Matrix
+
+| Factor | Green | Yellow | Red |
+|--------|-------|--------|-----|
+| Problem-Solution Fit | Validated with REAL data | Partial validation | SYNTHETIC only |
+| Business Viability | LTV:CAC >3:1 | LTV:CAC 1-3:1 | LTV:CAC <1:1 or unknown |
+| Feasibility | S/M effort, no blockers | L effort or 1 dependency | Multiple dependencies or unknowns |
+
+**Decision**: All Green → Go | Any Yellow → Proceed with mitigation plan | Any Red → Pivot or gather more data
+
+## Evidence Typing
+
+Every assumption and finding must be tagged with evidence type and confidence:
+
+| Type | Confidence Range | Source |
+|------|-----------------|--------|
+| **REAL** | 0.6 - 1.0 | Analytics, surveys, user interviews, A/B test results |
+| **SYNTHETIC** | 0.2 - 0.4 | AI-generated interviews, synthetic research |
+| **INFERRED** | 0.3 - 0.5 | Logical deductions from other evidence |
+| **AMBIGUOUS** | 0.1 - 0.3 | Contradictory or unclear signals |
+
+Format in all documents:
+```
+**Evidence**: [REAL] confidence: 0.85 — "68% of surveyed users reported this issue" (survey-results.md)
+```
+
 ## Experiment Design Patterns
 
 ### Landing Page Test

@@ -135,10 +135,9 @@ References for `consulting-problem-solving`: `.claude/skills/consulting-problem-
 | `ui-pattern-library` | UI patterns for wireframes |
 | `system-design-doc` | Tech dependencies and architecture |
 | `technical-spec-document` | Technical specification |
-| `strategic-narrative-generator` | Strategic narrative for presentations |
-| `multi-source-signal-synthesiser` | Cross-source signal synthesis |
-| `retro-analysis` | Retrospective analysis |
-| `ambiguity-resolver` | Resolving ambiguities in requirements |
+| `strategic-narrative-generator` | Strategic narratives + Gate presentation structure |
+| `multi-source-signal-synthesiser` | Cross-source signal synthesis with evidence typing |
+| `ambiguity-resolver` | Resolving ambiguities in requirements (utility — use at any step) |
 | `ab-test-announcement-wizard` | AB test / release announcements |
 | `user-test-concept` | Concept testing with real users |
 
@@ -177,7 +176,7 @@ Version: 1.0 | Date: | Author: | Status: Draft
 ### STEP 0 — `/setup-initiative` **Core**
 **Type**: PM fills with AI guidance
 **Output**: filled `CONTEXT.md` + `pipeline_config` in status.json
-**Skill**: read `setup-initiative`
+**Skills**: read `setup-initiative` + `ambiguity-resolver` (if brief is vague)
 
 AI guides PM through alignment checklist:
 1. **Outcome**: Which metric are we improving? Baseline -> Target
@@ -338,7 +337,7 @@ Waiting for data
 **Input**: `output/hypotheses.md` + research data
 **Output**: `output/validated-hypotheses.md`
 **PRD**: -> S3, S4
-**Skills**: read `funnel-analysis-builder` + `consulting-problem-solving`
+**Skills**: read `funnel-analysis-builder` + `consulting-problem-solving` + `multi-source-signal-synthesiser`
 
 Three sub-steps (PM chooses how many):
 
@@ -430,6 +429,7 @@ PM conducts test -> enters results -> hypotheses updated with REAL evidence for 
 **Type**: Autonomous
 **Input**: `output/PRD.md` + `output/solution-sketch.md` + `research/competitive-analysis.md`
 **Output**: `output/presentation.md` + `output/presentation.pptx`
+**Skills**: read `strategic-narrative-generator` (Gate 1 narrative structure)
 
 Read template: `template/slides/Gate 1 Template.pptx.pdf` (if exists).
 
@@ -498,6 +498,7 @@ Calculate: baseline, MDE, sample size, duration, segmentation, guardrails, decis
 ### STEP 15 — `/create-gate2-presentation` **Core** (Gate 2)
 **Type**: Autonomous
 **Output**: `output/gate2-presentation.md` + `output/gate2-presentation.pptx`
+**Skills**: read `strategic-narrative-generator` (Gate 2 narrative structure)
 
 Read template: `template/slides/Gate 2 Template.pptx.pdf` (if exists).
 
@@ -649,4 +650,5 @@ As [role] I want [action] So that [value]
 - If data is insufficient — say so directly, don't fabricate
 - **Evidence typing**: mark every piece of evidence as REAL/SYNTHETIC/INFERRED/AMBIGUOUS
 - **Respect pipeline_config**: skip disabled steps, warn about skipped recommended steps
+- **Use `ambiguity-resolver`** when PM input is vague or contradictory at any step
 - **After every session — SESSION END (status.json + decisions.md + git commit)**

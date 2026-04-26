@@ -102,8 +102,8 @@ See [CLAUDE.md](CLAUDE.md) for full pipeline documentation.
 |-------|---------|
 | `setup-initiative` | Alignment checklist, pipeline configuration |
 | `consulting-problem-solving` | MECE structure, pyramid principle, synthesis |
-| `product-discovery-template` | Hypotheses, ICE scoring, assumption mapping |
-| `user-persona-builder` | Behavioral personas from research data |
+| `product-discovery-template` | Hypotheses, ICE scoring, assumption mapping, business viability check |
+| `user-persona-builder` | Behavioral personas from research data + synthetic research methodology |
 | `funnel-analysis-builder` | Conversion funnels, cohort analysis, SQL patterns |
 | `product-requirements-doc` | PRD structure and content |
 | `user-story-generator` | User stories with Given/When/Then acceptance criteria |
@@ -114,10 +114,10 @@ See [CLAUDE.md](CLAUDE.md) for full pipeline documentation.
 | `design-critique-template` | Heuristic evaluation of design decisions |
 | `system-design-doc` | Technical architecture and dependencies |
 | `technical-spec-document` | Implementation blueprints |
-| `strategic-narrative-generator` | Strategic narratives for presentations |
-| `multi-source-signal-synthesiser` | Cross-source signal synthesis |
+| `strategic-narrative-generator` | Strategic narratives + Gate presentation structure |
+| `multi-source-signal-synthesiser` | Cross-source signal synthesis with evidence typing |
 | `ab-test-announcement-wizard` | Internal AB test / release announcements |
-| `ambiguity-resolver` | Resolving ambiguities in requirements |
+| `ambiguity-resolver` | Resolving ambiguities in requirements (utility — any step) |
 
 ## Dashboard
 
