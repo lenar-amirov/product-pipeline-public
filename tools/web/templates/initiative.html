@@ -117,13 +117,13 @@
   {% for step in initiative.steps %}
     {{ step_row(step, url_base, screens=screens if step.num == 8 else None, cjm_files=cjm_files if step.num == 1 else None, readonly=ro) }}
     {% if step.num == 10 %}
-      {{ gate_divider("Gate 1") }}
+      {{ gate_divider("Problem Research Report") }}
       </ul>
       <div class="section-label">Phase 2 — Проработка</div>
       <ul class="steps-list">
     {% endif %}
     {% if step.num == 15 %}
-      {{ gate_divider("Gate 2") }}
+      {{ gate_divider("Solution Research Report") }}
       </ul>
       <div class="section-label">Phase 3 — Запуск</div>
       <ul class="steps-list">

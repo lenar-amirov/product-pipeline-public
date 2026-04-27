@@ -9,7 +9,7 @@ Bridge the gap between PM-reviewed wireframes and real user feedback. A 15-minut
 ## When to use
 
 - After step 8 (sketch-solution) when wireframes exist
-- When PM wants to validate the solution direction with real users before Gate 1
+- When PM wants to validate the solution direction with real users before Problem Research Report
 - When the solution involves novel interaction patterns that need validation
 - When PM has access to 3-5 target users
 

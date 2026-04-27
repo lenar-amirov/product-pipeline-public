@@ -10,7 +10,7 @@
 
 ## User
 **Segment**: [new users / paying / churned / ...]
-**Segment size**: [DAU / MAU + share of total users — for "Problem" slide at Gate]
+**Segment size**: [DAU / MAU + share of total users — for "Problem" slide in report]
 **Platform**: [web / iOS / Android / all]
 **Key CJM scenario**: [registration / onboarding / checkout / ...]
 
@@ -21,8 +21,8 @@
 **Related initiatives**: [what it affects / what it depends on]
 
 ## Stakeholders
-**Decision-maker**: [who approves at Gate]
-**Influencers**: [who to align with before Gate]
+**Decision-maker**: [who approves at Report presentation]
+**Influencers**: [who to align with before Report]
 **Blockers**: [who might block and why]
 
 ## OKR Alignment

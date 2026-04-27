@@ -232,12 +232,12 @@ Heuristic evaluation + changelog.
 
 ---
 
-### STEP 10 — `/create-presentation` **Core** (Gate 1)
+### STEP 10 — `/create-presentation` **Core** (Problem Research Report)
 **Type**: Autonomous
 **Output**: `output/presentation.md` + `output/presentation.pptx`
-**Skills**: `strategic-narrative-generator` (Gate 1 narrative structure)
+**Skills**: `strategic-narrative-generator` (Problem Research Report narrative)
 
-7-slide Gate 1 structure. Every claim with source reference.
+7-slide Problem Research Report structure. Every claim with source reference.
 Tracking: `pending.gate1_challenge`.
 
 ---
@@ -274,16 +274,16 @@ Fill S8, S11. Check consistency. Status -> Review.
 
 ---
 
-### STEP 15 — `/create-gate2-presentation` **Core** (Gate 2)
+### STEP 15 — `/create-gate2-presentation` **Core** (Solution Research Report)
 **Type**: Autonomous
 **Output**: `output/gate2-presentation.md` + `output/gate2-presentation.pptx`
-**Skills**: `strategic-narrative-generator` (Gate 2 narrative structure)
+**Skills**: `strategic-narrative-generator` (Solution Research Report narrative)
 
 Tracking: `pending.gate2_challenge`.
 
 ---
 
-### `/create-jira` (after Gate 2)
+### `/create-jira` (after Solution Research Report)
 **Output**: `output/jira-tickets.md`
 **Skills**: `user-story-generator`
 
@@ -318,8 +318,8 @@ Tracking: `pending.support_brief`.
 | "analytics results: ..." | Write to `research/analytics-data.md`, close `pending.analytics_results` |
 | "survey results: ..." | Write to `research/survey-results.md`, close `pending.survey_results` |
 | "interview notes: ..." | Write to `research/interview-notes.md` |
-| "Gate 1 passed: ..." | Write to `output/decisions.md`, close `pending.gate1_challenge` |
-| "Gate 2 passed: ..." | Write to `output/decisions.md`, close `pending.gate2_challenge` |
+| "Problem report passed: ..." | Write to `output/decisions.md`, close `pending.gate1_challenge` |
+| "Solution report passed: ..." | Write to `output/decisions.md`, close `pending.gate2_challenge` |
 | "support brief sent" | `pending.support_brief -> null` |
 
 ---

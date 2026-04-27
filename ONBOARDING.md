@@ -193,7 +193,7 @@ You can reconfigure at any time by telling Claude: "reconfigure pipeline" or "en
 |---|---------|------|-------------|
 | 0 | `/setup-initiative` | Core | Alignment: metric, stakeholders, OKR, constraints, kill criteria, pipeline config |
 
-### Phase 1: Problem Research -> Gate 1
+### Phase 1: Problem Research -> Problem Research Report
 | # | Command | Type | What it does |
 |---|---------|------|-------------|
 | 1 | `/analyze-cjm` | Core | Analyze CJM, formulate problem hypotheses |
@@ -207,18 +207,18 @@ You can reconfigure at any time by telling Claude: "reconfigure pipeline" or "en
 | 8 | `/sketch-solution` | Core | Wireframes, screens, user flow |
 | 8.5 | `/user-test-concept` | Optional | Concept test with 3-5 real users |
 | 9 | `/review-design` | Recommended | Heuristic evaluation + iteration |
-| 10 | `/create-presentation` | Core | Gate 1 presentation |
+| 10 | `/create-presentation` | Core | Problem Research Report |
 
-### Phase 2: Solution Development -> Gate 2
+### Phase 2: Solution Development -> Solution Research Report
 | # | Command | Type | What it does |
 |---|---------|------|-------------|
 | 11 | `/create-design-brief` | Recommended | Brief for designer |
 | 12 | `/estimate-with-dev` | Core | Dev estimate and tech spec |
 | 13 | `/finalize-prd` | Core | Complete PRD with user stories |
 | 14 | `/design-ab-test` | Recommended | AB test: baseline, MDE, sample, guardrails |
-| 15 | `/create-gate2-presentation` | Core | Gate 2 presentation |
+| 15 | `/create-gate2-presentation` | Core | Solution Research Report |
 
-After Gate 2: `/create-jira` for dev tickets.
+After Solution Research Report: `/create-jira` for dev tickets.
 
 ### Phase 3: Launch Preparation
 | # | Command | Type | What it does |
@@ -311,8 +311,8 @@ When you've **received results**:
 |---|---|
 | Got analytics data | `/confirm-analytics-results` |
 | Got survey results | `/confirm-survey-results` |
-| Passed Gate 1 | `/confirm-gate1-challenge` |
-| Passed Gate 2 | `/confirm-gate2-challenge` |
+| Problem report passed | `/confirm-gate1-challenge` |
+| Solution report passed | `/confirm-gate2-challenge` |
 
 ### Reminder schedule
 
@@ -352,12 +352,12 @@ Check: (1) command is typed exactly as in the table, with `/` prefix; (2) you're
 **Can I work on multiple initiatives?**
 Yes. Each initiative is a separate folder with its own status. Switch via dashboard.
 
-**What are Gate 1 and Gate 2?**
-Reviews with your team/leadership:
-- **Gate 1** (after step 10): problem validated + solution sketch
-- **Gate 2** (after step 15): solution designed (design, PRD, AB test plan)
+**What are Problem Research Report and Solution Research Report?**
+Presentations for your team/leadership:
+- **Problem Research Report** (after step 10): problem validated + solution sketch
+- **Solution Research Report** (after step 15): solution designed (design, PRD, AB test plan)
 
-After Gate 2 -> Phase 3: launch preparation.
+After Solution Research Report -> Phase 3: launch preparation.
 
 **What's the difference between step types?**
 - **Core**: mandatory, pipeline breaks without them

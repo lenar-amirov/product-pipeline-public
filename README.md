@@ -29,8 +29,8 @@ The pipeline has 4 phases with configurable steps:
 | Phase | Steps | Gate |
 |-------|-------|------|
 | 0. Setup | `/setup-initiative` | — |
-| 1. Problem research | `/analyze-cjm` -> `/validate-problems` | Gate 1 |
-| 2. Solution design | `/solution-hypotheses` -> `/create-gate2-presentation` | Gate 2 |
+| 1. Problem research | `/analyze-cjm` -> `/validate-problems` | Problem Research Report |
+| 2. Solution design | `/solution-hypotheses` -> `/create-gate2-presentation` | Solution Research Report |
 | 3. Launch preparation | `/support-task` -> `/announce-release` | — |
 
 ### Configurable steps
@@ -60,7 +60,7 @@ Every step has a type that determines whether it can be skipped:
 |---|---------|------|-------------|
 | 0 | `/setup-initiative` | Core | Alignment checklist: metric, stakeholders, OKR, constraints, kill criteria |
 
-#### Phase 1: Problem Research -> Gate 1
+#### Phase 1: Problem Research -> Problem Research Report
 | # | Command | Type | What it does |
 |---|---------|------|-------------|
 | 1 | `/analyze-cjm` | Core | Analyze CJM, formulate problem hypotheses (MECE) |
@@ -74,18 +74,18 @@ Every step has a type that determines whether it can be skipped:
 | 8 | `/sketch-solution` | Core | UI wireframes, screens, user flow |
 | 8.5 | `/user-test-concept` | Optional | Concept test with 3-5 real users |
 | 9 | `/review-design` | Recommended | Heuristic evaluation + design iteration |
-| 10 | `/create-presentation` | Core | Gate 1 presentation (problem + solution sketch) |
+| 10 | `/create-presentation` | Core | Problem Research Report (problem + solution sketch) |
 
-#### Phase 2: Solution Development -> Gate 2
+#### Phase 2: Solution Development -> Solution Research Report
 | # | Command | Type | What it does |
 |---|---------|------|-------------|
 | 11 | `/create-design-brief` | Recommended | Brief for designer with wireframes |
 | 12 | `/estimate-with-dev` | Core | Dev lead fills tech estimate, dependencies |
 | 13 | `/finalize-prd` | Core | User stories, acceptance criteria, open questions |
 | 14 | `/design-ab-test` | Recommended | AB test design: baseline, MDE, sample size, guardrails |
-| 15 | `/create-gate2-presentation` | Core | Gate 2 presentation |
+| 15 | `/create-gate2-presentation` | Core | Solution Research Report |
 
-After Gate 2: `/create-jira` for dev tickets.
+After Solution Research Report: `/create-jira` for dev tickets.
 
 #### Phase 3: Launch Preparation
 | # | Command | Type | What it does |

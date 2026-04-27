@@ -5,7 +5,7 @@
 <div class="progress-segments">
   {% for step in steps %}
     <div class="progress-segment progress-segment--{{ step.status }}"></div>
-    {# Gate 1 gap after step 10, Gate 2 gap after step 15 #}
+    {# Report gap after step 10, Report gap after step 15 #}
     {% if step.num == 10 %}
       <div class="progress-segments__gate-gap"></div>
     {% endif %}

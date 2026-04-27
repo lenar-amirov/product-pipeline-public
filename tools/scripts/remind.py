@@ -83,16 +83,16 @@ RULES = {
     },
     "gate1_challenge": {
         "emoji": "🎯",
-        "title": "Иди на Challenge Gate 1",
+        "title": "Иди на Problem Research Report",
         "body": "Презентация готова, пора защищать",
-        "hint": "Когда сходишь → открой Cowork и скажи «Gate 1 прошёл: ...»",
+        "hint": "Когда сходишь → открой Cowork и скажи «Report прошёл: ...»",
         "remind_on": "next_monday",
     },
     "gate2_challenge": {
         "emoji": "🏁",
-        "title": "Иди на Challenge Gate 2",
+        "title": "Иди на Solution Research Report",
         "body": "Презентация готова, пора защищать",
-        "hint": "Когда сходишь → открой Cowork и скажи «Gate 2 прошёл: ...»",
+        "hint": "Когда сходишь → открой Cowork и скажи «Report прошёл: ...»",
         "remind_on": "next_monday",
     },
 }

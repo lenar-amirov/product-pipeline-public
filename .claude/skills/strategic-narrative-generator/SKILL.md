@@ -4,7 +4,7 @@ description: Generates the strategic story connecting your roadmap to company
   goals in a form non-technical stakeholders can repeat. Also structures Gate
   presentation narratives with source-backed claims. Use when user needs to
   "explain the roadmap", "present strategy to leadership", "create a narrative
-  for all-hands", "build Gate 1 presentation", "build Gate 2 presentation",
+  for all-hands", "build Problem Research Report", "build Solution Research Report",
   or "make the roadmap tell a story".
 metadata:
   author: Mohit Aggarwal
@@ -75,9 +75,9 @@ a specific source from research and output artifacts.
 
 ---
 
-## Gate Presentation Narratives (Steps 10 and 15)
+## Report Presentation Narratives (Steps 10 and 15)
 
-### Gate 1 Narrative Structure (Step 10: /create-presentation)
+### Problem Research Report Structure (Step 10: /create-presentation)
 
 **Purpose**: Convince stakeholders the problem is real, validated, and worth solving.
 
@@ -130,7 +130,7 @@ a specific source from research and output artifacts.
 **Transition**: [How to move to next slide]
 ```
 
-### Gate 2 Narrative Structure (Step 15: /create-gate2-presentation)
+### Solution Research Report Structure (Step 15: /create-gate2-presentation)
 
 **Purpose**: Convince stakeholders the solution is ready for development and testing.
 
@@ -139,14 +139,14 @@ a specific source from research and output artifacts.
 [Initiative name + PM name + date]
 
 ## Slide 2: Hypothesis Recap
-- Formula from Gate 1
+- Formula from Problem Research Report
 - Metrics: primary + guardrail + proxy
 - Target audience and size
 - **Sources**: solution-hypotheses.md, PRD.md §3
 
 ## Slide 3: Solution Context (AS IS)
 - Current user journey + pain points (recap)
-- What changed since Gate 1 (new data, design feedback)
+- What changed since Problem Research Report (new data, design feedback)
 - **Sources**: validated-hypotheses.md, concept-test-results.md
 
 ## Slide 4: Solution Design

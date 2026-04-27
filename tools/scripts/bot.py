@@ -55,13 +55,13 @@ COMMANDS = {
     "confirm-gate1-challenge": {
         "close": "gate1_challenge",
         "activate": None,
-        "question": "Каков результат Challenge Gate 1? (принято / на доработку — что именно)",
+        "question": "Каков результат Problem Research Report? (принято / на доработку — что именно)",
         "save_to": "output/decisions.md",
     },
     "confirm-gate2-challenge": {
         "close": "gate2_challenge",
         "activate": None,
-        "question": "Каков результат Challenge Gate 2? (принято / на доработку — что именно)",
+        "question": "Каков результат Solution Research Report? (принято / на доработку — что именно)",
         "save_to": "output/decisions.md",
     },
 }

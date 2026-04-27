@@ -146,7 +146,7 @@ References for `consulting-problem-solving`: `.claude/skills/consulting-problem-
 ## PRD — living document
 
 PRD is filled incrementally. Each step contributes its sections.
-By Gate 1: problem part + solution sketch. By Gate 2: everything else.
+By Problem Research Report: problem part + solution sketch. By Solution Research Report: everything else.
 
 ```
 # PRD: [Initiative name]
@@ -193,7 +193,7 @@ After checklist — write CONTEXT.md and set pipeline_config in status.json.
 
 ---
 
-### Phase 1: Problem Research -> Gate 1
+### Phase 1: Problem Research -> Problem Research Report
 
 ---
 
@@ -209,7 +209,7 @@ Only PROBLEM hypotheses. No solutions proposed.
 **CONTEXT.md readiness check** — before starting, verify:
 - Metric and baseline — without them hypotheses aren't grounded
 - Segment and size — without them can't assess Impact
-- "Why now" — without this can't justify Gate
+- "Why now" — without this can't justify Report presentation
 
 If critical fields empty — don't start, ask PM.
 
@@ -425,13 +425,13 @@ PM conducts test -> enters results -> hypotheses updated with REAL evidence for 
 
 ---
 
-### STEP 10 — `/create-presentation` **Core** (Gate 1)
+### STEP 10 — `/create-presentation` **Core** (Problem Research Report)
 **Type**: Autonomous
 **Input**: `output/PRD.md` + `output/solution-sketch.md` + `research/competitive-analysis.md`
 **Output**: `output/presentation.md` + `output/presentation.pptx`
-**Skills**: read `strategic-narrative-generator` (Gate 1 narrative structure)
+**Skills**: read `strategic-narrative-generator` (Problem Research Report narrative)
 
-Read template: `template/slides/Gate 1 Template.pptx.pdf` (if exists).
+Read template: `template/slides/Problem Research Report Template.pptx.pdf` (if exists).
 
 Structure:
 ```
@@ -452,7 +452,7 @@ Tracking: activate `pending.gate1_challenge`.
 
 ---
 
-### Phase 2: Solution Development -> Gate 2
+### Phase 2: Solution Development -> Solution Research Report
 
 ---
 
@@ -495,12 +495,12 @@ Calculate: baseline, MDE, sample size, duration, segmentation, guardrails, decis
 
 ---
 
-### STEP 15 — `/create-gate2-presentation` **Core** (Gate 2)
+### STEP 15 — `/create-gate2-presentation` **Core** (Solution Research Report)
 **Type**: Autonomous
 **Output**: `output/gate2-presentation.md` + `output/gate2-presentation.pptx`
-**Skills**: read `strategic-narrative-generator` (Gate 2 narrative structure)
+**Skills**: read `strategic-narrative-generator` (Solution Research Report narrative)
 
-Read template: `template/slides/Gate 2 Template.pptx.pdf` (if exists).
+Read template: `template/slides/Solution Research Report Template.pptx.pdf` (if exists).
 
 Structure:
 ```
@@ -518,7 +518,7 @@ Tracking: activate `pending.gate2_challenge`.
 
 ---
 
-### `/create-jira` (after Gate 2)
+### `/create-jira` (after Solution Research Report)
 **Output**: `output/jira-tickets.md`
 **Skills**: `user-story-generator`
 
@@ -587,8 +587,8 @@ PM confirms in Claude Code:
 | "analytics results: ..." | Write to `research/analytics-data.md`, close `pending.analytics_results` |
 | "survey results: ..." | Write to `research/survey-results.md`, close `pending.survey_results` |
 | "interview notes: ..." | Write to `research/interview-notes.md` |
-| "Gate 1 passed: ..." | Write to `output/decisions.md`, close `pending.gate1_challenge` |
-| "Gate 2 passed: ..." | Write to `output/decisions.md`, close `pending.gate2_challenge` |
+| "Problem report passed: ..." | Write to `output/decisions.md`, close `pending.gate1_challenge` |
+| "Solution report passed: ..." | Write to `output/decisions.md`, close `pending.gate2_challenge` |
 | "support brief sent" | `pending.support_brief -> null` |
 
 ---

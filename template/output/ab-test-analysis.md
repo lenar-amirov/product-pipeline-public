@@ -1,7 +1,7 @@
 # Анализ AB-теста: [Название инициативы]
 
 > Генерируется командой `/analyze-ab-results`
-> Используется для Gate 2
+> Used for Solution Research Report
 
 ---
 

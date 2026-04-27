@@ -23,7 +23,7 @@ Guide the PM through these 9 areas. For each area, ask a focused question, then 
 - **Required**: at minimum the metric name and direction (up/down)
 
 ### 2. Stakeholders
-**Ask**: "Who needs to approve this at Gate, and who might block it?"
+**Ask**: "Who needs to approve this at Report presentation, and who might block it?"
 - Get: decision-maker, influencers, potential blockers
 - Map: name -> role -> concern/interest
 - If PM says "just me": note that, but ask about dev lead and designer
@@ -31,7 +31,7 @@ Guide the PM through these 9 areas. For each area, ask a focused question, then 
 ### 3. OKR Alignment
 **Ask**: "Which company or team OKR does this serve?"
 - Get: specific OKR text or "exploratory / not tied to OKR"
-- If no OKR: flag as risk for Gate presentation ("needs strategic framing")
+- If no OKR: flag as risk for report presentation ("needs strategic framing")
 
 ### 4. Constraints
 **Ask**: "What can't we change, and what's our timeline?"
