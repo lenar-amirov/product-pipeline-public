@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% from "_macros.html" import progress_segments, phase_label, pending_inline, empty_state %}
 
-{% block title %}Инициативы группы — Pipeline{% endblock %}
+{% block title %}Team Initiatives — Pipeline{% endblock %}
 
 {% block content %}
-<a href="/{{ pm }}/" class="back-link">&larr; Мои инициативы</a>
+<a href="/{{ pm }}/" class="back-link">&larr; My initiatives</a>
 
-<h1 class="page-title page-title--detail">Инициативы группы</h1>
+<h1 class="page-title page-title--detail">Team Initiatives</h1>
 
 {% if groups %}
   {% for group in groups %}
@@ -37,8 +37,8 @@
   {% endfor %}
 {% else %}
   {{ empty_state(
-    "Нет инициатив",
-    "Ни у одного продакта пока нет инициатив."
+    "No initiatives",
+    "No team members have initiatives yet."
   ) }}
 {% endif %}
 {% endblock %}

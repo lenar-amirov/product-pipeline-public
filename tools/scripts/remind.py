@@ -22,84 +22,84 @@ CONFIG_FILE = os.path.join(BASE_DIR, "config", "telegram.json")
 LOG_FILE = os.path.join(BASE_DIR, "logs", "remind.log")
 
 # --- Rules ---
-# remind_after_days: первое напоминание через N дней после активации
-# repeat_every_days: повторять каждые N дней (0 = только один раз)
-# friday_digest: включить в пятничный дайджест аналитики
-# remind_on: "next_monday" — специальное правило (один раз, в ближайший понедельник)
+# remind_after_days: first reminder N days after activation
+# repeat_every_days: repeat every N days (0 = once only)
+# friday_digest: include in Friday analytics digest
+# remind_on: "next_monday" — special rule (once, on the next Monday)
 
 RULES = {
     "analytics_brief": {
         "emoji": "📊",
-        "title": "Передай бриф аналитику",
-        "body": "Бриф готов в <code>research/analytics-brief.md</code>",
-        "hint": "Когда передашь → скажи в Cowork «аналитику передал»",
+        "title": "Send brief to analyst",
+        "body": "Brief ready at <code>research/analytics-brief.md</code>",
+        "hint": "When sent → tell Claude Code: analytics brief sent",
         "remind_after_days": 1,
         "repeat_every_days": 0,
         "friday_digest": True,
     },
     "survey_brief": {
         "emoji": "📝",
-        "title": "Передай бриф на опрос",
-        "body": "Бриф готов в <code>research/survey-questions.md</code>",
-        "hint": "Когда передашь → скажи в Cowork «опрос передал»",
+        "title": "Send survey brief",
+        "body": "Brief ready at <code>research/survey-questions.md</code>",
+        "hint": "When sent → tell Claude Code: survey brief sent",
         "remind_after_days": 1,
         "repeat_every_days": 0,
         "friday_digest": True,
     },
     "audience_brief": {
         "emoji": "👥",
-        "title": "Передай бриф на выгрузку аудитории",
-        "body": "Бриф готов в <code>research/survey-audience-brief.md</code>",
-        "hint": "Когда передашь → скажи в Cowork «выгрузку передал»",
+        "title": "Send audience brief",
+        "body": "Brief ready at <code>research/survey-audience-brief.md</code>",
+        "hint": "When sent → tell Claude Code: audience brief sent",
         "remind_after_days": 1,
         "repeat_every_days": 0,
         "friday_digest": True,
     },
     "analytics_results": {
         "emoji": "📈",
-        "title": "Запроси результаты у аналитика",
-        "body": "Прошла неделя с момента передачи задач",
-        "hint": "Когда получишь → открой Cowork и скажи «результаты аналитики: ...»",
+        "title": "Request analyst results",
+        "body": "One week since brief was sent",
+        "hint": "When received → tell Claude Code: analytics results: ...",
         "remind_after_days": 7,
         "repeat_every_days": 7,
         "friday_digest": True,
     },
     "survey_results": {
         "emoji": "📋",
-        "title": "Запроси результаты опроса",
-        "body": "Прошло 2 недели с момента передачи опроса",
-        "hint": "Когда получишь → открой Cowork и скажи «результаты опроса: ...»",
+        "title": "Request survey results",
+        "body": "Two weeks since survey was sent",
+        "hint": "When received → tell Claude Code: survey results: ...",
         "remind_after_days": 14,
         "repeat_every_days": 7,
         "friday_digest": True,
     },
     "design_brief": {
         "emoji": "🎨",
-        "title": "Передай бриф дизайнеру",
-        "body": "Бриф готов в <code>output/design-brief.md</code>",
-        "hint": "Когда передашь → скажи в Cowork «бриф дизайнеру передал»",
+        "title": "Send brief to designer",
+        "body": "Brief ready at <code>output/design-brief.md</code>",
+        "hint": "When sent → tell Claude Code: design brief sent",
         "remind_after_days": 1,
         "repeat_every_days": 0,
     },
     "gate1_challenge": {
         "emoji": "🎯",
-        "title": "Иди на Problem Research Report",
-        "body": "Презентация готова, пора защищать",
-        "hint": "Когда сходишь → открой Cowork и скажи «Report прошёл: ...»",
+        "title": "Present Problem Research Report",
+        "body": "Presentation is ready",
+        "hint": "When done → tell Claude Code: report passed: ...",
         "remind_on": "next_monday",
     },
     "gate2_challenge": {
         "emoji": "🏁",
-        "title": "Иди на Solution Research Report",
-        "body": "Презентация готова, пора защищать",
-        "hint": "Когда сходишь → открой Cowork и скажи «Report прошёл: ...»",
+        "title": "Present Solution Research Report",
+        "body": "Presentation is ready",
+        "hint": "When done → tell Claude Code: report passed: ...",
         "remind_on": "next_monday",
     },
 }
 
 
 def next_monday(from_date: date) -> date:
-    """Ближайший понедельник строго после from_date."""
+    """Next Monday strictly after from_date."""
     days_ahead = -from_date.weekday() % 7
     if days_ahead == 0:
         days_ahead = 7
@@ -225,7 +225,7 @@ def main():
                     friday_digest[pm] = []
                 friday_digest[pm].append(
                     f"{rule['emoji']} <b>{initiative}</b>: {rule['title']}"
-                    + (f" ({days} дн.)" if days > 0 else "")
+                    + (f" ({days}d)" if days > 0 else "")
                 )
                 # Still fire individual reminder if due today (e.g. day 1)
                 if not should_remind(event_date, today, rule):
@@ -273,9 +273,9 @@ def main():
         if days_stale >= 14 and (days_stale - 14) % 14 == 0:
             text = (
                 f"💤 <b>{initiative}</b>\n\n"
-                f"<b>Инициатива не обновлялась {days_stale} дней</b>\n"
-                f"Нет активных задач в пайплайне\n\n"
-                f"💡 Продолжи работу над следующим шагом или закрой инициативу"
+                f"<b>Initiative not updated for {days_stale} days</b>\n"
+                f"No active tasks in pipeline\n\n"
+                f"💡 Continue with the next step or archive the initiative"
             )
             if send_telegram(bot_token, chat_id, text):
                 log(f"Stale reminder → {pm}: {initiative} ({days_stale} days)")
@@ -287,7 +287,7 @@ def main():
             chat_id = pms_config.get(pm)
             if not chat_id or not items:
                 continue
-            text = "📅 <b>Пятница: задачи у аналитика</b>\n\n" + "\n".join(items)
+            text = "📅 <b>Friday: pending analytics tasks</b>\n\n" + "\n".join(items)
             if send_telegram(bot_token, chat_id, text):
                 log(f"Friday digest → {pm}: {len(items)} item(s)")
                 sent += 1

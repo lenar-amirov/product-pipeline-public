@@ -5,8 +5,8 @@
 
 {% block content %}
 <div class="top-row">
-  <h1 class="page-title">Инициативы</h1>
-  <a href="/{{ pm }}/new" class="link-new">+ Новая</a>
+  <h1 class="page-title">Initiatives</h1>
+  <a href="/{{ pm }}/new" class="link-new">+ New</a>
 </div>
 
 {% if initiatives %}
@@ -18,12 +18,12 @@
         <span class="initiative-card__name">{{ ini.name }}</span>
         <div class="initiative-card__actions">
           <button class="initiative-card__claude tooltip"
-                  data-tooltip="Откроет терминал с контекстом"
+                  data-tooltip="Opens terminal with initiative context"
                   onclick="event.preventDefault(); event.stopPropagation(); openClaude('{{ pm }}', '{{ ini.name }}')">
             Claude Code ↗
           </button>
           <button class="initiative-card__archive tooltip"
-                  data-tooltip="В архив"
+                  data-tooltip="Archive"
                   onclick="event.preventDefault(); event.stopPropagation(); confirmArchive('{{ ini.name }}')">
             &#x2715;
           </button>
@@ -45,9 +45,9 @@
 
 {% else %}
   {{ empty_state(
-    "Нет инициатив",
-    "Создайте первую инициативу, чтобы начать работу с пайплайном.",
-    "+ Создать инициативу",
+    "No initiatives",
+    "Create your first initiative to start working with the pipeline.",
+    "+ Create initiative",
     "/" ~ pm ~ "/new"
   ) }}
 {% endif %}
@@ -57,14 +57,14 @@
   <div class="modal__backdrop"></div>
   <div class="modal__container modal__container--small">
     <div class="modal__header">
-      <h2 class="modal__title">Архивировать инициативу</h2>
-      <button class="modal__close" aria-label="Закрыть">&times;</button>
+      <h2 class="modal__title">Archive initiative</h2>
+      <button class="modal__close" aria-label="Close">&times;</button>
     </div>
     <div class="modal__body">
-      <p>Инициатива <strong id="archive-name"></strong> будет перемещена в архив. Вы сможете восстановить её позже.</p>
+      <p>Initiative <strong id="archive-name"></strong> will be moved to the archive. You can restore it later.</p>
       <div class="modal__actions">
-        <button class="btn-outline" id="archive-cancel">Отмена</button>
-        <button class="btn-danger" id="archive-confirm">Архивировать</button>
+        <button class="btn-outline" id="archive-cancel">Cancel</button>
+        <button class="btn-danger" id="archive-confirm">Archive</button>
       </div>
     </div>
   </div>
@@ -111,7 +111,7 @@
 
     confirmBtn.addEventListener('click', function() {
       confirmBtn.disabled = true;
-      confirmBtn.textContent = 'Архивируем...';
+      confirmBtn.textContent = 'Archiving...';
       fetch('/' + PM + '/initiative/' + archiveName + '/archive', { method: 'POST' })
         .then(function(r) { return r.json(); })
         .then(function(data) {
@@ -119,13 +119,13 @@
             location.reload();
           } else {
             confirmBtn.disabled = false;
-            confirmBtn.textContent = 'Архивировать';
-            alert(data.error || 'Ошибка');
+            confirmBtn.textContent = 'Archive';
+            alert(data.error || 'Error');
           }
         })
         .catch(function() {
           confirmBtn.disabled = false;
-          confirmBtn.textContent = 'Архивировать';
+          confirmBtn.textContent = 'Archive';
         });
     });
 

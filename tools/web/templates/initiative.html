@@ -16,9 +16,9 @@
 {% if shared|default(false) %}
 {# no back link for public share view #}
 {% elif ro %}
-<a href="/{{ pm }}/team" class="back-link">&larr; Инициативы группы</a>
+<a href="/{{ pm }}/team" class="back-link">&larr; Team initiatives</a>
 {% else %}
-<a href="/{{ pm }}/" class="back-link">&larr; Все инициативы</a>
+<a href="/{{ pm }}/" class="back-link">&larr; All initiatives</a>
 {% endif %}
 
 <div class="title-row">
@@ -31,13 +31,13 @@
   {% if not ro %}
   <div class="title-row__actions">
     <div class="share-widget" id="share-widget">
-      <button class="btn-outline" onclick="toggleShare()">Поделиться</button>
+      <button class="btn-outline" onclick="toggleShare()">Share</button>
       <div class="share-popover" id="share-popover" hidden>
         <div class="share-popover__content" id="share-content"></div>
       </div>
     </div>
     <button class="btn-outline tooltip"
-            data-tooltip="Откроет терминал с контекстом инициативы"
+            data-tooltip="Opens terminal with initiative context"
             onclick="openClaude('{{ pm }}', '{{ initiative.name }}')">
       Claude Code ↗
     </button>
@@ -48,18 +48,18 @@
 {# Context grid #}
 <div class="context-row">
   <div class="context-cell">
-    <div class="context-cell__label">Метрика</div>
+    <div class="context-cell__label">Metric</div>
     <div class="context-cell__value" id="ctx-val-metric">{{ initiative.context.metric }}</div>
   </div>
   <div class="context-cell">
-    <div class="context-cell__label">Сегмент</div>
+    <div class="context-cell__label">Segment</div>
     <div class="context-cell__value" id="ctx-val-segment">{{ initiative.context.segment }}</div>
   </div>
   <div class="context-cell">
-    <div class="context-cell__label">Прогресс</div>
-    <div class="context-cell__value">{{ initiative.steps_done }} из {{ initiative.total_steps }}
+    <div class="context-cell__label">Progress</div>
+    <div class="context-cell__value">{{ initiative.steps_done }} of {{ initiative.total_steps }}
       {% if not ro %}
-      <button class="context-edit-btn" onclick="openContextModal()" title="Редактировать контекст">&#9998;</button>
+      <button class="context-edit-btn" onclick="openContextModal()" title="Edit context">&#9998;</button>
       {% endif %}
     </div>
   </div>
@@ -86,9 +86,9 @@
   </div>
   {% elif not ro %}
   <div class="cjm-dropzone cjm-dropzone--section" id="cjm-dropzone-section">
-    <div class="cjm-dropzone__text">Перетащите скриншоты CJM сюда</div>
-    <div class="cjm-dropzone__hint">PNG, JPG, PDF — в порядке пути пользователя.
-      <label class="cjm-dropzone__browse" for="cjm-upload-input">Выбрать файлы</label>
+    <div class="cjm-dropzone__text">Drop CJM screenshots here</div>
+    <div class="cjm-dropzone__hint">PNG, JPG, PDF — in user journey order.
+      <label class="cjm-dropzone__browse" for="cjm-upload-input">Browse files</label>
     </div>
   </div>
   {% endif %}
@@ -104,7 +104,7 @@
 {# Pending tasks #}
 {% if initiative.pending %}
 <div class="pending-section">
-  <div class="section-label">Активные задачи</div>
+  <div class="section-label">Pending Tasks</div>
   {% for item in initiative.pending %}
     {{ pending_card(item, url_base) }}
   {% endfor %}
@@ -112,20 +112,20 @@
 {% endif %}
 
 {# Pipeline steps #}
-<div class="section-label">Phase 1 — Исследование</div>
+<div class="section-label">Phase 1 — Problem Research</div>
 <ul class="steps-list">
   {% for step in initiative.steps %}
     {{ step_row(step, url_base, screens=screens if step.num == 8 else None, cjm_files=cjm_files if step.num == 1 else None, readonly=ro) }}
     {% if step.num == 10 %}
       {{ gate_divider("Problem Research Report") }}
       </ul>
-      <div class="section-label">Phase 2 — Проработка</div>
+      <div class="section-label">Phase 2 — Solution Design</div>
       <ul class="steps-list">
     {% endif %}
     {% if step.num == 15 %}
       {{ gate_divider("Solution Research Report") }}
       </ul>
-      <div class="section-label">Phase 3 — Запуск</div>
+      <div class="section-label">Phase 3 — Launch</div>
       <ul class="steps-list">
     {% endif %}
   {% endfor %}
@@ -134,7 +134,7 @@
 {# Decisions #}
 {% if decisions %}
 <div class="decisions-section">
-  <div class="section-label">Решения</div>
+  <div class="section-label">Decisions</div>
 
   {# Show latest 2 expanded #}
   {% for entry in decisions[:2] %}
@@ -144,7 +144,7 @@
   {# Collapse older ones #}
   {% if decisions | length > 2 %}
   <details class="decisions-collapsed">
-    <summary>Показать все ({{ decisions | length }})</summary>
+    <summary>Show all ({{ decisions | length }})</summary>
     {% for entry in decisions[2:] %}
       {{ decision_entry(entry) }}
     {% endfor %}
@@ -161,26 +161,26 @@
   <div class="modal__backdrop"></div>
   <div class="modal__container">
     <div class="modal__header">
-      <h2 class="modal__title">Редактировать контекст</h2>
-      <button class="modal__close" aria-label="Закрыть">&times;</button>
+      <h2 class="modal__title">Edit Context</h2>
+      <button class="modal__close" aria-label="Close">&times;</button>
     </div>
     <div class="modal__body">
       <form id="context-form">
         <div class="form-group">
-          <label class="form-label">Заголовок</label>
+          <label class="form-label">Title</label>
           <input class="form-input" name="title" value="{{ context_full.title }}">
         </div>
         <div class="form-group">
-          <label class="form-label">О чём инициатива</label>
-          <textarea class="form-input form-input--textarea" name="description" rows="3" placeholder="Опиши своими словами: что происходит, в чём проблема, какой результат хочется получить">{{ context_full.description }}</textarea>
+          <label class="form-label">About</label>
+          <textarea class="form-input form-input--textarea" name="description" rows="3" placeholder="Describe in your own words: what's happening, what's the problem, what outcome you want">{{ context_full.description }}</textarea>
         </div>
         <div class="form-row">
           <div class="form-group form-group--half">
-            <label class="form-label">Метрика</label>
+            <label class="form-label">Metric</label>
             <input class="form-input" name="metric" value="{{ context_full.metric }}">
           </div>
           <div class="form-group form-group--half">
-            <label class="form-label">Горизонт</label>
+            <label class="form-label">Horizon</label>
             <input class="form-input" name="horizon" value="{{ context_full.horizon }}">
           </div>
         </div>
@@ -196,33 +196,33 @@
         </div>
         <div class="form-row">
           <div class="form-group form-group--half">
-            <label class="form-label">Сегмент</label>
+            <label class="form-label">Segment</label>
             <input class="form-input" name="segment" value="{{ context_full.segment }}">
           </div>
           <div class="form-group form-group--half">
-            <label class="form-label">Размер сегмента</label>
+            <label class="form-label">Segment size</label>
             <input class="form-input" name="segment_size" value="{{ context_full.segment_size }}">
           </div>
         </div>
         <div class="form-group">
-          <label class="form-label">Платформа</label>
+          <label class="form-label">Platform</label>
           <select class="form-input form-input--select" name="platform">
             <option value="">—</option>
             <option value="web" {{ 'selected' if context_full.platform == 'web' }}>Web</option>
             <option value="iOS" {{ 'selected' if context_full.platform == 'iOS' }}>iOS</option>
             <option value="Android" {{ 'selected' if context_full.platform == 'Android' }}>Android</option>
-            <option value="все" {{ 'selected' if context_full.platform == 'все' }}>Все платформы</option>
+            <option value="all" {{ 'selected' if context_full.platform in ['all', 'все'] }}>All platforms</option>
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">Почему сейчас</label>
+          <label class="form-label">Why now</label>
           <textarea class="form-input form-input--textarea" name="why_now" rows="2">{{ context_full.why_now }}</textarea>
         </div>
         <div class="form-group">
-          <label class="form-label">Ограничения</label>
+          <label class="form-label">Constraints</label>
           <textarea class="form-input form-input--textarea" name="constraints" rows="2">{{ context_full.constraints }}</textarea>
         </div>
-        <button type="submit" class="btn-primary" style="margin-top: var(--space-4);">Сохранить</button>
+        <button type="submit" class="btn-primary" style="margin-top: var(--space-4);">Save</button>
       </form>
     </div>
   </div>
@@ -335,7 +335,7 @@
     window.toggleShare = function() {
       if (!popover.hidden) { popover.hidden = true; return; }
       popover.hidden = false;
-      content.innerHTML = '<span class="share-popover__loading">Загрузка...</span>';
+      content.innerHTML = '<span class="share-popover__loading">Loading...</span>';
       fetch('/' + PM + '/initiative/' + INIT_NAME + '/share', { method: 'POST' })
         .then(function(r) { return r.json(); })
         .then(function(data) {
@@ -344,9 +344,9 @@
           content.innerHTML =
             '<div class="share-popover__link-row">' +
               '<input class="share-popover__input" id="share-url" value="' + url + '" readonly onclick="this.select()">' +
-              '<button class="btn-outline btn-outline--small" onclick="copyShare()">Копировать</button>' +
+              '<button class="btn-outline btn-outline--small" onclick="copyShare()">Copy</button>' +
             '</div>' +
-            '<button class="share-popover__revoke" onclick="revokeShare()">Отключить ссылку</button>';
+            '<button class="share-popover__revoke" onclick="revokeShare()">Revoke link</button>';
         });
     };
 
@@ -363,7 +363,7 @@
         .then(function(r) { return r.json(); })
         .then(function(data) {
           if (data.ok) {
-            content.innerHTML = '<span class="share-popover__loading">Ссылка отключена</span>';
+            content.innerHTML = '<span class="share-popover__loading">Link revoked</span>';
             setTimeout(function() { popover.hidden = true; }, 1200);
           }
         });

@@ -19,7 +19,7 @@
   {{ initiative.current_phase }}
   {% if initiative.current_cmd %}
     · <span class="phase-label__step">/{{ initiative.current_cmd }}</span>
-    {% if initiative.current_status == 'paused' %} · Пауза{% endif %}
+    {% if initiative.current_status == 'paused' %} · Paused{% endif %}
   {% endif %}
 </div>
 {% endmacro %}
@@ -31,7 +31,7 @@
   <span class="pending-dot"></span>
   <span>{{ item.label }}</span>
   {% if item.days > 0 %}
-    <span style="margin-left: auto; font-family: var(--font-mono); font-size: 12px;">{{ item.days }} дн.</span>
+    <span style="margin-left: auto; font-family: var(--font-mono); font-size: 12px;">{{ item.days }}d</span>
   {% endif %}
 </div>
 {% endmacro %}
@@ -44,9 +44,9 @@
   <div class="pending-task__meta">
     {% if item.days > 0 %}
       {% set severity = 'critical' if item.days > 14 else 'warning' %}
-      <span class="pending-task__days pending-task__days--{{ severity }}">{{ item.days }} дн.</span>
+      <span class="pending-task__days pending-task__days--{{ severity }}">{{ item.days }}d</span>
     {% else %}
-      <span class="pending-task__days">Сегодня</span>
+      <span class="pending-task__days">Today</span>
     {% endif %}
     {% if item.date %}
       <span>с {{ item.date }}</span>
@@ -54,7 +54,7 @@
     {% if item.brief_path %}
       <button class="artifact-link"
               onclick="event.stopPropagation(); openArtifact('{{ url_base }}', '{{ item.brief_path }}', '{{ item.label }}')">
-        Открыть бриф
+        Open brief
       </button>
     {% endif %}
   </div>
@@ -73,7 +73,7 @@
       {% else %}
         <a class="step__label step__label--link" href="javascript:void(0)"
            onclick="event.stopPropagation(); openClaudeStep('{{ step.command }}')"
-           title="Открыть в Claude Code с командой /{{ step.command }}">/{{ step.command }}</a>
+           title="Open in Claude Code with /{{ step.command }}">/{{ step.command }}</a>
       {% endif %}
       {% if step.status != 'pending' %}
         <span class="step__command">{{ step.label }}</span>

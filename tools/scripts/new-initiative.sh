@@ -1,87 +1,112 @@
 #!/bin/bash
-# Создаёт новую папку инициативы из шаблона
-# Использование: ./new-initiative.sh "название-инициативы"
+# Creates a new initiative folder from the template
+# Usage: ./new-initiative.sh "initiative-name"
+
+set -e
 
 if [ -z "$1" ]; then
-  echo "Использование: ./new-initiative.sh \"название-инициативы\""
-  echo "Пример:        ./new-initiative.sh checkout-redesign"
+  echo "Usage: ./new-initiative.sh \"initiative-name\""
+  echo "Example: ./new-initiative.sh checkout-redesign"
   exit 1
 fi
 
 NAME="$1"
-PM="$(whoami)"
-BASE="$HOME/pipeline"
-TEMPLATE="$BASE/template"
-TARGET="$BASE/$NAME"
 
-if [ -d "$TARGET" ]; then
-  echo "Папка '$NAME' уже существует"
+# Find repo root (where template/ lives)
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+TEMPLATE="$REPO_ROOT/template"
+
+if [ ! -d "$TEMPLATE" ]; then
+  echo "Error: template/ directory not found at $REPO_ROOT"
   exit 1
 fi
 
-cp -r "$TEMPLATE" "$TARGET"
-
-# Создаём симлинк ~/.claude/skills → ~/pipeline/.claude/skills (один раз)
-if [ ! -e ~/.claude/skills ]; then
-  mkdir -p ~/.claude
-  ln -sf ~/pipeline/.claude/skills ~/.claude/skills
-  echo "✓ Skills linked: ~/.claude/skills → ~/pipeline/.claude/skills"
+# Determine PM name
+PM_FILE="$REPO_ROOT/.pm-local"
+if [ -f "$PM_FILE" ]; then
+  PM="$(cat "$PM_FILE" | tr -d '[:space:]')"
+else
+  echo -n "Enter your name (will be saved to .pm-local): "
+  read PM
+  echo "$PM" > "$PM_FILE"
+  echo "Saved: $PM_FILE"
 fi
 
-# Подставляем название и продакта в CONTEXT.md
-sed -i "s/\[НАЗВАНИЕ\]/$NAME/g" "$TARGET/CONTEXT.md"
-sed -i "s/\[ИМЯ\]/$PM/g" "$TARGET/CONTEXT.md"
+TARGET="$REPO_ROOT/$PM/$NAME"
 
-# Инициализируем трекер статуса (v2 — с полем steps)
-python3 -c "
+if [ -d "$TARGET" ]; then
+  echo "Error: initiative '$PM/$NAME' already exists"
+  exit 1
+fi
+
+# Create PM directory if needed
+mkdir -p "$REPO_ROOT/$PM"
+
+# Copy template
+cp -r "$TEMPLATE" "$TARGET"
+
+# Replace placeholders in CONTEXT.md (macOS + Linux compatible)
+if [ -f "$TARGET/CONTEXT.md" ]; then
+  sed -i.bak "s/\[NAME\]/$NAME/g; s/\[NAME\]/$PM/2" "$TARGET/CONTEXT.md"
+  rm -f "$TARGET/CONTEXT.md.bak"
+fi
+
+# Update status.json with PM and initiative name
+if [ -f "$TARGET/output/status.json" ]; then
+  python3 -c "
 import json, sys
 from datetime import date
-d = {
-  'pm': sys.argv[1],
-  'initiative': sys.argv[2],
-  'created': str(date.today()),
-  'steps': {str(i): {'status': 'pending', 'date': None, 'summary': None} for i in range(1, 16)},
-  'pending': {
-    'analytics_brief': None, 'survey_brief': None, 'audience_brief': None,
-    'analytics_results': None, 'survey_results': None,
-    'design_brief': None, 'gate1_challenge': None, 'gate2_challenge': None
-  }
-}
-print(json.dumps(d, indent=2, ensure_ascii=False))
-" "$PM" "$NAME" > "$TARGET/output/status.json"
+with open(sys.argv[1], 'r') as f:
+    d = json.load(f)
+d['pm'] = sys.argv[2]
+d['initiative'] = sys.argv[3]
+d['created'] = str(date.today())
+with open(sys.argv[1], 'w') as f:
+    json.dump(d, f, indent=2, ensure_ascii=False)
+" "$TARGET/output/status.json" "$PM" "$NAME"
+fi
 
-# Инициализируем decisions.md
-echo "# Лог решений: $NAME" > "$TARGET/output/decisions.md"
+# Initialize decisions.md
+echo "# Decision Log: $NAME" > "$TARGET/output/decisions.md"
 
-# Создаём CJM папку
+# Create CJM directory
 mkdir -p "$TARGET/CJM"
 
-echo "✓ Инициатива создана: $TARGET"
 echo ""
-echo "Дальше:"
-echo "  1. Заполни $TARGET/CONTEXT.md"
-echo "  2. Положи скрины CJM в $TARGET/CJM/ (формат: 01_шаг.png, 02_шаг.png...)"
-echo "  3. Открой Claude Code в папке $TARGET"
+echo "Initiative created: $PM/$NAME"
 echo ""
-echo "Пайплайн команд:"
+echo "Next steps:"
+echo "  1. Fill in $PM/$NAME/CONTEXT.md"
+echo "  2. Add CJM screenshots to $PM/$NAME/CJM/ (format: 01_step-name.png, 02_step-name.png...)"
+echo "  3. Open Claude Code in the repo root"
+echo "  4. Say: \"work on $NAME\" or run /setup-initiative"
 echo ""
-echo "  ── Phase 1: Исследование проблемы + Образ решения → Problem Research Report ──"
-echo "  1.  /analyze-cjm             → гипотезы проблем из CJM"
-echo "  2.  /synthetic-research      → синтетика или задача на реальное исследование"
-echo "  3.  /competitor-research     → конкурентный анализ"
-echo "  4.  /generate-research       → бриф аналитику + опрос"
-echo "  5.  /create-survey-audience  → выборка для опроса"
-echo "  6.  /validate-problems       → валидация гипотез по данным"
-echo "  7.  /solution-hypotheses     → гипотезы решений"
-echo "  8.  /sketch-solution         → образ решения + Figma"
-echo "  9.  /review-design           → ревью дизайна"
-echo "  10. /create-presentation     → Problem Research Report (.md + .pptx)"
+echo "Pipeline commands:"
 echo ""
-echo "  ── Phase 2: Проработка решения → Solution Research Report ──"
-echo "  11. /create-design-brief     → задача дизайнеру + UX-исследование"
-echo "  12. /estimate-with-dev       → оценка с разработкой"
-echo "  13. /finalize-prd            → финализация PRD"
-echo "  14. /design-ab-test          → дизайн AB-теста"
-echo "  15. /create-gate2-presentation → Solution Research Report (.md + .pptx)"
+echo "  -- Phase 1: Problem Research --> Problem Research Report --"
+echo "  0.  /setup-initiative        -> alignment checklist + pipeline config"
+echo "  1.  /analyze-cjm             -> problem hypotheses from CJM"
+echo "  2.  /synthetic-research      -> synthetic interviews or real research brief"
+echo "  3.  /competitor-research     -> competitive analysis"
+echo "  4.  /generate-research       -> analytics brief + survey design"
+echo "  5.  /create-survey-audience  -> survey audience selection"
+echo "  6.  /validate-problems       -> validate hypotheses with data"
+echo "  7.  /solution-hypotheses     -> solution hypotheses with ICE"
+echo "  8.  /sketch-solution         -> wireframes + user flow"
+echo "  9.  /review-design           -> heuristic evaluation"
+echo "  10. /create-presentation     -> Problem Research Report (.md + .pptx)"
 echo ""
-echo "      /create-jira             → Jira тикеты (после Solution Research Report)"
+echo "  -- Phase 2: Solution Development --> Solution Research Report --"
+echo "  11. /create-design-brief     -> brief for designer"
+echo "  12. /estimate-with-dev       -> dev estimate"
+echo "  13. /finalize-prd            -> finalize PRD"
+echo "  14. /design-ab-test          -> AB test design"
+echo "  15. /create-gate2-presentation -> Solution Research Report (.md + .pptx)"
+echo ""
+echo "  -- Phase 3: Launch Preparation --"
+echo "  16. /support-task            -> support team brief"
+echo "  17. /announce-ab-test        -> AB test announcement"
+echo "  18. /announce-release        -> release announcement"
+echo ""
+echo "      /create-jira             -> Jira tickets (after Solution Research Report)"

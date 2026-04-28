@@ -1,1 +1,1 @@
-# Лог решений: [Название инициативы]
+# Decision Log: [Initiative Name]

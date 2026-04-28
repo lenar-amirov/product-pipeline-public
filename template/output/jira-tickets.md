@@ -1,1 +1,1 @@
-<\!-- Заполняется по ходу пайплайна -->
+<!-- Populated during the pipeline -->

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-generate-pptx.py — конвертирует output/presentation.md в output/presentation.pptx
+generate-pptx.py — converts output/presentation.md to output/presentation.pptx
 
 Usage:
     python3 generate-pptx.py <initiative-folder>
@@ -18,23 +18,23 @@ try:
     from pptx.dml.color import RGBColor
     from pptx.enum.text import PP_ALIGN
 except ImportError:
-    print("❌ python-pptx не установлен. Запусти: pip install python-pptx")
+    print("python-pptx not installed. Run: pip install python-pptx")
     sys.exit(1)
 
-# --- Тема оформления ---
-BG_COLOR     = RGBColor(0x18, 0x18, 0x1A)  # тёмный фон
-ACCENT_COLOR = RGBColor(0x00, 0x7A, 0xFF)  # синяя полоса
-TITLE_COLOR  = RGBColor(0xFF, 0xFF, 0xFF)  # белый заголовок
-BODY_COLOR   = RGBColor(0xCC, 0xCC, 0xCC)  # светло-серый текст
-META_COLOR   = RGBColor(0x66, 0x66, 0x66)  # серый для вспомогательного
+# --- Theme ---
+BG_COLOR     = RGBColor(0x18, 0x18, 0x1A)  # dark background
+ACCENT_COLOR = RGBColor(0x00, 0x7A, 0xFF)  # blue accent bar
+TITLE_COLOR  = RGBColor(0xFF, 0xFF, 0xFF)  # white title
+BODY_COLOR   = RGBColor(0xCC, 0xCC, 0xCC)  # light gray body text
+META_COLOR   = RGBColor(0x66, 0x66, 0x66)  # gray metadata
 
 SLIDE_W = Inches(13.33)
 SLIDE_H = Inches(7.5)
 
 
 def parse_slides(md_content: str) -> list[dict]:
-    """Парсит markdown в список слайдов {title, body, notes}."""
-    # Убираем шапку файла (# заголовок и > комментарии)
+    """Parse markdown into list of slides {title, body, notes}."""
+    # Remove file header (# title and > comments)
     content = re.sub(r'^# .+\n', '', md_content, count=1)
     content = re.sub(r'^>.*\n?', '', content, flags=re.MULTILINE)
 
@@ -43,23 +43,23 @@ def parse_slides(md_content: str) -> list[dict]:
 
     for raw in raw_slides:
         raw = raw.strip()
-        if not raw or raw == '[Claude заполнит после запуска команды]':
+        if not raw or raw.startswith('[Claude'):
             continue
 
         slide = {}
 
-        # Заголовок: ## Слайд N: Название
-        m = re.match(r'^##\s+(?:Слайд\s+\d+[:.]\s*)?(.+)$', raw, re.MULTILINE)
+        # Title: ## Slide N: Title (or ## Слайд N: for backwards compat)
+        m = re.match(r'^##\s+(?:(?:Slide|Слайд)\s+\d+[:.]\s*)?(.+)$', raw, re.MULTILINE)
         if m:
             slide['title'] = m.group(1).strip()
         else:
             m = re.match(r'^#\s+(.+)$', raw, re.MULTILINE)
             slide['title'] = m.group(1).strip() if m else ''
 
-        # Убираем строку заголовка из тела
+        # Remove title line from body
         body = re.sub(r'^#{1,3} .+$', '', raw, count=1, flags=re.MULTILINE).strip()
 
-        # Заметки спикера — строки начинающиеся с >
+        # Speaker notes — lines starting with >
         notes_lines, body_lines = [], []
         for line in body.split('\n'):
             if line.startswith('> '):
@@ -128,7 +128,7 @@ def add_body(slide, body: str):
         p = tf.paragraphs[0] if first_para else tf.add_paragraph()
         first_para = False
 
-        # Определяем уровень отступа
+        # Determine indent level
         if re.match(r'^\s{2,}[-*]', line):
             p.level = 1
             p.space_before = Pt(2)
@@ -141,7 +141,7 @@ def add_body(slide, body: str):
             p.level = 0
             p.space_before = Pt(7)
 
-        # Разбиваем по **жирному**
+        # Split by **bold** markers
         parts = re.split(r'\*\*(.*?)\*\*', stripped)
         for i, part in enumerate(parts):
             if not part:
@@ -194,18 +194,18 @@ def main():
     out_path = base / initiative / "output" / "presentation.pptx"
 
     if not md_path.exists():
-        print(f"❌ Файл не найден: {md_path}")
+        print(f"File not found: {md_path}")
         sys.exit(1)
 
     slides_data = parse_slides(md_path.read_text(encoding='utf-8'))
 
     if not slides_data:
-        print("❌ Слайды не найдены. Проверь формат presentation.md")
+        print("No slides found. Check presentation.md format")
         sys.exit(1)
 
     build_pptx(slides_data, out_path)
-    print(f"✅ Готово: {out_path}")
-    print(f"   Слайдов: {len(slides_data)}")
+    print(f"Done: {out_path}")
+    print(f"Slides: {len(slides_data)}")
 
 
 if __name__ == '__main__':

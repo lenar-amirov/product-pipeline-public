@@ -1,3 +1,3 @@
-# Гипотезы проблем: [Название инициативы]
+# Problem Hypotheses: [Initiative Name]
 
-<!-- Заполняется на шаге 1 (/analyze-cjm) -->
+<!-- Populated at step 1 (/analyze-cjm) -->

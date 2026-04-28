@@ -1,14 +1,14 @@
-# Комментарии к дизайну
+# Design Comments
 
-> Заполняется продактом после просмотра Figma-вайрфреймов
-> После заполнения запусти `/review-design`
+> Filled in by the PM after reviewing Figma wireframes
+> After filling in, run `/review-design`
 
-## Общие правки
+## General Revisions
 - [ ] ...
 
-## По экранам
-### Экран [название]
+## Per Screen
+### Screen [name]
 - ...
 
-## Что нельзя менять
+## What Must Not Change
 - ...

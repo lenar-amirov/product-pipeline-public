@@ -1,8 +1,8 @@
-# Результаты AB-теста: [Название инициативы]
+# AB Test Results: [Initiative Name]
 
-> Заполняется аналитиком после завершения теста.
-> Данные могут быть анонимизированы — анализируй тренды и соотношения.
+> Filled in by the analyst after the test concludes.
+> Data may be anonymized — analyze trends and ratios.
 
 ---
 
-[Аналитик заполнит после завершения теста]
+[Analyst will populate after the test concludes]

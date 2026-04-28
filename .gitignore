@@ -4,3 +4,14 @@ config/telegram.json
 logs/
 .claude/settings.local.json
 **/settings.local.json
+
+# PM initiative data (created locally, not committed to public repo)
+# Exclude everything under {pm}/{initiative}/ patterns
+# but keep template/ and tools/
+*.pptx
+.pm-local
+
+# User initiative folders — ignore all top-level PM directories
+# Each PM creates their own: alice/, bob/, etc.
+# These contain initiative data (research, output, CJM) that shouldn't be in the public repo.
+# To track your work in git, create a separate private repo or use a branch.

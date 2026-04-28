@@ -43,34 +43,34 @@ COMMANDS = {
     "confirm-analytics-results": {
         "close": "analytics_results",
         "activate": None,
-        "question": "Что получили от аналитика? Напиши ключевые цифры и выводы.",
+        "question": "What did the analyst find? Key numbers and conclusions.",
         "save_to": "research/analytics-data.md",
     },
     "confirm-survey-results": {
         "close": "survey_results",
         "activate": None,
-        "question": "Что показал опрос? Ключевые цифры, паттерны, неожиданные ответы.",
+        "question": "What did the survey show? Key numbers, patterns, surprises.",
         "save_to": "research/survey-results.md",
     },
     "confirm-gate1-challenge": {
         "close": "gate1_challenge",
         "activate": None,
-        "question": "Каков результат Problem Research Report? (принято / на доработку — что именно)",
+        "question": "Problem Research Report result? (approved / needs rework — specifics)",
         "save_to": "output/decisions.md",
     },
     "confirm-gate2-challenge": {
         "close": "gate2_challenge",
         "activate": None,
-        "question": "Каков результат Solution Research Report? (принято / на доработку — что именно)",
+        "question": "Solution Research Report result? (approved / needs rework — specifics)",
         "save_to": "output/decisions.md",
     },
 }
 
 SIMPLE_REPLIES = {
-    "analytics-brief-sent": "✅ Отмечено. Через неделю напомню запросить результаты у аналитика.",
-    "survey-brief-sent": "✅ Отмечено. Через 2 недели напомню запросить результаты опроса.",
-    "audience-brief-sent": "✅ Отмечено.",
-    "design-brief-sent": "✅ Отмечено.",
+    "analytics-brief-sent": "Noted. Will remind you to request analyst results in 1 week.",
+    "survey-brief-sent": "Noted. Will remind you to request survey results in 2 weeks.",
+    "audience-brief-sent": "Noted.",
+    "design-brief-sent": "Noted.",
 }
 
 
@@ -183,13 +183,13 @@ def handle_command(token, chat_id, pm_name, cmd_name, state):
     """Process a slash command. Returns new conversation state or None."""
     spec = COMMANDS.get(cmd_name)
     if not spec:
-        send(token, chat_id, "Неизвестная команда.")
+        send(token, chat_id, "Unknown command.")
         return None
 
     candidates = find_initiatives(pm_name, spec["close"])
 
     if not candidates:
-        send(token, chat_id, f"Нет активных задач <code>{spec['close']}</code> в твоих инициативах.")
+        send(token, chat_id, f"No active <code>{spec['close']}</code> tasks in your initiatives.")
         return None
 
     if len(candidates) == 1:
@@ -197,7 +197,7 @@ def handle_command(token, chat_id, pm_name, cmd_name, state):
 
     # Multiple initiatives — ask to choose
     lines = "\n".join(f"{i+1}. <b>{c['initiative']}</b>" for i, c in enumerate(candidates))
-    send(token, chat_id, f"Несколько инициатив с этой задачей:\n\n{lines}\n\nНапиши номер.")
+    send(token, chat_id, f"Multiple initiatives with this task:\n\n{lines}\n\nType a number.")
     return {"step": "choose", "cmd": cmd_name, "candidates": candidates}
 
 
@@ -226,7 +226,7 @@ def handle_text(token, chat_id, pm_name, text, conv):
             if not 0 <= idx < len(candidates):
                 raise ValueError
         except ValueError:
-            send(token, chat_id, f"Напиши число от 1 до {len(candidates)}.")
+            send(token, chat_id, f"Type a number from 1 to {len(candidates)}.")
             return conv  # keep state
 
         cmd_name = conv["cmd"]
@@ -241,7 +241,7 @@ def handle_text(token, chat_id, pm_name, text, conv):
         update_status(candidate["status_path"], spec["close"], spec.get("activate"))
         send(token, chat_id,
              f"<b>{candidate['initiative']}</b>\n\n"
-             f"✅ Зафиксировано в <code>{spec['save_to']}</code>")
+             f"Saved to <code>{spec['save_to']}</code>")
         log(f"{pm_name}: {candidate['initiative']} / {cmd_name}")
         return None
 
@@ -308,7 +308,7 @@ def main():
                 new_conv = handle_text(token, chat_id, pm_name, text, conv)
             else:
                 send(token, chat_id,
-                     "Используй команды из напоминаний или напиши /help.")
+                     "Use commands from reminders or type /help.")
                 new_conv = None
 
             state[chat_id] = new_conv

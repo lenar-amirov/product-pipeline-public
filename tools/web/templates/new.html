@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}Новая инициатива — Pipeline{% endblock %}
+{% block title %}New Initiative — Pipeline{% endblock %}
 
 {% block content %}
-<a href="/{{ pm }}/" class="back-link">&larr; Все инициативы</a>
+<a href="/{{ pm }}/" class="back-link">&larr; All initiatives</a>
 
-<h1 class="page-title page-title--detail">Новая инициатива</h1>
+<h1 class="page-title page-title--detail">New Initiative</h1>
 
 {% if error %}
 <div class="form-error">{{ error }}</div>
@@ -23,7 +23,7 @@
   {# === Step 1: Name === #}
   <div class="wizard__step" data-step="1">
     <div class="form-group">
-      <label class="form-label" for="name">Название инициативы</label>
+      <label class="form-label" for="name">Initiative name</label>
       <input class="form-input"
              type="text"
              id="name"
@@ -32,34 +32,34 @@
              pattern="[a-z0-9-]+"
              required
              autofocus>
-      <div class="form-hint">Строчные латинские буквы, цифры и дефисы</div>
+      <div class="form-hint">Lowercase letters, digits, and dashes only</div>
     </div>
     <div class="wizard__nav">
       <span></span>
-      <button type="button" class="btn-primary" onclick="wizardNext()">Далее &rarr;</button>
+      <button type="button" class="btn-primary" onclick="wizardNext()">Next &rarr;</button>
     </div>
   </div>
 
   {# === Step 2: Context === #}
   <div class="wizard__step" data-step="2" hidden>
     <div class="form-group">
-      <label class="form-label" for="ctx-title">Заголовок (человекочитаемый)</label>
-      <input class="form-input" type="text" id="ctx-title" name="title" placeholder="Редизайн чекаута">
+      <label class="form-label" for="ctx-title">Title (human-readable)</label>
+      <input class="form-input" type="text" id="ctx-title" name="title" placeholder="Checkout Redesign">
     </div>
 
     <div class="form-group">
-      <label class="form-label" for="ctx-description">О чём инициатива</label>
-      <textarea class="form-input form-input--textarea" id="ctx-description" name="description" rows="3" placeholder="Опиши своими словами: что происходит, в чём проблема, какой результат хочется получить"></textarea>
+      <label class="form-label" for="ctx-description">About this initiative</label>
+      <textarea class="form-input form-input--textarea" id="ctx-description" name="description" rows="3" placeholder="Describe in your own words: what's happening, what's the problem, what outcome you want"></textarea>
     </div>
 
     <div class="form-row">
       <div class="form-group form-group--half">
-        <label class="form-label" for="ctx-metric">Метрика</label>
-        <input class="form-input" type="text" id="ctx-metric" name="metric" placeholder="конверсия в оплату">
+        <label class="form-label" for="ctx-metric">Metric</label>
+        <input class="form-input" type="text" id="ctx-metric" name="metric" placeholder="conversion to payment">
       </div>
       <div class="form-group form-group--half">
-        <label class="form-label" for="ctx-horizon">Горизонт</label>
-        <input class="form-input" type="text" id="ctx-horizon" name="horizon" placeholder="квартал">
+        <label class="form-label" for="ctx-horizon">Horizon</label>
+        <input class="form-input" type="text" id="ctx-horizon" name="horizon" placeholder="quarter">
       </div>
     </div>
 
@@ -76,54 +76,54 @@
 
     <div class="form-row">
       <div class="form-group form-group--half">
-        <label class="form-label" for="ctx-segment">Сегмент</label>
-        <input class="form-input" type="text" id="ctx-segment" name="segment" placeholder="новые пользователи">
+        <label class="form-label" for="ctx-segment">Segment</label>
+        <input class="form-input" type="text" id="ctx-segment" name="segment" placeholder="new users">
       </div>
       <div class="form-group form-group--half">
-        <label class="form-label" for="ctx-segment-size">Размер сегмента</label>
+        <label class="form-label" for="ctx-segment-size">Segment size</label>
         <input class="form-input" type="text" id="ctx-segment-size" name="segment_size" placeholder="500k MAU">
       </div>
     </div>
 
     <div class="form-group">
-      <label class="form-label" for="ctx-platform">Платформа</label>
+      <label class="form-label" for="ctx-platform">Platform</label>
       <select class="form-input form-input--select" id="ctx-platform" name="platform">
         <option value="">—</option>
         <option value="web">Web</option>
         <option value="iOS">iOS</option>
         <option value="Android">Android</option>
-        <option value="все">Все платформы</option>
+        <option value="all">All platforms</option>
       </select>
     </div>
 
     <div class="form-group">
-      <label class="form-label" for="ctx-why">Почему сейчас</label>
-      <textarea class="form-input form-input--textarea" id="ctx-why" name="why_now" rows="2" placeholder="Конкурент запустил аналог, жалобы пользователей выросли на 40%"></textarea>
+      <label class="form-label" for="ctx-why">Why now</label>
+      <textarea class="form-input form-input--textarea" id="ctx-why" name="why_now" rows="2" placeholder="Competitor launched similar feature, user complaints up 40%"></textarea>
     </div>
 
     <div class="form-group">
-      <label class="form-label" for="ctx-constraints">Ограничения</label>
-      <textarea class="form-input form-input--textarea" id="ctx-constraints" name="constraints" rows="2" placeholder="Нельзя менять навигацию, релиз через 6 недель"></textarea>
+      <label class="form-label" for="ctx-constraints">Constraints</label>
+      <textarea class="form-input form-input--textarea" id="ctx-constraints" name="constraints" rows="2" placeholder="Can't change navigation, release in 6 weeks"></textarea>
     </div>
 
-    <div class="form-hint" style="margin-bottom: var(--space-4);">Все поля опциональные — можно заполнить позже</div>
+    <div class="form-hint" style="margin-bottom: var(--space-4);">All fields are optional — you can fill them in later</div>
 
     <div class="wizard__nav">
-      <button type="button" class="btn-outline" onclick="wizardPrev()">&larr; Назад</button>
-      <button type="button" class="btn-primary" onclick="wizardNext()">Далее &rarr;</button>
+      <button type="button" class="btn-outline" onclick="wizardPrev()">&larr; Back</button>
+      <button type="button" class="btn-primary" onclick="wizardNext()">Next &rarr;</button>
     </div>
   </div>
 
   {# === Step 3: CJM === #}
   <div class="wizard__step" data-step="3" hidden>
     <div class="form-group">
-      <label class="form-label">Скриншоты CJM</label>
-      <div class="form-hint" style="margin-bottom: var(--space-3);">PNG, JPG или PDF — в порядке пути пользователя</div>
+      <label class="form-label">CJM Screenshots</label>
+      <div class="form-hint" style="margin-bottom: var(--space-3);">PNG, JPG or PDF — in user journey order</div>
     </div>
 
     <div class="cjm-dropzone" id="cjm-dropzone">
-      <div class="cjm-dropzone__text">Перетащите файлы сюда</div>
-      <div class="cjm-dropzone__hint">или <label class="cjm-dropzone__browse" for="cjm-input">выберите файлы</label></div>
+      <div class="cjm-dropzone__text">Drop files here</div>
+      <div class="cjm-dropzone__hint">or <label class="cjm-dropzone__browse" for="cjm-input">browse files</label></div>
       <input type="file" id="cjm-input" multiple accept=".png,.jpg,.jpeg,.webp,.pdf" hidden>
     </div>
 
@@ -133,10 +133,10 @@
     <input type="hidden" name="cjm_labels" id="cjm-labels-input">
 
     <div class="wizard__nav">
-      <button type="button" class="btn-outline" onclick="wizardPrev()">&larr; Назад</button>
+      <button type="button" class="btn-outline" onclick="wizardPrev()">&larr; Back</button>
       <div style="display: flex; align-items: center; gap: var(--space-4);">
-        <a href="javascript:void(0)" class="wizard__skip" onclick="submitWizard()">Пропустить</a>
-        <button type="button" class="btn-primary" onclick="submitWizard()">Создать инициативу</button>
+        <a href="javascript:void(0)" class="wizard__skip" onclick="submitWizard()">Skip</a>
+        <button type="button" class="btn-primary" onclick="submitWizard()">Create Initiative</button>
       </div>
     </div>
   </div>
@@ -173,7 +173,7 @@
       var val = nameInput.value.trim();
       if (!val) { nameInput.focus(); return; }
       if (!/^[a-z0-9-]+$/.test(val)) {
-        nameInput.setCustomValidity('Только строчные латинские буквы, цифры и дефисы');
+        nameInput.setCustomValidity('Only lowercase letters, digits, and dashes');
         nameInput.reportValidity();
         return;
       }
@@ -324,7 +324,7 @@
     // Submit
     var btn = document.querySelector('.wizard__step[data-step="3"] .btn-primary');
     btn.disabled = true;
-    btn.textContent = 'Создаём...';
+    btn.textContent = 'Creating...';
 
     fetch(form.action, { method: 'POST', body: fd })
       .then(function(r) {
@@ -335,7 +335,7 @@
       })
       .catch(function() {
         btn.disabled = false;
-        btn.textContent = 'Создать инициативу';
+        btn.textContent = 'Create Initiative';
       });
   };
 })();

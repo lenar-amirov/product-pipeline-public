@@ -31,59 +31,59 @@ def pm_root(pm):
 # --- Constants ---
 
 PIPELINE_STEPS = [
-    (1,  "analyze-cjm",              "Phase 1", "Анализ CJM"),
-    (2,  "synthetic-research",        "Phase 1", "Синт. интервью"),
-    (3,  "competitor-research",       "Phase 1", "Конкуренты"),
-    (4,  "generate-research",         "Phase 1", "Бриф аналитику"),
-    (5,  "create-survey-audience",    "Phase 1", "Аудитория"),
-    (6,  "validate-problems",         "Phase 1", "Валидация"),
-    (7,  "solution-hypotheses",       "Phase 1", "Гипотезы решений"),
-    (8,  "sketch-solution",           "Phase 1", "Образ решения"),
-    (9,  "review-design",             "Phase 1", "Ревью дизайна"),
+    (1,  "analyze-cjm",              "Phase 1", "CJM Analysis"),
+    (2,  "synthetic-research",        "Phase 1", "Synthetic Research"),
+    (3,  "competitor-research",       "Phase 1", "Competitor Research"),
+    (4,  "generate-research",         "Phase 1", "Research Brief"),
+    (5,  "create-survey-audience",    "Phase 1", "Survey Audience"),
+    (6,  "validate-problems",         "Phase 1", "Validation"),
+    (7,  "solution-hypotheses",       "Phase 1", "Solution Hypotheses"),
+    (8,  "sketch-solution",           "Phase 1", "Solution Sketch"),
+    (9,  "review-design",             "Phase 1", "Design Review"),
     (10, "create-presentation",       "Phase 1", "Problem Research Report"),
-    (11, "create-design-brief",       "Phase 2", "Дизайн-бриф"),
-    (12, "estimate-with-dev",         "Phase 2", "Оценка разработки"),
-    (13, "finalize-prd",              "Phase 2", "Финализация PRD"),
-    (14, "design-ab-test",            "Phase 2", "AB-тест"),
+    (11, "create-design-brief",       "Phase 2", "Design Brief"),
+    (12, "estimate-with-dev",         "Phase 2", "Dev Estimate"),
+    (13, "finalize-prd",              "Phase 2", "Finalize PRD"),
+    (14, "design-ab-test",            "Phase 2", "AB Test Design"),
     (15, "create-gate2-presentation", "Phase 2", "Solution Research Report"),
-    (16, "support-task",              "Phase 3", "Бриф поддержке"),
-    (17, "announce-ab-test",          "Phase 3", "Анонс AB-теста"),
-    (18, "announce-release",          "Phase 3", "Анонс релиза"),
+    (16, "support-task",              "Phase 3", "Support Brief"),
+    (17, "announce-ab-test",          "Phase 3", "AB Test Announcement"),
+    (18, "announce-release",          "Phase 3", "Release Announcement"),
 ]
 
 STEP_ARTIFACTS = {
-    1:  [("Гипотезы проблем", "output/hypotheses.md")],
-    2:  [("Синтетические интервью", "research/synthetic-interviews.md")],
-    3:  [("Конкурентный анализ", "research/competitive-analysis.md")],
-    4:  [("Бриф аналитику", "research/analytics-brief.md"),
-         ("Вопросы опроса", "research/survey-questions.md")],
-    5:  [("Бриф на аудиторию", "research/survey-audience-brief.md")],
-    6:  [("Валидированные гипотезы", "output/validated-hypotheses.md")],
-    7:  [("Гипотезы решений", "output/solution-hypotheses.md")],
-    8:  [("Образ решения", "output/solution-sketch.md"),
-         ("Экраны Stitch", "output/screens/")],
+    1:  [("Problem Hypotheses", "output/hypotheses.md")],
+    2:  [("Synthetic Interviews", "research/synthetic-interviews.md")],
+    3:  [("Competitive Analysis", "research/competitive-analysis.md")],
+    4:  [("Analytics Brief", "research/analytics-brief.md"),
+         ("Survey Questions", "research/survey-questions.md")],
+    5:  [("Audience Brief", "research/survey-audience-brief.md")],
+    6:  [("Validated Hypotheses", "output/validated-hypotheses.md")],
+    7:  [("Solution Hypotheses", "output/solution-hypotheses.md")],
+    8:  [("Solution Sketch", "output/solution-sketch.md"),
+         ("Screens", "output/screens/")],
     9:  [],
     10: [("Problem Research Report", "output/presentation.md")],
-    11: [("Дизайн-бриф", "output/design-brief.md")],
-    12: [("Оценка разработки", "output/dev-estimate.md")],
+    11: [("Design Brief", "output/design-brief.md")],
+    12: [("Dev Estimate", "output/dev-estimate.md")],
     13: [("PRD", "output/PRD.md")],
-    14: [("AB-тест", "output/ab-test-design.md")],
+    14: [("AB Test Design", "output/ab-test-design.md")],
     15: [("Solution Research Report", "output/gate2-presentation.md")],
-    16: [("Бриф поддержке", "output/support-brief.md")],
-    17: [("Анонс AB-теста", "output/announce-ab-test.md")],
-    18: [("Анонс релиза", "output/announce-release.md")],
+    16: [("Support Brief", "output/support-brief.md")],
+    17: [("AB Test Announcement", "output/announce-ab-test.md")],
+    18: [("Release Announcement", "output/announce-release.md")],
 }
 
 PENDING_LABELS = {
-    "analytics_brief":   ("Передай бриф аналитику", "research/analytics-brief.md"),
-    "survey_brief":      ("Передай бриф на опрос", "research/survey-questions.md"),
-    "audience_brief":    ("Передай бриф на выгрузку", "research/survey-audience-brief.md"),
-    "analytics_results": ("Запроси результаты аналитики", "research/analytics-brief.md"),
-    "survey_results":    ("Запроси результаты опроса", "research/survey-questions.md"),
-    "design_brief":      ("Передай бриф дизайнеру", "output/design-brief.md"),
-    "gate1_challenge":   ("Иди на Problem Research Report", "output/presentation.md"),
-    "gate2_challenge":   ("Иди на Solution Research Report", "output/gate2-presentation.md"),
-    "support_brief":     ("Передай бриф в поддержку", "output/support-brief.md"),
+    "analytics_brief":   ("Send brief to analyst", "research/analytics-brief.md"),
+    "survey_brief":      ("Send survey brief", "research/survey-questions.md"),
+    "audience_brief":    ("Send audience brief", "research/survey-audience-brief.md"),
+    "analytics_results": ("Request analytics results", "research/analytics-brief.md"),
+    "survey_results":    ("Request survey results", "research/survey-questions.md"),
+    "design_brief":      ("Send brief to designer", "output/design-brief.md"),
+    "gate1_challenge":   ("Present Problem Research Report", "output/presentation.md"),
+    "gate2_challenge":   ("Present Solution Research Report", "output/gate2-presentation.md"),
+    "support_brief":     ("Send brief to support", "output/support-brief.md"),
 }
 
 EXCLUDED_DIRS = {
@@ -134,19 +134,19 @@ def parse_context(base_path):
         return result
 
     # Title from first heading
-    m = re.search(r"^#\s+(?:Инициатива:\s*)?(.+)$", text, re.MULTILINE)
+    m = re.search(r"^#\s+(?:(?:Initiative|Инициатива):\s*)?(.+)$", text, re.MULTILINE)
     if m:
         result["title"] = m.group(1).strip()
 
-    # Metric
-    m = re.search(r"\*\*Метрика[^*]*\*\*:\s*(.+)", text)
+    # Metric (English or Russian)
+    m = re.search(r"\*\*(?:Metric[^*]*|Метрика[^*]*)\*\*:\s*(.+)", text)
     if m:
         val = m.group(1).strip()
         if val and not val.startswith("["):
             result["metric"] = val
 
-    # Segment
-    m = re.search(r"\*\*Сегмент\*\*:\s*(.+)", text)
+    # Segment (English or Russian)
+    m = re.search(r"\*\*(?:Segment|Сегмент)\*\*:\s*(.+)", text)
     if m:
         val = m.group(1).strip()
         if val and not val.startswith("["):
@@ -327,7 +327,7 @@ def create_initiative(pm, name):
     ctx_path = target / "CONTEXT.md"
     if ctx_path.is_file():
         text = ctx_path.read_text(encoding="utf-8")
-        text = text.replace("[НАЗВАНИЕ]", name).replace("[ИМЯ]", pm)
+        text = text.replace("[NAME]", name, 1).replace("[NAME]", pm, 1)
         ctx_path.write_text(text, encoding="utf-8")
 
     # Ensure output directory
@@ -347,7 +347,7 @@ def create_initiative(pm, name):
     # Initialize decisions.md
     dec_path = output_dir / "decisions.md"
     if not dec_path.is_file():
-        dec_path.write_text("# Решения\n\n", encoding="utf-8")
+        dec_path.write_text("# Decision Log\n\n", encoding="utf-8")
 
     # Create CJM directory
     (target / "CJM").mkdir(exist_ok=True)
@@ -363,39 +363,39 @@ def generate_context_md(name, pm, fields):
     desc = fields.get("description", "").strip()
 
     lines = [
-        f"# Инициатива: {v('title', name)}",
+        f"# Initiative: {v('title', name)}",
         "",
-        f"**Продакт**: {pm}",
+        f"**Product Manager**: {pm}",
     ]
     if desc:
-        lines += ["", "## О чём инициатива", desc]
+        lines += ["", "## About", desc]
     lines += [
         "",
-        "## Цель",
-        f"**Метрика, которую улучшаем**: {v('metric', '[конверсия в оплату / retention D7 / NPS / ...]')}",
-        f"**Текущий baseline**: {v('baseline', '[X%]')}",
-        f"**Целевой результат**: {v('target', '[Y%]')}",
-        f"**Горизонт**: {v('horizon', '[квартал / 6 недель / ...]')}",
+        "## Outcome",
+        f"**Metric we're improving**: {v('metric', '[conversion to payment / retention D7 / NPS / ...]')}",
+        f"**Current baseline**: {v('baseline', '[X%]')}",
+        f"**Target result**: {v('target', '[Y%]')}",
+        f"**Horizon**: {v('horizon', '[quarter / 6 weeks / ...]')}",
         "",
-        "## Пользователь",
-        f"**Сегмент**: {v('segment', '[новые пользователи / платящие / churned / ...]')}",
-        f"**Размер сегмента**: {v('segment_size', '[DAU / MAU + доля от всех пользователей]')}",
-        f"**Платформа**: {v('platform', '[web / iOS / Android / все]')}",
-        f"**Ключевой сценарий на CJM**: {v('scenario', '[регистрация / онбординг / оформление заказа / ...]')}",
+        "## User",
+        f"**Segment**: {v('segment', '[new users / paying / churned / ...]')}",
+        f"**Segment size**: {v('segment_size', '[DAU / MAU + share of total users]')}",
+        f"**Platform**: {v('platform', '[web / iOS / Android / all]')}",
+        f"**Key CJM scenario**: {v('scenario', '[registration / onboarding / checkout / ...]')}",
         "",
-        "## Контекст",
-        f"**Почему сейчас**: {v('why_now', '[что изменилось]')}",
-        f"**Что уже пробовали**: {v('tried', '[что делали раньше]')}",
-        f"**Ограничения**: {v('constraints', '[нельзя трогать X / нет бюджета на Y / ...]')}",
-        f"**Связи с другими инициативами**: {v('links', '[что аффектит / от чего зависит]')}",
+        "## Context",
+        f"**Why now**: {v('why_now', '[what changed]')}",
+        f"**What we tried before**: {v('tried', '[previous attempts]')}",
+        f"**Constraints**: {v('constraints', '[can\\'t touch X / no budget for Y / ...]')}",
+        f"**Related initiatives**: {v('links', '[what it affects / what it depends on]')}",
         "",
         "## CJM",
-        "Материалы в папке `/CJM/`. Поддерживаемые форматы:",
-        "- **PNG/JPG скрины**: `01_шаг-название.png`, `02_шаг-название.png` — экспорт из Miro/Figma",
-        "- **Figma файл**: `*.fig` — читать через Figma MCP",
-        "- **PDF**: `*.pdf` — экспорт из Miro/Notion",
+        "Materials in `/CJM/`. Supported formats:",
+        "- **PNG/JPG screenshots**: `01_step-name.png`, `02_step-name.png` — export from Miro/Figma",
+        "- **Figma file**: `*.fig` — read via Figma MCP",
+        "- **PDF**: `*.pdf` — export from Miro/Notion",
         "",
-        "Если шаг имеет состояния — отдельные файлы: `03a_form-empty.png`, `03b_form-error.png`",
+        "If a step has states — separate files: `03a_form-empty.png`, `03b_form-error.png`",
     ]
     return "\n".join(lines) + "\n"
 
@@ -415,33 +415,33 @@ def parse_context_full(base_path):
     except FileNotFoundError:
         return result
 
-    m = re.search(r"^#\s+(?:Инициатива:\s*)?(.+)$", text, re.MULTILINE)
+    m = re.search(r"^#\s+(?:(?:Initiative|Инициатива):\s*)?(.+)$", text, re.MULTILINE)
     if m:
         val = m.group(1).strip()
         if val and not val.startswith("["):
             result["title"] = val
 
-    # Description — text between "## О чём инициатива" and next "##"
+    # Description — text between "## About" (or "## О чём инициатива") and next "##"
     m = re.search(
-        r"^## О чём инициатива\s*\n(.*?)(?=^## |\Z)",
+        r"^## (?:About|О чём инициатива)\s*\n(.*?)(?=^## |\Z)",
         text, re.MULTILINE | re.DOTALL,
     )
     if m:
         result["description"] = m.group(1).strip()
 
     field_map = {
-        r"\*\*Метрика[^*]*\*\*:\s*(.+)": "metric",
-        r"\*\*Текущий baseline\*\*:\s*(.+)": "baseline",
-        r"\*\*Целевой результат\*\*:\s*(.+)": "target",
-        r"\*\*Горизонт\*\*:\s*(.+)": "horizon",
-        r"\*\*Сегмент\*\*:\s*(.+)": "segment",
-        r"\*\*Размер сегмента\*\*:\s*(.+)": "segment_size",
-        r"\*\*Платформа\*\*:\s*(.+)": "platform",
-        r"\*\*Ключевой сценарий на CJM\*\*:\s*(.+)": "scenario",
-        r"\*\*Почему сейчас\*\*:\s*(.+)": "why_now",
-        r"\*\*Что уже пробовали\*\*:\s*(.+)": "tried",
-        r"\*\*Ограничения\*\*:\s*(.+)": "constraints",
-        r"\*\*Связи с другими инициативами\*\*:\s*(.+)": "links",
+        r"\*\*(?:Metric[^*]*|Метрика[^*]*)\*\*:\s*(.+)": "metric",
+        r"\*\*(?:Current baseline|Текущий baseline)\*\*:\s*(.+)": "baseline",
+        r"\*\*(?:Target result|Целевой результат)\*\*:\s*(.+)": "target",
+        r"\*\*(?:Horizon|Горизонт)\*\*:\s*(.+)": "horizon",
+        r"\*\*(?:Segment|Сегмент)\*\*:\s*(.+)": "segment",
+        r"\*\*(?:Segment size|Размер сегмента)\*\*:\s*(.+)": "segment_size",
+        r"\*\*(?:Platform|Платформа)\*\*:\s*(.+)": "platform",
+        r"\*\*(?:Key CJM scenario|Ключевой сценарий на CJM)\*\*:\s*(.+)": "scenario",
+        r"\*\*(?:Why now|Почему сейчас)\*\*:\s*(.+)": "why_now",
+        r"\*\*(?:What we tried before|Что уже пробовали)\*\*:\s*(.+)": "tried",
+        r"\*\*(?:Constraints|Ограничения)\*\*:\s*(.+)": "constraints",
+        r"\*\*(?:Related initiatives|Связи с другими инициативами)\*\*:\s*(.+)": "links",
     }
     for pattern, key in field_map.items():
         m = re.search(pattern, text)
@@ -570,18 +570,18 @@ def artifact_view(pm, name):
         abort(404)
     rel_path = request.args.get("path", "")
     if not rel_path or ".." in rel_path:
-        return jsonify({"error": "Неверный путь"}), 400
+        return jsonify({"error": "Invalid path"}), 400
 
     base_path = pm_root(pm) / name
     full_path = base_path / rel_path
 
     if not full_path.is_file():
-        return jsonify({"error": "Файл не найден"})
+        return jsonify({"error": "File not found"})
 
     try:
         text = full_path.read_text(encoding="utf-8")
     except Exception:
-        return jsonify({"error": "Ошибка чтения файла"})
+        return jsonify({"error": "Error reading file"})
 
     MD.reset()
     html = MD.convert(text)
@@ -630,20 +630,20 @@ def new_initiative_submit(pm):
 
     if not name:
         return render_template("new.html", pm=pm,
-                               error="Введите название инициативы.")
+                               error="Please enter an initiative name.")
     if not re.match(r"^[a-z0-9-]+$", name):
         return render_template("new.html", pm=pm,
-                               error="Только строчные латинские буквы, цифры и дефисы.")
+                               error="Only lowercase letters, digits, and dashes.")
 
     target = pm_root(pm) / name
     if target.exists():
         return render_template("new.html", pm=pm,
-                               error=f"Инициатива «{name}» уже существует.")
+                               error=f"Initiative \"{name}\" already exists.")
 
     try:
         create_initiative(pm, name)
     except Exception as e:
-        return render_template("new.html", pm=pm, error=f"Ошибка создания: {e}")
+        return render_template("new.html", pm=pm, error=f"Creation error: {e}")
 
     # Context fields
     ctx_fields = {}
@@ -744,14 +744,14 @@ def team_artifact_view(owner, name):
         abort(404)
     rel_path = request.args.get("path", "")
     if not rel_path or ".." in rel_path:
-        return jsonify({"error": "Неверный путь"}), 400
+        return jsonify({"error": "Invalid path"}), 400
     full_path = pm_root(owner) / name / rel_path
     if not full_path.is_file():
-        return jsonify({"error": "Файл не найден"})
+        return jsonify({"error": "File not found"})
     try:
         text = full_path.read_text(encoding="utf-8")
     except Exception:
-        return jsonify({"error": "Ошибка чтения файла"})
+        return jsonify({"error": "Error reading file"})
     MD.reset()
     html = MD.convert(text)
     try:
