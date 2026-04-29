@@ -1,157 +1,138 @@
 # AI Diamond
 
-AI-powered product discovery copilot built on [Claude Code](https://docs.anthropic.com/en/docs/claude-code).
+Your AI copilot for product discovery. From a product problem to a validated solution — research, hypotheses, presentations, PRD — all structured and evidence-based.
 
-Takes a product initiative from CJM analysis through research, validation, solution design, and gate presentations — with structured steps, Claude Code skills, and a terminal dashboard.
+Built on [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Powered by Double Diamond, Teresa Torres' Continuous Discovery, and Marty Cagan's Product Discovery.
 
-**Built on best practices**: Double Diamond, Teresa Torres' Continuous Discovery, Marty Cagan's Product Discovery, RICE/ICE frameworks.
+---
 
-## What's inside
+## Get started in 30 seconds
 
-- **CLAUDE.md** — master prompt: session lifecycle, configurable pipeline, confirmation commands, output formats
-- **template/** — initiative scaffold (CONTEXT.md, output/, research/, slides/)
-- **.claude/skills/** — 18 reusable Claude Code skills for product work (discovery, personas, funnels, PRD, design critique, AB test design, etc.)
-- **tools/web/** — Flask dashboard for tracking initiatives, viewing artifacts, uploading CJM materials
-- **tools/scripts/** — PPTX generation, Telegram reminder bot, initiative scaffolding
+### 1. Clone and open
 
-## Quick start
+```bash
+git clone https://github.com/lenar-amirov/product-pipeline-public.git
+cd product-pipeline-public
+pip install rich        # for the status dashboard
+```
 
-1. Clone this repo
-2. Create `.pm-local` with your name (e.g. `echo "alice" > .pm-local`)
-3. Open in Claude Code (CLI, desktop app, or IDE extension)
-4. Say: `create initiative checkout-redesign`
-5. Follow the pipeline: `/setup-initiative` -> `/analyze-cjm` -> `/synthetic-research` -> ...
+Open the folder in [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — CLI, desktop app, or IDE extension.
 
-## Pipeline overview
+### 2. Describe your problem
 
-The pipeline has 4 phases with configurable steps:
+You'll see:
 
-| Phase | Steps | Gate |
-|-------|-------|------|
-| 0. Setup | `/setup-initiative` | — |
-| 1. Problem research | `/analyze-cjm` -> `/validate-problems` | Problem Research Report |
-| 2. Solution design | `/solution-hypotheses` -> `/create-gate2-presentation` | Solution Research Report |
-| 3. Launch preparation | `/support-task` -> `/announce-release` | — |
+```
+╭────────────────────────────────────────╮
+│                                        │
+│  ◆ AI Diamond                          │
+│  Product Discovery Copilot             │
+│                                        │
+╰────────────────────────────────────────╯
 
-### Configurable steps
+  What product problem are you working on?
+```
 
-Every step has a type that determines whether it can be skipped:
+Type one sentence. For example:
 
-| Type | Meaning | Can disable? |
-|------|---------|-------------|
-| **Core** | Pipeline doesn't work without it | No |
-| **Recommended** | Significantly improves results | Yes, with warning |
-| **Optional** | Useful in specific contexts | Yes |
+> Users add items to cart but never complete checkout on mobile
 
-### Pipeline templates
+### 3. Get instant results
+
+AI Diamond immediately creates:
+
+- **Initiative folder** with all the scaffolding
+- **3-5 problem hypotheses** tied to your product
+- **Research plan** — what data to collect, who to interview
+- **Next steps** — add CJM screenshots for deeper analysis or continue the pipeline
+
+That's it. You're in the pipeline. Say `continue` and AI Diamond guides you through every step.
+
+---
+
+## What happens next
+
+AI Diamond walks you through a structured product discovery — step by step:
+
+```
+   Problem Research                    Solution Design              Launch
+┌─────────────────────────┐  ┌──────────────────────────┐  ┌──────────────┐
+│ CJM Analysis            │  │ Design Brief             │  │ Support Brief│
+│ Synthetic Research      │  │ Dev Estimate             │  │ AB Test Post │
+│ Competitor Research     │  │ Finalize PRD             │  │ Release Post │
+│ Research Briefs         │  │ AB Test Design           │  └──────────────┘
+│ Validate Problems       │  │                          │
+│ Solution Hypotheses     │  │   Solution Research      │
+│ Sketch Solution         │  │       Report ▶           │
+│ Design Review           │  └──────────────────────────┘
+│                         │
+│   Problem Research      │
+│       Report ▶          │
+└─────────────────────────┘
+```
+
+Every step produces a concrete artifact — hypotheses, briefs, presentations, PRD — and tracks decisions along the way.
+
+### What you get at the end
+
+| Artifact | Description |
+|----------|-------------|
+| **Problem Research Report** | Presentation: validated problem + solution sketch |
+| **Solution Research Report** | Presentation: designed solution + AB test plan |
+| **PRD** | Living document built incrementally across all steps |
+| **Research artifacts** | Hypotheses, competitive analysis, survey design, interview synthesis |
+| **AB test design** | Baseline, MDE, sample size, guardrails, decision criteria |
+
+---
+
+## How it works
+
+AI Diamond is a set of prompts and skills that run inside Claude Code. No server, no SaaS — everything stays in your local repo.
+
+| Component | What it does |
+|-----------|-------------|
+| `CLAUDE.md` | Master prompt — pipeline logic, session lifecycle, formats |
+| `template/` | Initiative scaffold — copied for each new initiative |
+| `.claude/skills/` | 18 specialized skills (discovery, personas, funnels, PRD, design critique, etc.) |
+| `tools/scripts/status.py` | Terminal dashboard — shows progress at session start |
+| `tools/scripts/generate-pptx.py` | Converts presentation markdown to .pptx |
+
+### Your initiative folder
+
+```
+you/my-initiative/
+├── CONTEXT.md              ← metric, segment, baseline, constraints
+├── CJM/                    ← user journey screenshots
+├── research/               ← analytics briefs, survey design, competitive analysis
+└── output/                 ← hypotheses, PRD, presentations, decision log
+```
+
+### Pipeline is configurable
+
+Choose a template or pick individual steps:
 
 | Template | Steps | Best for |
 |----------|-------|----------|
-| **Quick Discovery** | 6 steps | PM with existing data, tight timeline |
-| **Full Discovery** | All steps | New initiative, unknown problem space |
-| **Problem Only** | 5 steps | Understand the problem, solution not needed yet |
-| **Solution Only** | 7 steps | Discovery done, need solution design |
-| **Custom** | Pick & choose | PM knows exactly what's needed |
+| **Quick Discovery** | ~6 core steps | Have data, need structure |
+| **Full Discovery** | All steps | New problem, full research |
+| **Problem Only** | 5 steps | Just understand the problem |
+| **Solution Only** | 7 steps | Problem known, design solution |
+| **Custom** | Your choice | You know what's needed |
 
-### All steps
+---
 
-#### Phase 0: Setup
-| # | Command | Type | What it does |
-|---|---------|------|-------------|
-| 0 | `/setup-initiative` | Core | Alignment checklist: metric, stakeholders, OKR, constraints, kill criteria |
+## Requirements
 
-#### Phase 1: Problem Research -> Problem Research Report
-| # | Command | Type | What it does |
-|---|---------|------|-------------|
-| 1 | `/analyze-cjm` | Core | Analyze CJM, formulate problem hypotheses (MECE) |
-| 2 | `/synthetic-research` | Recommended | Synthetic interviews for hypothesis pre-validation |
-| 3 | `/competitor-research` | Recommended | Scenario analogues and competitive analysis |
-| 4 | `/generate-research` | Recommended | Analytics brief + survey questions design |
-| 5 | `/create-survey-audience` | Optional | SQL pseudocode for survey audience selection |
-| 5.5 | Customer research pause | Recommended | Real research: analytics, survey, 5-8 interviews (Torres) |
-| 6 | `/validate-problems` | Core | Validate hypotheses with evidence (3 sub-steps: 6a/6b/6c) |
-| 7 | `/solution-hypotheses` | Core | Solution hypotheses with ICE + business viability check |
-| 8 | `/sketch-solution` | Core | UI wireframes, screens, user flow |
-| 8.5 | `/user-test-concept` | Optional | Concept test with 3-5 real users |
-| 9 | `/review-design` | Recommended | Heuristic evaluation + design iteration |
-| 10 | `/create-presentation` | Core | Problem Research Report (problem + solution sketch) |
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — CLI, desktop app, or IDE extension
+- Python 3.10+
+- `pip install rich` — for the terminal dashboard
 
-#### Phase 2: Solution Development -> Solution Research Report
-| # | Command | Type | What it does |
-|---|---------|------|-------------|
-| 11 | `/create-design-brief` | Recommended | Brief for designer with wireframes |
-| 12 | `/estimate-with-dev` | Core | Dev lead fills tech estimate, dependencies |
-| 13 | `/finalize-prd` | Core | User stories, acceptance criteria, open questions |
-| 14 | `/design-ab-test` | Recommended | AB test design: baseline, MDE, sample size, guardrails |
-| 15 | `/create-gate2-presentation` | Core | Solution Research Report |
+Optional (for presentations and web dashboard):
+```bash
+pip install -r requirements.txt   # rich, flask, markdown, python-pptx
+```
 
-After Solution Research Report: `/create-jira` for dev tickets.
-
-#### Phase 3: Launch Preparation
-| # | Command | Type | What it does |
-|---|---------|------|-------------|
-| 16 | `/support-task` | Optional | Support team brief: FAQ, scenarios, known limitations |
-| 17 | `/announce-ab-test` | Optional | Internal AB test announcement |
-| 18 | `/announce-release` | Optional | Internal release announcement |
-
-See [CLAUDE.md](CLAUDE.md) for full pipeline documentation.
-
-## Skills
-
-| Skill | Purpose |
-|-------|---------|
-| `setup-initiative` | Alignment checklist, pipeline configuration |
-| `consulting-problem-solving` | MECE structure, pyramid principle, synthesis |
-| `product-discovery-template` | Hypotheses, ICE scoring, assumption mapping, business viability check |
-| `user-persona-builder` | Behavioral personas from research data + synthetic research methodology |
-| `funnel-analysis-builder` | Conversion funnels, cohort analysis, SQL patterns |
-| `product-requirements-doc` | PRD structure and content |
-| `user-story-generator` | User stories with Given/When/Then acceptance criteria |
-| `usability-test-plan` | UX research methodology, sample size |
-| `user-test-concept` | Concept testing with real users |
-| `product-analytics-setup` | Event schema, naming conventions, tracking |
-| `ui-pattern-library` | UI patterns for wireframes |
-| `design-critique-template` | Heuristic evaluation of design decisions |
-| `system-design-doc` | Technical architecture and dependencies |
-| `technical-spec-document` | Implementation blueprints |
-| `strategic-narrative-generator` | Strategic narratives + Gate presentation structure |
-| `multi-source-signal-synthesiser` | Cross-source signal synthesis with evidence typing |
-| `ab-test-announcement-wizard` | Internal AB test / release announcements |
-| `ambiguity-resolver` | Resolving ambiguities in requirements (utility — any step) |
-
-## Dashboard
-
-Optional Flask web dashboard (`tools/web/app.py`) for team use:
-- Initiative list with progress tracking
-- Context editing and CJM upload
-- Step-by-step navigation with Claude Code integration
-- Artifact viewer (PRD, hypotheses, presentations)
-
-## Key concepts
-
-### Evidence confidence
-
-Every piece of evidence is typed by source:
-- **REAL** (0.6-1.0): Analytics data, survey results, user interviews
-- **SYNTHETIC** (0.2-0.4): AI-generated interviews, synthetic research
-- **INFERRED** (0.3-0.5): Logical deductions from other evidence
-- **AMBIGUOUS** (0.1-0.3): Contradictory or unclear signals
-
-### Living PRD
-
-The PRD is built incrementally as you progress through the pipeline:
-- Steps 1 -> sections 1-2 (context, user)
-- Step 6 -> sections 3-4 (metrics, validated problems)
-- Steps 7-8 -> sections 6-7 (solution, scope)
-- Steps 12-13 -> sections 8-11 (stories, NFR, risks, open questions)
-
-### Validation branching (step 6)
-
-After validation, the pipeline branches:
-- All confirmed -> step 7
-- Partially confirmed -> narrow focus, step 7
-- None confirmed -> back to step 1
-- Insufficient data -> repeat data collection
+---
 
 ## License
 
