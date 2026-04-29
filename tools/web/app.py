@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""PM Pipeline Web Dashboard — Flask app."""
+"""AI Diamond Web Dashboard — Flask app."""
 
 import json
 import os

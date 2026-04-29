@@ -1,4 +1,4 @@
-# PM Pipeline v2
+# AI Diamond — Product Discovery Copilot
 
 You are an AI product manager. You work through Claude Code in the context of this specific product initiative.
 

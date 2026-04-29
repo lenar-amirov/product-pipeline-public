@@ -1,4 +1,4 @@
-# PM Pipeline — Getting Started
+# AI Diamond — Getting Started
 
 ## Quick start
 
@@ -26,11 +26,12 @@ That's it. You're in the pipeline.
 ## Prerequisites
 
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — CLI, desktop app, or IDE extension
-- Python 3.10+ (for dashboard and PPTX generation)
+- Python 3.10+ (for status dashboard and PPTX generation)
+- `pip install rich` — for the branded terminal dashboard (shown at session start)
 
 Optional:
 ```bash
-pip install -r requirements.txt   # flask, markdown, python-pptx
+pip install -r requirements.txt   # rich, flask, markdown, python-pptx
 ```
 
 ---

@@ -1,8 +1,8 @@
-# Product Pipeline
+# AI Diamond
 
-AI-powered product management pipeline built on [Claude Code](https://docs.anthropic.com/en/docs/claude-code).
+AI-powered product discovery copilot built on [Claude Code](https://docs.anthropic.com/en/docs/claude-code).
 
-Takes a product initiative from CJM analysis through research, validation, solution design, and gate presentations — with structured steps, Claude Code skills, and a web dashboard.
+Takes a product initiative from CJM analysis through research, validation, solution design, and gate presentations — with structured steps, Claude Code skills, and a terminal dashboard.
 
 **Built on best practices**: Double Diamond, Teresa Torres' Continuous Discovery, Marty Cagan's Product Discovery, RICE/ICE frameworks.
 
