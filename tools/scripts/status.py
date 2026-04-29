@@ -2,9 +2,9 @@
 """
 status.py — branded dashboard for AI Diamond pipeline.
 
-Usage:
-    python3 tools/scripts/status.py
-    python3 tools/scripts/status.py --initiative checkout-redesign
+Two modes:
+  - First launch (no .pm-local): onboarding with example
+  - Regular (has .pm-local): initiative status list
 """
 
 import json
@@ -13,11 +13,11 @@ import os
 import sys
 from pathlib import Path
 from typing import Optional
+from datetime import date
 
 try:
     from rich.console import Console
     from rich.panel import Panel
-    from rich.table import Table
     from rich.text import Text
     from rich import box
 except ImportError:
@@ -71,7 +71,7 @@ def find_pm() -> Optional[str]:
     return None
 
 
-def load_initiatives(pm: str) -> list[dict]:
+def load_initiatives(pm: str) -> list:
     initiatives = []
     pattern = str(REPO_ROOT / pm / "*" / "output" / "status.json")
     for path in sorted(glob.glob(pattern)):
@@ -89,17 +89,14 @@ def load_initiatives(pm: str) -> list[dict]:
         enabled_steps = config.get("enabled_steps", {})
         pending = status.get("pending", {})
 
-        # Count completed
         done = sum(1 for s in steps.values()
                    if isinstance(s, dict) and s.get("status") == "done")
 
-        # Count total enabled steps
         if enabled_steps:
             total = sum(1 for v in enabled_steps.values() if v)
         else:
             total = 18
 
-        # Find current step
         current_step = None
         current_cmd = None
         for num in range(18, -1, -1):
@@ -108,16 +105,13 @@ def load_initiatives(pm: str) -> list[dict]:
                 current_step = num
                 break
             elif isinstance(s, dict) and s.get("status") == "done":
-                # Next step after this one
                 current_step = num + 1
                 break
 
         if current_step is not None and current_step in PIPELINE_STEPS:
             current_cmd = PIPELINE_STEPS[current_step]
 
-        # Pending items
         pending_items = []
-        from datetime import date
         today = date.today()
         for key, val in pending.items():
             if val is None:
@@ -137,7 +131,6 @@ def load_initiatives(pm: str) -> list[dict]:
             "current_step": current_step,
             "current_cmd": current_cmd,
             "pending": pending_items,
-            "path": os.path.dirname(os.path.dirname(path)),
         })
 
     return initiatives
@@ -148,15 +141,15 @@ def progress_bar(done: int, total: int, width: int = 20) -> Text:
         return Text("?" * width, style="dim")
     filled = round(done / total * width)
     bar = Text()
-    bar.append("█" * filled, style="bright_blue")
-    bar.append("░" * (width - filled), style="bright_black")
+    bar.append("\u2588" * filled, style="bright_blue")
+    bar.append("\u2591" * (width - filled), style="bright_black")
     bar.append(f"  {done}/{total}", style="dim")
     return bar
 
 
 def render_header():
     title = Text()
-    title.append("◆ ", style="bright_blue bold")
+    title.append("\u25c6 ", style="bright_blue bold")
     title.append("AI Diamond", style="bold white")
     subtitle = Text("Product Discovery Copilot", style="dim")
 
@@ -165,47 +158,71 @@ def render_header():
                         padding=(1, 2)))
 
 
-def render_initiatives(initiatives: list[dict]):
+def render_onboarding():
+    """First launch — show example and invite the user to start."""
+    console.print()
+
+    # Example block
+    example_title = Text("  Example:", style="bold white")
+    console.print(example_title)
+    console.print()
+    console.print('  You say:', style="dim")
+    console.print('  "Users add items to cart but never complete checkout on mobile"',
+                  style="italic bright_white")
+    console.print()
+    console.print('  AI Diamond creates:', style="dim")
+    console.print('    \u2192 Initiative [bold]mobile-checkout-drop[/bold]')
+    console.print('    \u2192 5 problem hypotheses tied to the checkout funnel')
+    console.print('    \u2192 Research plan: what data to collect, who to interview')
+    console.print('    \u2192 Ready for deep CJM analysis with screenshots')
+    console.print()
+
+    # Separator
+    console.print("  " + "\u2500" * 50, style="bright_black", highlight=False)
+    console.print()
+
+    # CTA
+    console.print("  [bold]What product problem are you working on?[/bold]")
+    console.print()
+
+
+def render_initiatives(initiatives: list):
+    """Regular launch — show initiative status."""
     if not initiatives:
-        console.print("  No initiatives yet. Say [bold]create initiative <name>[/bold] to start.\n")
+        console.print("  No initiatives yet.", style="dim")
+        console.print("  Describe your product problem or say [bold]create initiative <name>[/bold]")
+        console.print()
         return
 
     for init in initiatives:
-        # Initiative name + progress bar
         name_text = Text(f"  {init['name']}", style="bold white")
         console.print(name_text, end="  ")
         console.print(progress_bar(init['done'], init['total']))
 
-        # Current step
         if init['current_cmd']:
-            console.print(f"    → Step {init['current_step']}: {init['current_cmd']}",
+            console.print(f"    \u2192 Step {init['current_step']}: {init['current_cmd']}",
                          style="dim")
 
-        # Pending items
         for p in init['pending']:
             days_str = f" ({p['days']}d)" if p['days'] > 0 else ""
             style = "yellow" if p['days'] > 7 else "dim yellow" if p['days'] > 0 else "dim"
-            console.print(f"    ⏳ {p['label']}{days_str}", style=style)
+            console.print(f"    \u23f3 {p['label']}{days_str}", style=style)
 
         console.print()
 
-
-def render_footer():
-    console.print("  Type a command or say [bold]continue[/bold]\n", style="dim")
+    console.print("  Type a command or say [bold]continue[/bold]", style="dim")
+    console.print()
 
 
 def main():
     pm = find_pm()
-
     render_header()
 
     if pm:
         initiatives = load_initiatives(pm)
         render_initiatives(initiatives)
     else:
-        console.print("  First time? Say [bold]create initiative <name>[/bold] to start.\n")
-
-    render_footer()
+        render_onboarding()
 
 
 if __name__ == "__main__":
