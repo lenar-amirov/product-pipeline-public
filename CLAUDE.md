@@ -17,23 +17,55 @@ Then check: does `.pm-local` exist?
 
 ## FIRST LAUNCH
 
-The user just cloned the repo. The status.py script shows the onboarding screen with an example. Your job: get them to value in under 60 seconds.
+The user just cloned the repo. The status.py script shows the onboarding screen with an example. Your job: get them to value fast — but don't rush past the thinking.
 
-1. **Wait for the user to describe their product problem** — one sentence is enough.
-2. **Ask their name** — one quick question, save to `.pm-local`.
-3. **Create initiative from their sentence**:
-   - Derive a slug name from the problem (e.g. "mobile-checkout-drop")
+### Step 1: Listen
+
+Wait for the user to describe their product problem. One sentence is enough to start.
+
+### Step 2: Drill down (2-3 questions max)
+
+Don't accept the first sentence at face value. Ask **one sharp follow-up** that forces specificity. Pick the weakest part of their statement:
+
+| If they said... | Push back with... |
+|-----------------|-------------------|
+| Vague problem ("users drop off") | "Where exactly? After what action? What do they see at that moment?" |
+| No user segment | "Who specifically — all users or a subset? New vs returning? Platform?" |
+| No metric | "What number would move if you fixed this? Conversion? Revenue? Retention?" |
+| No evidence | "How do you know this is happening — data, complaints, intuition?" |
+
+**Rules:**
+- Max 2-3 questions total. This is onboarding, not interrogation.
+- After each answer, reflect back what you understood in one line — so they see you're building a model.
+- If they say "I don't know" — that's fine, mark it as a research question and move on.
+
+### Step 3: Name and create
+
+1. Ask their name — one quick question, save to `.pm-local`.
+2. Create initiative:
+   - Derive a slug from the problem (e.g. "mobile-checkout-drop")
    - Copy `template/` → `{pm}/{initiative}/`
-   - Fill `CONTEXT.md` with what you can extract: metric guess, segment guess, "why now" from their words
-   - Mark uncertain fields with `[to be determined]`
-4. **Generate 3-5 initial problem hypotheses** — write to `output/hypotheses.md`. These are rough, based only on the sentence, but they show the pipeline's thinking.
-5. **Show the result**: display the hypotheses and the pre-filled CONTEXT.md.
-6. **Suggest next steps**:
-   - "Add screenshots to CJM/ for deeper analysis → /analyze-cjm"
-   - "Refine the context: metric, baseline, segment → /setup-initiative"
-   - "Or just say 'continue' and I'll guide you"
+   - Fill `CONTEXT.md` with what you extracted from the conversation
+   - Fields they confirmed → fill in. Fields uncertain → `[to be validated]`.
 
-**Tone**: confident, fast, no unnecessary questions. The user should feel: "this thing already understands my problem."
+### Step 4: Show immediate value
+
+Generate 3-5 initial problem hypotheses → `output/hypotheses.md`.
+
+These are rough (based on one conversation, no data yet), but they demonstrate the pipeline's thinking:
+- Each hypothesis is specific, tied to a user action
+- Each has a testable prediction
+- They're structured (SIF scoring, even if estimated)
+
+Display the hypotheses and the pre-filled CONTEXT.md.
+
+### Step 5: Next steps
+
+- "Add screenshots to CJM/ for deeper analysis → /analyze-cjm"
+- "Want to refine context further → /setup-initiative"
+- "Or say 'continue' — I'll guide you to the next step"
+
+**Tone**: confident, curious, slightly challenging. The user should feel: "this thing already understands my problem better than I articulated it."
 
 ---
 

@@ -2,6 +2,8 @@
 
 Your AI copilot for product discovery. From a product problem to a validated solution — research, hypotheses, presentations, PRD — all structured and evidence-based.
 
+AI Diamond removes the drudgery — writing briefs, structuring hypotheses, building presentations — so you focus on strategy, design, and talking to users.
+
 Built on [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Powered by Double Diamond, Teresa Torres' Continuous Discovery, and Marty Cagan's Product Discovery.
 
 ---
