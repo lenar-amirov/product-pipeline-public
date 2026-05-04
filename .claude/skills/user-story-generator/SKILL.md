@@ -176,3 +176,66 @@ Split by technical layers:
 - Story point re-estimation based on new information
 - Continuous acceptance criteria refinement
 - Stakeholder feedback incorporation
+
+## Multi-Tracker Support
+
+Adapt ticket format based on CONTEXT.md → Tracker field.
+
+### Jira Format
+```markdown
+## EPIC: [Title]
+Jira Project: [KEY] | Fix Version: [version]
+
+### Story: [Title]
+Type: Story | Priority: High | Points: 5 | Component: Backend
+Labels: initiative:[name]
+
+As [role] I want [action] So that [value]
+
+Acceptance Criteria:
+- Given... When... Then...
+
+Sub-tasks:
+- [ ] [Component] Description — estimate
+```
+
+### Linear Format
+```markdown
+## Project: [Name]
+Team: [Name] | Cycle: [Name]
+
+### Issue: [Title]
+Priority: High | Estimate: 5 | Label: initiative:[name]
+
+Description with user story.
+
+Sub-issues:
+- [ ] Sub-issue title
+```
+
+### GitHub Issues Format
+```markdown
+## Milestone: [Title]
+Repo: owner/repo
+
+### Issue: [Title]
+Labels: priority:high, type:feature, initiative:[name]
+
+Description with user story.
+
+Tasks:
+- [ ] Task 1
+- [ ] Task 2
+```
+
+## MCP Push Flow
+
+When PM confirms and says "push" / "create tickets":
+
+1. Detect available MCP tools (jira, linear, or gh CLI for GitHub)
+2. Create parent (Epic/Project/Milestone) first
+3. Create children with parent reference
+4. Append tracker URLs to `output/tickets.md`
+5. Report: "Created N epic + M stories in [Tracker]"
+
+If no MCP available → show connection instructions and keep markdown.

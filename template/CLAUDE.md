@@ -76,7 +76,7 @@ Skills are in `.claude/skills/` relative to repo root. Each skill: `.claude/skil
 | `product-discovery-template` | Hypotheses, ICE, assumption mapping |
 | `usability-test-plan` | Surveys, UX tests, sample size |
 | `funnel-analysis-builder` | Funnel analysis, metrics, SQL patterns |
-| `user-story-generator` | User stories, acceptance criteria |
+| `user-story-generator` | User stories, acceptance criteria, tracker tickets (Jira/Linear/GitHub) |
 | `product-requirements-doc` | PRD structure |
 | `design-critique-template` | Heuristic evaluation |
 | `user-persona-builder` | Personas with behavioral patterns |
@@ -283,9 +283,11 @@ Tracking: `pending.gate2_challenge`.
 
 ---
 
-### `/create-jira` (after Solution Research Report)
-**Output**: `output/jira-tickets.md`
+### `/create-tickets` (after Solution Research Report)
+**Output**: `output/tickets.md` + push to tracker via MCP (if connected)
 **Skills**: `user-story-generator`
+
+Generates tickets in markdown (review first), then pushes to Jira/Linear/GitHub Issues if MCP is available. See root CLAUDE.md for full flow.
 
 ---
 

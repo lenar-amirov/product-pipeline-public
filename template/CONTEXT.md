@@ -25,6 +25,11 @@
 **Influencers**: [who to align with before Report]
 **Blockers**: [who might block and why]
 
+## Tracker
+**System**: [Jira / Linear / GitHub Issues / None]
+**Project/Board**: [project key or board name — e.g. CHECKOUT, Mobile Team]
+**Labels**: [standard labels to apply — e.g. initiative:checkout-redesign]
+
 ## OKR Alignment
 **Company OKR**: [which company-level OKR this serves]
 **Team OKR**: [which team OKR this maps to]

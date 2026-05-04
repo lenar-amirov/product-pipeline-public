@@ -239,6 +239,72 @@ Features:
 
 ---
 
+## Optional: Tracker integration (Jira / Linear / GitHub Issues)
+
+After Solution Research Report, AI Diamond can push tickets directly to your tracker via MCP.
+
+### Jira
+
+Add to your Claude Code MCP settings (`.claude/settings.local.json` or via Claude Code settings UI):
+
+```json
+{
+  "mcpServers": {
+    "jira": {
+      "command": "npx",
+      "args": ["@anthropic/mcp-atlassian"],
+      "env": {
+        "JIRA_URL": "https://your-company.atlassian.net",
+        "JIRA_EMAIL": "you@company.com",
+        "JIRA_API_TOKEN": "your-api-token"
+      }
+    }
+  }
+}
+```
+
+Get your API token: https://id.atlassian.com/manage-profile/security/api-tokens
+
+### Linear
+
+```json
+{
+  "mcpServers": {
+    "linear": {
+      "command": "npx",
+      "args": ["@anthropic/mcp-linear"],
+      "env": {
+        "LINEAR_API_KEY": "your-api-key"
+      }
+    }
+  }
+}
+```
+
+Get your API key: Linear Settings → API → Personal API keys
+
+### GitHub Issues
+
+No extra MCP needed — Claude Code uses `gh` CLI natively.
+
+```bash
+gh auth status   # make sure you're logged in
+```
+
+Set in your initiative's `CONTEXT.md`:
+```
+## Tracker
+**System**: GitHub Issues
+**Project/Board**: owner/repo
+**Labels**: initiative:checkout-redesign
+```
+
+### No tracker? No problem.
+
+AI Diamond generates tickets as markdown in `output/tickets.md`. Copy-paste or create manually.
+
+---
+
 ## Optional: Telegram bot
 
 For teams, a Telegram bot handles confirmations and reminders (`tools/scripts/bot.py`).

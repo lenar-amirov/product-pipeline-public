@@ -190,7 +190,7 @@ References for `consulting-problem-solving`: `.claude/skills/consulting-problem-
 | `product-discovery-template` | Hypotheses, ICE, assumption mapping |
 | `usability-test-plan` | Surveys, UX tests, sample size |
 | `funnel-analysis-builder` | Funnel analysis, metrics, SQL patterns |
-| `user-story-generator` | User stories, acceptance criteria, Jira tickets |
+| `user-story-generator` | User stories, acceptance criteria, tracker tickets (Jira/Linear/GitHub) |
 | `product-requirements-doc` | PRD structure |
 | `design-critique-template` | Heuristic evaluation of design decisions |
 | `user-persona-builder` | Personas with behavioral patterns |
@@ -582,9 +582,72 @@ Tracking: activate `pending.gate2_challenge`.
 
 ---
 
-### `/create-jira` (after Solution Research Report)
-**Output**: `output/jira-tickets.md`
+### `/create-tickets` (after Solution Research Report)
+**Type**: Autonomous → PM confirms → Push via MCP
+**Input**: `output/PRD.md` + `output/solution-sketch.md` + `output/dev-estimate.md`
+**Output**: `output/tickets.md` + tickets in tracker (if MCP connected)
 **Skills**: `user-story-generator`
+
+**Phase A — Generate tickets in markdown:**
+
+1. Read PRD (§6-8: solution, scope, user stories), dev estimate, solution sketch
+2. Structure tickets by tracker format (from `CONTEXT.md` → Tracker field):
+
+| Tracker | Structure |
+|---------|-----------|
+| **Jira** | Epic → Story → Sub-task |
+| **Linear** | Project → Issue → Sub-issue |
+| **GitHub Issues** | Milestone → Issue → Task list |
+| **None** | Generate markdown only |
+
+3. For each ticket generate:
+   - Title (concise, imperative: "Add payment form validation")
+   - Description (user story format: As/I want/So that)
+   - Acceptance criteria (Given/When/Then)
+   - Priority (from PRD §7 scope: Must/Should/Won't)
+   - Estimate (from dev-estimate.md)
+   - Dependencies (which tickets block which)
+   - Component/Team label
+
+4. Write to `output/tickets.md` — show to PM for review.
+
+**Phase B — Push to tracker via MCP:**
+
+After PM says "push tickets" or "create in [Jira/Linear/GitHub]":
+
+1. **Check MCP availability**:
+   - Look for connected MCP tools: `jira`, `linear`, or `github`
+   - If no tracker MCP found → show setup instructions (see below)
+
+2. **Push tickets**:
+   - Create epic/project/milestone first
+   - Create stories/issues with references to parent
+   - Set priority, labels, estimates
+   - Link dependencies between tickets
+   - Report back: created N tickets, link to board/project
+
+3. **Save references**: append ticket URLs/IDs to `output/tickets.md`
+
+**If no MCP connected — show setup guide:**
+
+```
+No tracker MCP detected. To push tickets directly, connect one:
+
+Jira:
+  Add to Claude Code settings → MCP Servers:
+  "jira": { "command": "npx", "args": ["@anthropic/mcp-atlassian"] }
+  Then: set JIRA_URL, JIRA_EMAIL, JIRA_API_TOKEN env vars
+
+Linear:
+  "linear": { "command": "npx", "args": ["@anthropic/mcp-linear"] }
+  Then: set LINEAR_API_KEY env var
+
+GitHub Issues:
+  Already available via `gh` CLI — no extra MCP needed.
+  Make sure `gh auth status` shows you're logged in.
+
+Or skip — tickets are saved in output/tickets.md for manual creation.
+```
 
 ---
 
@@ -692,13 +755,23 @@ PM confirms in Claude Code:
   - Effort: S/M/L
 ```
 
-### Jira tickets (`output/jira-tickets.md`)
+### Tickets (`output/tickets.md`)
 ```
 ## EPIC: [Title]
+tracker_ref: [URL or ID after push]
+
 ### Story: [Title]
 As [role] I want [action] So that [value]
 **Acceptance criteria**: Given/When/Then
-**Sub-tasks**: Design / Backend / Frontend / QA
+**Priority**: Must Have / Should Have
+**Estimate**: [from dev-estimate]
+**Component**: [Backend / Frontend / Design / QA]
+**Depends on**: [other story titles]
+**Sub-tasks**:
+- [ ] Design
+- [ ] Backend
+- [ ] Frontend
+- [ ] QA
 ```
 
 ---
