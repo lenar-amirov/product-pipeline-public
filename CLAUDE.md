@@ -61,7 +61,27 @@ After every completed step or significant discussion:
 
 ## PIPELINE OVERVIEW
 
-When PM calls a pipeline command, read the step's detailed instructions from `.claude/skills/pipeline-steps/SKILL.md`.
+When PM calls a pipeline command **or describes intent in natural language**, read the step's detailed instructions from `.claude/skills/pipeline-steps/SKILL.md`.
+
+### Intent matching
+
+PM won't always use `/commands`. Match their intent to the right step:
+
+| PM says something like... | → Step |
+|---------------------------|--------|
+| "let's analyze the screenshots", "look at the CJM" | 1 `/analyze-cjm` |
+| "let's do synthetic interviews", "what would users say" | 2 `/synthetic-research` |
+| "what do competitors do", "how do others solve this" | 3 `/competitor-research` |
+| "I need a brief for the analyst", "what data do we need" | 4 `/generate-research` |
+| "I got analytics results", "here's the data from analyst" | 6 `/validate-problems` |
+| "let's think about solutions", "how do we solve this" | 7 `/solution-hypotheses` |
+| "draw the screens", "what does it look like" | 8 `/sketch-solution` |
+| "I need a presentation", "prep for the report" | 10 or 15 (check which gate is next) |
+| "let's plan the AB test", "how do we test this" | 14 `/design-ab-test` |
+| "create tickets", "break this into tasks" | `/create-tickets` |
+| "continue", "what's next", "where were we" | Check status.json → suggest next |
+
+When unsure — check `output/status.json` for current step, then suggest the logical next one.
 
 | # | Command | Type | Key skills |
 |---|---------|------|-----------|
