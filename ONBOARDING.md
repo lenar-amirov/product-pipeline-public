@@ -305,19 +305,6 @@ AI Diamond generates tickets as markdown in `output/tickets.md`. Copy-paste or c
 
 ---
 
-## Optional: Telegram bot
-
-For teams, a Telegram bot handles confirmations and reminders (`tools/scripts/bot.py`).
-
-Setup:
-1. Create a bot via [@BotFather](https://t.me/BotFather)
-2. Configure `config/telegram.json` with bot token and PM chat IDs
-3. Run: `python tools/scripts/bot.py`
-
-Reminder cron: `python tools/scripts/remind.py` (daily, sends overdue task reminders).
-
----
-
 ## FAQ
 
 **How to continue working?**

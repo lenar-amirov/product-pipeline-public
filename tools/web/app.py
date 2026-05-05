@@ -596,24 +596,6 @@ def artifact_view(pm, name):
     return jsonify({"html": html, "updated": updated})
 
 
-@app.route("/<pm>/open/<name>", methods=["POST"])
-def open_initiative(pm, name):
-    if pm not in USERS:
-        abort(404)
-    initiative_path = str(pm_root(pm) / name)
-    command = request.args.get("cmd", "")
-    state_file = f"/tmp/pm-session-{pm}"
-    try:
-        content = initiative_path
-        if command:
-            content += f"\n/{command}"
-        with open(state_file, "w", encoding="utf-8") as f:
-            f.write(content)
-    except OSError as e:
-        return jsonify({"ok": False, "error": str(e)}), 500
-    return jsonify({"ok": True})
-
-
 @app.route("/<pm>/new", methods=["GET"])
 def new_initiative_form(pm):
     if pm not in USERS:
@@ -677,89 +659,6 @@ def new_initiative_submit(pm):
     return redirect(f"/{pm}/initiative/{name}")
 
 
-@app.route(f"/{ADMIN_USER}/team")
-def team_page():
-    """Show all initiatives from all PMs (admin only)."""
-    groups = []
-    for user in USERS:
-        inits = list_initiatives(user)
-        if inits:
-            groups.append({"pm": user, "initiatives": inits})
-    return render_template("team.html", pm=ADMIN_USER, groups=groups, is_admin=True)
-
-
-@app.route(f"/{ADMIN_USER}/team/<owner>/<name>")
-def team_initiative_detail(owner, name):
-    """View any PM's initiative in read-only mode (admin only)."""
-    if owner not in USERS:
-        abort(404)
-    base_path = str(pm_root(owner) / name)
-    if not os.path.isdir(base_path):
-        abort(404)
-    data = get_initiative_data(owner, base_path)
-    decisions = parse_decisions(base_path)
-    screens = get_screens(base_path)
-    cjm_files = get_cjm_files(base_path)
-    context_full = parse_context_full(base_path)
-    return render_template(
-        "initiative.html",
-        pm=ADMIN_USER,
-        owner_pm=owner,
-        initiative=data,
-        decisions=decisions,
-        screens=screens,
-        cjm_files=cjm_files,
-        context_full=context_full,
-        readonly=True,
-        is_admin=True,
-    )
-
-
-@app.route(f"/{ADMIN_USER}/team/<owner>/<name>/cjm/<filename>")
-def team_cjm_file(owner, name, filename):
-    """Proxy CJM file from any PM's initiative."""
-    if owner not in USERS or ".." in filename:
-        abort(404)
-    cjm_dir = pm_root(owner) / name / "CJM"
-    if not (cjm_dir / filename).is_file():
-        abort(404)
-    return send_from_directory(str(cjm_dir), filename)
-
-
-@app.route(f"/{ADMIN_USER}/team/<owner>/<name>/screen/<filename>")
-def team_screen_file(owner, name, filename):
-    """Proxy screen file from any PM's initiative."""
-    if owner not in USERS or ".." in filename:
-        abort(404)
-    screens_dir = pm_root(owner) / name / "output" / "screens"
-    if not (screens_dir / filename).is_file():
-        abort(404)
-    return send_from_directory(str(screens_dir), filename)
-
-
-@app.route(f"/{ADMIN_USER}/team/<owner>/<name>/artifact")
-def team_artifact_view(owner, name):
-    """Proxy artifact from any PM's initiative."""
-    if owner not in USERS:
-        abort(404)
-    rel_path = request.args.get("path", "")
-    if not rel_path or ".." in rel_path:
-        return jsonify({"error": "Invalid path"}), 400
-    full_path = pm_root(owner) / name / rel_path
-    if not full_path.is_file():
-        return jsonify({"error": "File not found"})
-    try:
-        text = full_path.read_text(encoding="utf-8")
-    except Exception:
-        return jsonify({"error": "Error reading file"})
-    MD.reset()
-    html = MD.convert(text)
-    try:
-        mtime = datetime.fromtimestamp(full_path.stat().st_mtime)
-        updated = mtime.strftime("%Y-%m-%d")
-    except Exception:
-        updated = ""
-    return jsonify({"html": html, "updated": updated})
 
 
 @app.route("/<pm>/archive")
@@ -869,7 +768,6 @@ def shared_initiative(token):
     return render_template(
         "initiative.html",
         pm=owner,
-        owner_pm=owner,
         initiative=data,
         decisions=decisions,
         screens=screens,

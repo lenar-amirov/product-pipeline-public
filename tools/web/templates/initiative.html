@@ -7,16 +7,12 @@
 {% set ro = readonly|default(false) %}
 {% if shared|default(false) %}
   {% set url_base = share_base %}
-{% elif owner_pm is defined %}
-  {% set url_base = '/' ~ pm ~ '/team/' ~ owner_pm ~ '/' ~ initiative.name %}
 {% else %}
   {% set url_base = '/' ~ pm ~ '/initiative/' ~ initiative.name %}
 {% endif %}
 
 {% if shared|default(false) %}
 {# no back link for public share view #}
-{% elif ro %}
-<a href="/{{ pm }}/team" class="back-link">&larr; Team initiatives</a>
 {% else %}
 <a href="/{{ pm }}/" class="back-link">&larr; All initiatives</a>
 {% endif %}
@@ -24,9 +20,6 @@
 <div class="title-row">
   <div>
     <h1 class="page-title page-title--detail">{{ initiative.context.title if initiative.context.title != '—' else initiative.name }}</h1>
-    {% if ro and owner_pm is defined %}
-      <span class="owner-badge">{{ owner_pm }}</span>
-    {% endif %}
   </div>
   {% if not ro %}
   <div class="title-row__actions">
@@ -36,11 +29,6 @@
         <div class="share-popover__content" id="share-content"></div>
       </div>
     </div>
-    <button class="btn-outline tooltip"
-            data-tooltip="Opens terminal with initiative context"
-            onclick="openClaude('{{ pm }}', '{{ initiative.name }}')">
-      Claude Code ↗
-    </button>
   </div>
   {% endif %}
 </div>
@@ -233,17 +221,13 @@
 <script>
   var PM = '{{ pm }}';
   var INIT_NAME = '{{ initiative.name }}';
-  var URL_BASE = '{{ share_base if shared|default(false) else ("/" ~ pm ~ "/team/" ~ owner_pm ~ "/" ~ initiative.name if owner_pm is defined else "/" ~ pm ~ "/initiative/" ~ initiative.name) }}';
+  var URL_BASE = '{{ share_base if shared|default(false) else ("/" ~ pm ~ "/initiative/" ~ initiative.name) }}';
   var READONLY = {{ 'true' if readonly|default(false) else 'false' }};
 
-  function openClaude(pm, name) {
-    fetch('/' + pm + '/open/' + name, { method: 'POST' });
-    window.open('/' + pm + '/terminal/', '_blank');
-  }
-
   function openClaudeStep(cmd) {
-    fetch('/' + PM + '/open/' + INIT_NAME + '?cmd=' + encodeURIComponent(cmd), { method: 'POST' });
-    window.open('/' + PM + '/terminal/', '_blank');
+    // Show command for the user to run in their local Claude Code session
+    navigator.clipboard.writeText('/' + cmd).catch(() => {});
+    alert('Command copied: /' + cmd + '\n\nPaste it into your Claude Code session.');
   }
 
   /* Context modal */

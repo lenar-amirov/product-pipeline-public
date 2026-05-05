@@ -16,7 +16,6 @@
     <a href="/{{ pm }}/" class="header__logo">Pipeline</a>
     <div class="header__right">
       {% if not shared|default(false) %}
-        {% if is_admin|default(false) %}<a href="/{{ pm }}/team" class="header__link" title="Team initiatives">Team</a>{% endif %}
         <a href="/{{ pm }}/archive" class="header__link" title="Archive">Archive</a>
         <a href="/{{ pm }}/onboarding" class="help-btn" title="Guide">?</a>
         <span class="header__pm">{{ pm }}</span>

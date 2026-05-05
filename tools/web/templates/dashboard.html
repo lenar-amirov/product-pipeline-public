@@ -17,11 +17,6 @@
       <div class="initiative-card__header">
         <span class="initiative-card__name">{{ ini.name }}</span>
         <div class="initiative-card__actions">
-          <button class="initiative-card__claude tooltip"
-                  data-tooltip="Opens terminal with initiative context"
-                  onclick="event.preventDefault(); event.stopPropagation(); openClaude('{{ pm }}', '{{ ini.name }}')">
-            Claude Code ↗
-          </button>
           <button class="initiative-card__archive tooltip"
                   data-tooltip="Archive"
                   onclick="event.preventDefault(); event.stopPropagation(); confirmArchive('{{ ini.name }}')">
@@ -75,11 +70,6 @@
 <script>
   var PM = '{{ pm }}';
   var archiveName = '';
-
-  function openClaude(pm, name) {
-    fetch('/' + pm + '/open/' + name, { method: 'POST' });
-    window.open('/' + pm + '/terminal/', '_blank');
-  }
 
   /* Archive modal */
   (function() {
