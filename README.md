@@ -95,7 +95,7 @@ AI Diamond is a set of prompts and skills that run inside Claude Code. No server
 |-----------|-------------|
 | `CLAUDE.md` | Master prompt — pipeline logic, session lifecycle, formats |
 | `template/` | Initiative scaffold — copied for each new initiative |
-| `.claude/skills/` | 18 specialized skills (discovery, personas, funnels, PRD, design critique, etc.) |
+| `.claude/skills/` | 19 specialized skills (discovery, personas, funnels, PRD, design critique, pipeline-steps, etc.) |
 | `tools/scripts/status.py` | Terminal dashboard — shows progress at session start |
 | `tools/scripts/generate-pptx.py` | Converts presentation markdown to .pptx |
 

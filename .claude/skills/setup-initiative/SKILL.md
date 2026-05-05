@@ -14,7 +14,7 @@ Ensure explicit alignment on goals, constraints, stakeholders, and success crite
 
 ## Checklist
 
-Guide the PM through these 9 areas. For each area, ask a focused question, then write the answer to CONTEXT.md.
+Guide the PM through these 10 areas. For each area, ask a focused question, then write the answer to CONTEXT.md.
 
 ### 1. Outcome
 **Ask**: "What metric are we trying to improve, and by how much?"
@@ -60,7 +60,13 @@ Guide the PM through these 9 areas. For each area, ask a focused question, then 
 - This determines which steps can be accelerated or skipped
 - If rich data exists: suggest `quick` or `solution-only` template
 
-### 9. Pipeline Configuration
+### 9. Tracker
+**Ask**: "Where do you want dev tickets to land — Jira, Linear, GitHub Issues, or none?"
+- Get: tracker system, project key/board name, standard labels
+- If they say "I'll figure it out later" — set `None`, can be changed before `/create-tickets`
+- Mention: "If you want me to push tickets directly, you'll need to connect the MCP — see ONBOARDING.md"
+
+### 10. Pipeline Configuration
 **Ask**: "How thorough should we be?" Then present template options:
 
 ```

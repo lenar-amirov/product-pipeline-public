@@ -14,15 +14,18 @@ Run `python3 tools/scripts/status.py` first. Then check `.pm-local`:
 Status.py shows onboarding with example. Your job: value in 60 seconds.
 
 1. **Listen** — wait for user to describe their product problem.
-2. **Drill down** (2-3 questions max) �� push back on the weakest part:
+2. **Drill down** (2-3 questions max) — push back on the weakest part:
    - Vague problem → "Where exactly? After what action?"
    - No segment → "Who specifically? New vs returning? Platform?"
    - No metric → "What number moves if you fix this?"
    - No evidence → "Data, complaints, or intuition?"
    - After each answer, reflect back in one line.
-3. **Name + create** — ask name, save to `.pm-local`. Create initiative: derive slug, copy `template/`, fill CONTEXT.md from conversation.
+3. **Name + create** — ask name, save to `.pm-local`. Run `tools/scripts/new-initiative.sh "<slug>"` (slug derived from problem). Then fill `CONTEXT.md` from the conversation.
 4. **Show value** — generate 3-5 problem hypotheses → `output/hypotheses.md`. Display them + CONTEXT.md.
-5. **Next steps** — suggest: add CJM screenshots, /setup-initiative, or "continue".
+5. **Next steps** — suggest in this order:
+   - "Run `/setup-initiative` to lock in metric/baseline/segment and choose pipeline template" (recommended — without it pipeline_config stays at default `full`)
+   - "Add CJM screenshots to `CJM/` for deeper analysis"
+   - "Or just say 'continue' — I'll guide you"
 
 **Tone**: confident, curious, slightly challenging.
 
@@ -51,11 +54,12 @@ After every completed step or significant discussion:
 
 ## CREATE INITIATIVE
 
-1. Copy `template/` → `{pm}/{name}/`
-2. Fill PM name and initiative name in `CONTEXT.md`
-3. Initialize `output/status.json` and `output/decisions.md`
-4. Commit + push
-5. Start `/setup-initiative` immediately
+Use `tools/scripts/new-initiative.sh "<slug>"` — it handles all scaffolding (copy template, replace `[INITIATIVE_NAME]`/`[PM_NAME]`, init status.json with today's date, init decisions.md, create CJM/).
+
+After scaffolding:
+1. If FIRST LAUNCH: fill `CONTEXT.md` from the conversation you just had
+2. Otherwise: start `/setup-initiative` to walk PM through the alignment checklist
+3. Commit + push
 
 ---
 

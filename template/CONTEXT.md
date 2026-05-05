@@ -1,6 +1,6 @@
-# Initiative: [NAME]
+# Initiative: [INITIATIVE_NAME]
 
-**Product Manager**: [NAME]
+**Product Manager**: [PM_NAME]
 
 ## Outcome
 **Metric we're improving**: [conversion to payment / retention D7 / NPS / time to first action / ...]

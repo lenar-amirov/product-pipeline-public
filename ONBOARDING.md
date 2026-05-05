@@ -42,7 +42,7 @@ pip install -r requirements.txt   # rich, flask, markdown, python-pptx
 
 When you open Claude Code in the repo, it reads:
 - `CLAUDE.md` — master prompt with the full pipeline
-- `.claude/skills/` — 18 specialized skills (discovery, personas, funnels, PRD, etc.)
+- `.claude/skills/` — 19 specialized skills (discovery, personas, funnels, PRD, pipeline-steps, etc.)
 - Your initiative's `CONTEXT.md`, `status.json`, and `decisions.md`
 
 Claude knows where you are in the pipeline and suggests the next step.
@@ -162,7 +162,7 @@ Reconfigure anytime: tell Claude "reconfigure pipeline" or "enable competitor re
 | 14 | `/design-ab-test` | Recommended | AB test: baseline, MDE, sample, guardrails |
 | 15 | `/create-gate2-presentation` | Core | Solution Research Report |
 
-After Solution Research Report: `/create-jira` for dev tickets.
+After Solution Research Report: `/create-tickets` to generate dev tickets and push them to Jira/Linear/GitHub Issues via MCP.
 
 ### Phase 3: Launch Preparation
 | # | Command | Type | What it does |
@@ -227,9 +227,11 @@ A Flask dashboard is included for visual tracking (`tools/web/app.py`):
 
 ```bash
 pip install -r requirements.txt
-python tools/web/app.py
+PM_USERS=$(cat .pm-local) python tools/web/app.py
 # Open http://localhost:5000/{your-name}/
 ```
+
+By default the app expects users `alice,bob`. Pass `PM_USERS=<your-name>` so it uses your `.pm-local` name.
 
 Features:
 - Initiative list with progress tracking

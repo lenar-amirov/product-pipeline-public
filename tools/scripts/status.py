@@ -86,14 +86,16 @@ def load_initiatives(pm: str) -> list:
 
         steps = status.get("steps", {})
         config = status.get("pipeline_config", {})
-        enabled_steps = config.get("enabled_steps", {})
+        config_steps = config.get("steps", {})
+        template_name = config.get("template", "full")
         pending = status.get("pending", {})
 
         done = sum(1 for s in steps.values()
                    if isinstance(s, dict) and s.get("status") == "done")
 
-        if enabled_steps:
-            total = sum(1 for v in enabled_steps.values() if v)
+        if config_steps:
+            total = sum(1 for v in config_steps.values()
+                        if isinstance(v, dict) and v.get("enabled"))
         else:
             total = 18
 
@@ -107,6 +109,10 @@ def load_initiatives(pm: str) -> list:
             elif isinstance(s, dict) and s.get("status") == "done":
                 current_step = num + 1
                 break
+
+        # Fresh initiative — no step started yet, point to 0
+        if current_step is None and steps:
+            current_step = 0
 
         if current_step is not None and current_step in PIPELINE_STEPS:
             current_cmd = PIPELINE_STEPS[current_step]
@@ -128,6 +134,7 @@ def load_initiatives(pm: str) -> list:
             "name": name,
             "done": done,
             "total": total,
+            "template": template_name,
             "current_step": current_step,
             "current_cmd": current_cmd,
             "pending": pending_items,
@@ -199,9 +206,12 @@ def render_initiatives(initiatives: list):
         console.print(name_text, end="  ")
         console.print(progress_bar(init['done'], init['total']))
 
+        template_label = init.get('template', 'full')
         if init['current_cmd']:
-            console.print(f"    \u2192 Step {init['current_step']}: {init['current_cmd']}",
+            console.print(f"    \u2192 Step {init['current_step']}: {init['current_cmd']}  ({template_label} template)",
                          style="dim")
+        else:
+            console.print(f"    ({template_label} template)", style="dim")
 
         for p in init['pending']:
             days_str = f" ({p['days']}d)" if p['days'] > 0 else ""

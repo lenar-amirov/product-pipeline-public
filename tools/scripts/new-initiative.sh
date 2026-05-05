@@ -48,7 +48,7 @@ cp -r "$TEMPLATE" "$TARGET"
 
 # Replace placeholders in CONTEXT.md (macOS + Linux compatible)
 if [ -f "$TARGET/CONTEXT.md" ]; then
-  sed -i.bak "s/\[NAME\]/$NAME/g; s/\[NAME\]/$PM/2" "$TARGET/CONTEXT.md"
+  sed -i.bak "s/\[INITIATIVE_NAME\]/$NAME/g; s/\[PM_NAME\]/$PM/g" "$TARGET/CONTEXT.md"
   rm -f "$TARGET/CONTEXT.md.bak"
 fi
 
@@ -109,4 +109,4 @@ echo "  16. /support-task            -> support team brief"
 echo "  17. /announce-ab-test        -> AB test announcement"
 echo "  18. /announce-release        -> release announcement"
 echo ""
-echo "      /create-jira             -> Jira tickets (after Solution Research Report)"
+echo "      /create-tickets          -> push tickets to Jira/Linear/GitHub via MCP (after Solution Research Report)"
