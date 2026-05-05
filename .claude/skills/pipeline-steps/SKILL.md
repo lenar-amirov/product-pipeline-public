@@ -24,8 +24,8 @@ Guide PM through alignment checklist:
 6. Kill criteria
 7. User segment: who, how many, where
 8. Available data: analytics, CJM, research, feedback
-9. Pipeline config: choose template or custom steps
-10. Tracker: Jira/Linear/GitHub/None + project key
+9. Tracker: Jira/Linear/GitHub/None + project key
+10. Pipeline config: choose template or custom steps
 
 After checklist — write CONTEXT.md and set pipeline_config in status.json.
 
@@ -48,13 +48,21 @@ After checklist — write CONTEXT.md and set pipeline_config in status.json.
 
 If critical fields empty — ask PM, don't start.
 
+**No CJM screenshots? Don't block.** Offer the PM 3 options:
+- (a) "Describe the user journey in the chat — I'll work from your description (mark hypotheses INFERRED, confidence 0.3-0.5)"
+- (b) "Take 5 minutes to capture screens — paste links or save to `CJM/` and I'll wait"
+- (c) "Skip CJM analysis — go straight to /synthetic-research from CONTEXT.md alone"
+
+Pick the path with the PM, then proceed.
+
 1. Read `CONTEXT.md`
-2. Analyze `/CJM/` materials in order (PNG/JPG directly, .fig via Figma MCP, .pdf via Read)
-3. For each CJM step: what user sees, does, where friction occurs
+2. Analyze CJM materials if present (PNG/JPG directly, .fig via Figma MCP, .pdf via Read).
+   If no CJM — work from PM's verbal description; mark each hypothesis as INFERRED.
+3. For each step: what user sees, does, where friction occurs
 4. Use MECE structure from `consulting-problem-solving`
 5. Form 5-15 problem hypotheses in `output/hypotheses.md`
 6. Create 2-3 initial personas from `user-persona-builder`
-7. Add `## Blind spots` — what's unclear from CJM
+7. Add `## Blind spots` — what's unclear (especially valuable when no CJM was provided)
 8. Fill PRD §1, §2
 
 ---
@@ -237,6 +245,7 @@ Structure: Title → Context → Problem → AS IS → Hypothesis → Solution �
 
 For each slide: title, bullets, speaker notes, sources.
 After `presentation.md` run `python3 tools/scripts/generate-pptx.py {initiative-folder}`.
+If the script fails (no `python-pptx`), tell PM: "PPTX generation needs `pip install python-pptx`. The markdown is ready at `output/presentation.md` — you can convert it manually or install python-pptx and re-run." Don't block.
 
 **Tracking**: activate `pending.gate1_challenge`.
 

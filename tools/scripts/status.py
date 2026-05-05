@@ -20,9 +20,9 @@ try:
     from rich.panel import Panel
     from rich.text import Text
     from rich import box
+    HAS_RICH = True
 except ImportError:
-    print("rich not installed. Run: pip install rich")
-    sys.exit(1)
+    HAS_RICH = False
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -224,7 +224,49 @@ def render_initiatives(initiatives: list):
     console.print()
 
 
+def render_plain():
+    """Plain-text fallback when `rich` is not installed."""
+    pm = find_pm()
+    print()
+    print("  AI Diamond — Product Discovery Copilot")
+    print("  " + "-" * 38)
+    print()
+
+    if not pm:
+        print('  Example:')
+        print('    You say: "Users add items to cart but never complete checkout on mobile"')
+        print('    AI Diamond creates: initiative + 5 problem hypotheses + research plan')
+        print()
+        print("  What product problem are you working on?")
+        print()
+        print("  (Tip: install `rich` for a nicer dashboard — pip install rich)")
+        return
+
+    initiatives = load_initiatives(pm)
+    if not initiatives:
+        print(f"  PM: {pm}")
+        print("  No initiatives yet. Describe your product problem to start.")
+        print()
+        return
+
+    for init in initiatives:
+        bar_filled = round(init['done'] / max(init['total'], 1) * 20) if init['total'] else 0
+        bar = "#" * bar_filled + "." * (20 - bar_filled)
+        print(f"  {init['name']}  [{bar}]  {init['done']}/{init['total']}  ({init.get('template', 'full')} template)")
+        if init['current_cmd']:
+            print(f"    -> Step {init['current_step']}: {init['current_cmd']}")
+        for p in init['pending']:
+            days_str = f" ({p['days']}d)" if p['days'] > 0 else ""
+            print(f"    [pending] {p['label']}{days_str}")
+        print()
+    print("  (Tip: install `rich` for a nicer dashboard — pip install rich)")
+
+
 def main():
+    if not HAS_RICH:
+        render_plain()
+        return
+
     pm = find_pm()
     render_header()
 

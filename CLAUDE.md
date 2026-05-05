@@ -20,7 +20,10 @@ Status.py shows onboarding with example. Your job: value in 60 seconds.
    - No metric → "What number moves if you fix this?"
    - No evidence → "Data, complaints, or intuition?"
    - After each answer, reflect back in one line.
-3. **Name + create** — ask name, save to `.pm-local`. Run `tools/scripts/new-initiative.sh "<slug>"` (slug derived from problem). Then fill `CONTEXT.md` from the conversation.
+3. **Name + create** — ask name, then:
+   - **First** write `.pm-local` (single line, no trailing newline) via Write tool — this skips an interactive prompt the script can't satisfy from the bash tool
+   - **Then** run `tools/scripts/new-initiative.sh "<slug>"` (slug derived from problem, kebab-case)
+   - **Then** edit `{pm}/{slug}/CONTEXT.md` with what you extracted from the drill-down — leave unverified fields as `[to be validated]`
 4. **Show value** — generate 3-5 problem hypotheses → `output/hypotheses.md`. Display them + CONTEXT.md.
 5. **Next steps** — suggest in this order:
    - "Run `/setup-initiative` to lock in metric/baseline/segment and choose pipeline template" (recommended — without it pipeline_config stays at default `full`)
