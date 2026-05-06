@@ -17,9 +17,11 @@ Built on [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Powered 
 In Claude Code:
 
 ```
-/plugin marketplace add lenar-amirov/product-pipeline-public
+/plugin marketplace add https://github.com/lenar-amirov/product-pipeline-public.git
 /plugin install product-discovery
 ```
+
+(Use the full HTTPS URL — the GitHub shorthand `lenar-amirov/product-pipeline-public` may try SSH and fail if your git is configured for SSH-only.)
 
 Then in any project where you want to start a discovery:
 
