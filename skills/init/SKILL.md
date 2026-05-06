@@ -1,14 +1,14 @@
 ---
-description: Scaffold the Product Discovery pipeline into the current project. Creates CLAUDE.md, template/, .claude/skills/, .claude/rules/, tools/scripts/. Run this once per repository to bootstrap product discovery work. Trigger when the user says "init product discovery", "scaffold pipeline", "set up discovery", or invokes /product-discovery:init.
+description: Scaffold the Product Discovery pipeline into the user's current project directory. Run when the user invokes /product-discovery:init or asks to "scaffold pipeline", "set up product discovery", "initialize discovery". Copies CLAUDE.md, template/, .claude/skills/, .claude/rules/, and tools/scripts/ from the plugin into the user's working directory, so Claude can run the discovery pipeline on every future session.
 ---
 
 # Product Discovery — Init
 
 Scaffold the full Product Discovery pipeline into the user's current project directory.
 
-## What this does
+## What this skill does
 
-Copies the plugin's bundled files into the user's repo so they can use the pipeline locally:
+Copies the plugin's bundled pipeline files into the user's working directory:
 
 ```
 <user-repo>/
@@ -23,53 +23,93 @@ Copies the plugin's bundled files into the user's repo so they can use the pipel
     └── generate-pptx.py            # Presentation builder
 ```
 
-Once scaffolded, the user works with the pipeline as a normal local project — Claude reads CLAUDE.md on every session, runs status.py, and walks them through the discovery flow.
+Once scaffolded, the user works with the pipeline as a normal local project — Claude reads CLAUDE.md at every session start, runs status.py, and walks them through the discovery flow.
 
 ## How to run
 
-When the user invokes `/product-discovery:init` (or asks to scaffold):
+Follow these steps in order. **Don't skip the confirmation step** — the user needs to know exactly what's being copied where.
 
-1. **Confirm location** — ask: "Scaffold Product Discovery into `<current-dir>`? (y/n)"
-   - Show the absolute path so the user knows exactly where files will land
-   - If user says no, ask which directory they want
+### Step 1: Confirm location
 
-2. **Check for conflicts** — if `CLAUDE.md`, `.claude/`, `template/`, or `tools/` already exist in the target, list them and ask:
-   - "These files exist. (m)erge — keep existing, only add new files / (o)verwrite / (c)ancel?"
-   - Default to merge (safer)
+Run:
+```bash
+pwd
+```
 
-3. **Copy plugin files** — use the bash tool to copy from the plugin directory.
-   The plugin's source files live alongside this skill. Use `${CLAUDE_PLUGIN_ROOT}` if available, otherwise resolve via the skill's location.
+Show the absolute path to the user and ask:
+> "Scaffold Product Discovery into `<absolute-path>`? (y/n)"
 
-   ```bash
-   PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$(dirname $(dirname "$0"))}"
-   TARGET="${1:-.}"
+- If user says no, ask: "Which directory should I scaffold into?"
+- If user is in `~` (home directory), warn: "This will copy files directly into your home directory. Usually you want a project subdirectory. Continue anyway?"
 
-   # Skip files the user already has unless they said overwrite
-   cp -rn "$PLUGIN_ROOT/CLAUDE.md" "$TARGET/"
-   cp -rn "$PLUGIN_ROOT/.claude" "$TARGET/"
-   cp -rn "$PLUGIN_ROOT/template" "$TARGET/"
-   cp -rn "$PLUGIN_ROOT/tools" "$TARGET/"
-   ```
+### Step 2: Check for existing files
 
-4. **Install dependencies hint** — after copying, tell the user:
-   ```
-   ✓ Product Discovery pipeline scaffolded.
+Run:
+```bash
+ls -d CLAUDE.md .claude template tools 2>/dev/null
+```
 
-   Next:
-     pip install rich       # for the session-start dashboard
-     claude                 # restart Claude Code to load CLAUDE.md
+If any of those exist, list them and ask:
+> "These files already exist: [list]. Choose: (m) merge — keep existing, only add new / (o) overwrite all / (c) cancel?"
 
-   Then describe your product problem and the pipeline will guide you.
-   ```
+Default to merge. Skip step 3 if user picks cancel.
 
-5. **Don't auto-run anything else** — let the user restart Claude Code so CLAUDE.md is freshly loaded.
+### Step 3: Copy files
+
+The plugin's bundled files live at `${CLAUDE_PLUGIN_ROOT}` — this environment variable is set by Claude Code when the plugin is loaded.
+
+Run this single bash block:
+
+```bash
+PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:?CLAUDE_PLUGIN_ROOT not set — plugin install may be broken}"
+TARGET="$(pwd)"
+
+# Use -n (no-clobber) for merge, -f for overwrite. Default: merge.
+COPY_FLAG="${COPY_FLAG:--n}"
+
+cp -r $COPY_FLAG "$PLUGIN_ROOT/CLAUDE.md" "$TARGET/" 2>/dev/null || cp -r "$PLUGIN_ROOT/CLAUDE.md" "$TARGET/"
+cp -r $COPY_FLAG "$PLUGIN_ROOT/.claude" "$TARGET/" 2>/dev/null || true
+cp -r $COPY_FLAG "$PLUGIN_ROOT/template" "$TARGET/" 2>/dev/null || true
+cp -r $COPY_FLAG "$PLUGIN_ROOT/tools" "$TARGET/" 2>/dev/null || true
+
+# Verify the copy succeeded
+ls "$TARGET/CLAUDE.md" "$TARGET/template" "$TARGET/.claude/skills" "$TARGET/tools/scripts" >/dev/null && echo "OK" || echo "MISSING"
+```
+
+For overwrite mode, set `COPY_FLAG=-f` before running.
+
+### Step 4: Tell the user what to do next
+
+After successful copy:
+
+```
+✓ Product Discovery pipeline scaffolded into <path>
+
+Next steps:
+  1. Install the dashboard dependency:
+     pip install rich
+
+  2. Restart Claude Code so the new CLAUDE.md is loaded:
+     /exit
+     claude
+
+  3. Send any message — Claude will show the welcome screen
+     and ask "What product problem are you working on?"
+```
+
+### Step 5: Stop here
+
+Don't run status.py, don't try to start the pipeline. CLAUDE.md only takes effect after Claude Code restarts. Tell the user to restart and end the response.
 
 ## Edge cases
 
-- **No write access**: surface the OS error clearly, suggest `sudo` only if appropriate
-- **Plugin files missing**: if `${CLAUDE_PLUGIN_ROOT}` doesn't contain CLAUDE.md, the plugin install is broken — tell user to reinstall via `/plugin install product-discovery`
-- **User in their home directory**: warn before copying — ask "Are you sure you want to scaffold into `~`? Usually you want a project subdirectory."
+- **`CLAUDE_PLUGIN_ROOT` is empty or unset**: tell the user "Plugin install appears broken. Try: `/plugin uninstall product-discovery && /plugin install product-discovery`"
+- **No write permission**: surface the OS error verbatim. Don't suggest `sudo` automatically — that's risky for files going into a project directory.
+- **Source files missing in plugin install**: if `ls "$PLUGIN_ROOT/CLAUDE.md"` fails, the plugin is corrupted. Tell user to reinstall.
+- **User wants to update an already-scaffolded project**: suggest `cd` to a fresh directory or use `COPY_FLAG=-f` to overwrite (warning: overwrites their CLAUDE.md customizations).
 
-## Why this exists
+## Why this skill exists
 
-Product Discovery is a Claude Code-native pipeline. Its core lives in CLAUDE.md (auto-loaded by Claude on every session) and in skills/rules under `.claude/`. Plugins can ship those skills, but Claude Code doesn't auto-inject CLAUDE.md from a plugin into the user's project. So we use a one-time scaffold step to copy the necessary files locally — after that, the project works without further plugin involvement.
+Product Discovery is a Claude Code-native pipeline. Its core lives in `CLAUDE.md` (auto-loaded by Claude on every session) and in `.claude/skills/` + `.claude/rules/`. Plugins ship those files, but Claude Code doesn't auto-inject `CLAUDE.md` from a plugin into the user's project — files in `.claude/` plugin directories are loaded into the plugin's own context, not the user's project.
+
+So we use a one-time scaffold step to copy the necessary files into the user's project directory. After that, the project works as a standalone Product Discovery setup — the user can iterate without further plugin involvement, push to their own git repo, customize CLAUDE.md, etc.

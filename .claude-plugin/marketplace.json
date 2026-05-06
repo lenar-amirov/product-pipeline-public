@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "product-discovery",
-      "source": ".",
+      "source": "./",
       "description": "AI copilot for product discovery — from problem to PRD. Walks PMs through CJM analysis, hypothesis validation, solution design, and presentations.",
       "homepage": "https://github.com/lenar-amirov/product-pipeline-public",
       "license": "MIT"

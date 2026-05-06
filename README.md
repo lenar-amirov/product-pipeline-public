@@ -6,6 +6,8 @@ Product Discovery removes the drudgery — writing briefs, structuring hypothese
 
 Built on [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Powered by Double Diamond, Teresa Torres' Continuous Discovery, and Marty Cagan's Product Discovery.
 
+> **Requires** Claude Code desktop app or CLI (not the web version — needs persistent local state).
+
 ---
 
 ## Get started in 30 seconds
