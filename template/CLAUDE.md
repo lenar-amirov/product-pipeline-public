@@ -1,4 +1,4 @@
-# AI Diamond — Initiative Context
+# Product Discovery — Initiative Context
 
 <!-- This CLAUDE.md is copied into each initiative folder. It loads on demand when Claude reads initiative files. -->
 

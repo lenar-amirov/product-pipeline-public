@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""AI Diamond Web Dashboard — Flask app."""
+"""Product Discovery Web Dashboard — Flask app."""
 
 import json
 import os

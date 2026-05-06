@@ -1,0 +1,16 @@
+{
+  "name": "product-discovery",
+  "owner": {
+    "name": "Lenar Amirov",
+    "url": "https://github.com/lenar-amirov"
+  },
+  "plugins": [
+    {
+      "name": "product-discovery",
+      "source": ".",
+      "description": "AI copilot for product discovery — from problem to PRD. Walks PMs through CJM analysis, hypothesis validation, solution design, and presentations.",
+      "homepage": "https://github.com/lenar-amirov/product-pipeline-public",
+      "license": "MIT"
+    }
+  ]
+}

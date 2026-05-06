@@ -1,8 +1,8 @@
-# AI Diamond
+# Product Discovery
 
 Your AI copilot for product discovery. From a product problem to a validated solution — research, hypotheses, presentations, PRD — all structured and evidence-based.
 
-AI Diamond removes the drudgery — writing briefs, structuring hypotheses, building presentations — so you focus on strategy, design, and talking to users.
+Product Discovery removes the drudgery — writing briefs, structuring hypotheses, building presentations — so you focus on strategy, design, and talking to users.
 
 Built on [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Powered by Double Diamond, Teresa Torres' Continuous Discovery, and Marty Cagan's Product Discovery.
 
@@ -10,15 +10,39 @@ Built on [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Powered 
 
 ## Get started in 30 seconds
 
-### 1. Clone and open
+### 1. Install the plugin
+
+In Claude Code:
+
+```
+/plugin marketplace add lenar-amirov/product-pipeline-public
+/plugin install product-discovery
+```
+
+Then in any project where you want to start a discovery:
+
+```
+/product-discovery:init
+```
+
+The plugin scaffolds `CLAUDE.md`, `template/`, and `.claude/` into your repo. After scaffolding:
 
 ```bash
-git clone https://github.com/lenar-amirov/product-pipeline-public.git
-cd product-pipeline-public
 pip install rich        # for the status dashboard
 ```
 
-Open the folder in [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — CLI, desktop app, or IDE extension.
+Restart Claude Code so the new `CLAUDE.md` loads.
+
+### Alternative: clone the repo
+
+If you don't want the plugin, clone directly:
+
+```bash
+git clone https://github.com/lenar-amirov/product-pipeline-public.git my-discovery
+cd my-discovery && pip install rich
+```
+
+Open in [Claude Code](https://docs.anthropic.com/en/docs/claude-code).
 
 ### 2. Describe your problem
 
@@ -27,8 +51,8 @@ You'll see:
 ```
 ╭────────────────────────────────────────╮
 │                                        │
-│  ◆ AI Diamond                          │
-│  Product Discovery Copilot             │
+│  ◆ Product Discovery                   │
+│  PM Copilot                            │
 │                                        │
 ╰────────────────────────────────────────╯
 
@@ -41,20 +65,20 @@ Type one sentence. For example:
 
 ### 3. Get instant results
 
-AI Diamond immediately creates:
+Product Discovery immediately creates:
 
 - **Initiative folder** with all the scaffolding
 - **3-5 problem hypotheses** tied to your product
 - **Research plan** — what data to collect, who to interview
 - **Next steps** — add CJM screenshots for deeper analysis or continue the pipeline
 
-That's it. You're in the pipeline. Say `continue` and AI Diamond guides you through every step.
+That's it. You're in the pipeline. Say `continue` and Product Discovery guides you through every step.
 
 ---
 
 ## What happens next
 
-AI Diamond walks you through a structured product discovery — step by step:
+The pipeline walks you through structured discovery — step by step:
 
 ```
    Problem Research                    Solution Design              Launch
@@ -89,7 +113,7 @@ Every step produces a concrete artifact — hypotheses, briefs, presentations, P
 
 ## How it works
 
-AI Diamond is a set of prompts and skills that run inside Claude Code. No server, no SaaS — everything stays in your local repo.
+Product Discovery is a set of prompts and skills that run inside Claude Code. No server, no SaaS — everything stays in your local repo.
 
 | Component | What it does |
 |-----------|-------------|

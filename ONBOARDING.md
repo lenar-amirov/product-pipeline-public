@@ -1,4 +1,4 @@
-# AI Diamond — Getting Started
+# Product Discovery — Getting Started
 
 ## Quick start
 
@@ -243,7 +243,7 @@ Features:
 
 ## Optional: Tracker integration (Jira / Linear / GitHub Issues)
 
-After Solution Research Report, AI Diamond can push tickets directly to your tracker via MCP.
+After Solution Research Report, Product Discovery can push tickets directly to your tracker via MCP.
 
 ### Jira
 
@@ -303,7 +303,7 @@ Set in your initiative's `CONTEXT.md`:
 
 ### No tracker? No problem.
 
-AI Diamond generates tickets as markdown in `output/tickets.md`. Copy-paste or create manually.
+Product Discovery generates tickets as markdown in `output/tickets.md`. Copy-paste or create manually.
 
 ---
 

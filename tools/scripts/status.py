@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-status.py — branded dashboard for AI Diamond pipeline.
+status.py — branded dashboard for Product Discovery pipeline.
 
 Two modes:
   - First launch (no .pm-local): onboarding with example
@@ -157,8 +157,8 @@ def progress_bar(done: int, total: int, width: int = 20) -> Text:
 def render_header():
     title = Text()
     title.append("\u25c6 ", style="bright_blue bold")
-    title.append("AI Diamond", style="bold white")
-    subtitle = Text("Product Discovery Copilot", style="dim")
+    title.append("Product Discovery", style="bold white")
+    subtitle = Text("PM Copilot", style="dim")
 
     header = Text.assemble(title, "\n", subtitle)
     console.print(Panel(header, box=box.ROUNDED, border_style="bright_blue",
@@ -177,7 +177,7 @@ def render_onboarding():
     console.print('  "Users add items to cart but never complete checkout on mobile"',
                   style="italic bright_white")
     console.print()
-    console.print('  AI Diamond creates:', style="dim")
+    console.print('  Product Discovery creates:', style="dim")
     console.print('    \u2192 Initiative [bold]mobile-checkout-drop[/bold]')
     console.print('    \u2192 5 problem hypotheses tied to the checkout funnel')
     console.print('    \u2192 Research plan: what data to collect, who to interview')
@@ -228,14 +228,14 @@ def render_plain():
     """Plain-text fallback when `rich` is not installed."""
     pm = find_pm()
     print()
-    print("  AI Diamond — Product Discovery Copilot")
+    print("  Product Discovery — PM Copilot")
     print("  " + "-" * 38)
     print()
 
     if not pm:
         print('  Example:')
         print('    You say: "Users add items to cart but never complete checkout on mobile"')
-        print('    AI Diamond creates: initiative + 5 problem hypotheses + research plan')
+        print('    Product Discovery creates: initiative + 5 problem hypotheses + research plan')
         print()
         print("  What product problem are you working on?")
         print()
