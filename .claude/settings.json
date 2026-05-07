@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 tools/scripts/status.py"
+          }
+        ]
+      }
+    ]
+  }
+}

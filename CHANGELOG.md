@@ -5,6 +5,30 @@ All notable changes to Product Discovery will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.2.0] — 2026-05-07
+
+### Added
+
+- `.claude/settings.json` with `SessionStart` hook that auto-runs
+  `tools/scripts/status.py` on every session start. This guarantees the
+  welcome screen / initiative dashboard appears, regardless of whether
+  Claude reads CLAUDE.md proactively.
+
+### Changed
+
+- CLAUDE.md SESSION START block is now imperative ("STOP — READ THIS BEFORE
+  RESPONDING"). Explicit anti-pattern guidance: don't give a polished
+  consulting answer before completing the procedure.
+- init skill: handles existing `.claude/settings.json` — warns the user
+  and shows the hook snippet to merge manually.
+- init skill: recommends `pip3` over `pip` (macOS often lacks `pip`).
+
+### Fixed
+
+- Pipeline procedure was being skipped when users asked product questions
+  directly — Claude would answer as a generic consultant. The SessionStart
+  hook + stronger CLAUDE.md instructions force the FIRST LAUNCH flow.
+
 ## [0.1.0] — 2026-05-06
 
 Initial public release.

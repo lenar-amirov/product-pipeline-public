@@ -54,6 +54,18 @@ If any of those exist, list them and ask:
 
 Default to merge. Skip step 3 if user picks cancel.
 
+**Special case for `.claude/settings.json`**: if the user already has `.claude/settings.json`, our SessionStart hook won't be added in merge mode. Tell them: "Your existing `.claude/settings.json` was kept. To get auto-launching of the welcome screen at session start, manually add this hook to your settings.json:"
+
+```json
+{
+  "hooks": {
+    "SessionStart": [
+      { "hooks": [ { "type": "command", "command": "python3 tools/scripts/status.py" } ] }
+    ]
+  }
+}
+```
+
 ### Step 3: Copy files
 
 The plugin's bundled files live at `${CLAUDE_PLUGIN_ROOT}` — this environment variable is set by Claude Code when the plugin is loaded.
