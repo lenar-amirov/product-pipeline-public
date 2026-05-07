@@ -80,25 +80,27 @@ For overwrite mode, set `COPY_FLAG=-f` before running.
 
 ### Step 4: Tell the user what to do next
 
-After successful copy:
+After successful copy, show the user this exact set of next steps. **The cd step is critical** — Claude loads CLAUDE.md from the working directory, so the user MUST be in the scaffolded directory when they restart Claude Code.
 
 ```
-✓ Product Discovery pipeline scaffolded into <path>
+✓ Product Discovery pipeline scaffolded into <ABSOLUTE_PATH>
 
-Next steps:
-  1. Install the dashboard dependency:
-     pip3 install rich       # macOS often only has pip3, not pip
-     # or: python3 -m pip install rich
+NEXT STEPS — run these in your terminal:
 
-  2. Restart Claude Code so the new CLAUDE.md is loaded:
-     /exit
-     claude
+  pip3 install rich                          # install dashboard (macOS often only has pip3)
+  /exit                                       # exit this Claude Code session
+  cd "<ABSOLUTE_PATH>" && claude              # ⚠ MUST cd into the scaffolded dir before launching claude
 
-  3. Send any message — Claude will show the welcome screen
-     and ask "What product problem are you working on?"
+In the new Claude Code session, send any message —
+Claude will show the welcome screen and ask:
+  "What product problem are you working on?"
 ```
 
-**Note**: many systems have `pip3` but not `pip`. If `pip` fails, use `pip3` or `python3 -m pip`.
+Substitute `<ABSOLUTE_PATH>` with the absolute path you scaffolded into. Use double quotes — the path may contain spaces.
+
+**Why cd matters**: Claude Code loads `CLAUDE.md` from the current working directory at session start. If the user runs `claude` from anywhere else (like home), the pipeline's CLAUDE.md won't load and Claude won't know about Product Discovery. This is the #1 user error — emphasize it.
+
+**If `pip3` also fails**: try `python3 -m pip install rich`.
 
 ### Step 5: Stop here
 
