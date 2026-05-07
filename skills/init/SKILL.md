@@ -87,7 +87,8 @@ After successful copy:
 
 Next steps:
   1. Install the dashboard dependency:
-     pip install rich
+     pip3 install rich       # macOS often only has pip3, not pip
+     # or: python3 -m pip install rich
 
   2. Restart Claude Code so the new CLAUDE.md is loaded:
      /exit
@@ -96,6 +97,8 @@ Next steps:
   3. Send any message — Claude will show the welcome screen
      and ask "What product problem are you working on?"
 ```
+
+**Note**: many systems have `pip3` but not `pip`. If `pip` fails, use `pip3` or `python3 -m pip`.
 
 ### Step 5: Stop here
 
