@@ -5,6 +5,28 @@ All notable changes to Product Discovery will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.7.2] — 2026-05-09
+
+### Removed (further cleanup)
+
+- `template/CLAUDE.md` — was a stale duplicate of repo-root CLAUDE.md.
+  Still showed steps 17/18 as `/announce-ab-test` and `/announce-release`
+  (removed in 0.4.0). Pipeline reference table was redundant with main
+  CLAUDE.md. No code references it; nothing in `new-initiative.sh` depended
+  on per-initiative CLAUDE.md existing.
+
+### Fixed
+
+- `tools/web/app.py` `PIPELINE_STEPS` and `STEP_ARTIFACTS` were stale —
+  still referenced removed steps 17/18 (announcements). Updated to v0.4.0
+  pipeline (16 = analyze-ab-test, 17 = plan-gtm, 18 = create-gtm-materials,
+  19 = support-task).
+- `ab-test-announcement-wizard` skill was self-described as "for steps
+  17/18" (removed). Repurposed as a structural pattern provider for
+  step 18 `/create-gtm-materials` (provides announcement-style scaffolding
+  for in-app, email, blog materials).
+- README "18 steps" → "19 steps" in two places (stale since 0.4.0).
+
 ## [0.7.1] — 2026-05-09
 
 ### Removed (cleanup)

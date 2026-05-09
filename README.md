@@ -20,7 +20,7 @@ There are great PM skill marketplaces (e.g. [pm-skills](https://github.com/phury
 |---|---|---|
 | **Unit of work** | One question, one answer | One initiative, many sessions |
 | **State** | Stateless — Claude forgets next time | Persistent: CONTEXT.md, status.json, decisions.md, PRD.md |
-| **PRD** | Generated when you ask | Living document, builds across all 18 steps |
+| **PRD** | Generated when you ask | Living document, builds across all 19 steps |
 | **Evidence** | Free-form text | Typed: REAL / SYNTHETIC / INFERRED with confidence 0.0–1.0 |
 | **Continuity** | Each session is a fresh start | Resume exactly where you stopped, with full context |
 | **Best for** | Quick answers on any PM task | Working a real product initiative through to launch |
@@ -103,7 +103,7 @@ The work is now persisted. Close Claude, come back tomorrow — the initiative r
 
 ## The pipeline
 
-18 steps across 3 phases. Each step produces a concrete artifact and updates the living PRD.
+19 steps across 3 phases. Each step produces a concrete artifact and updates the living PRD.
 
 ```
    Problem Research              Solution Design + Validate         Launch

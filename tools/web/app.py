@@ -46,9 +46,10 @@ PIPELINE_STEPS = [
     (13, "finalize-prd",              "Phase 2", "Finalize PRD"),
     (14, "design-ab-test",            "Phase 2", "AB Test Design"),
     (15, "create-gate2-presentation", "Phase 2", "Solution Research Report"),
-    (16, "support-task",              "Phase 3", "Support Brief"),
-    (17, "announce-ab-test",          "Phase 3", "AB Test Announcement"),
-    (18, "announce-release",          "Phase 3", "Release Announcement"),
+    (16, "analyze-ab-test",           "Phase 2", "AB Test Analysis"),
+    (17, "plan-gtm",                  "Phase 3", "GTM Plan"),
+    (18, "create-gtm-materials",      "Phase 3", "GTM Materials"),
+    (19, "support-task",              "Phase 3", "Support Brief"),
 ]
 
 STEP_ARTIFACTS = {
@@ -69,9 +70,10 @@ STEP_ARTIFACTS = {
     13: [("PRD", "output/PRD.md")],
     14: [("AB Test Design", "output/ab-test-design.md")],
     15: [("Solution Research Report", "output/gate2-presentation.md")],
-    16: [("Support Brief", "output/support-brief.md")],
-    17: [("AB Test Announcement", "output/announce-ab-test.md")],
-    18: [("Release Announcement", "output/announce-release.md")],
+    16: [("AB Test Analysis", "output/ab-test-analysis.md")],
+    17: [("GTM Plan", "output/gtm-plan.md")],
+    18: [("GTM Materials", "output/gtm-materials.md")],
+    19: [("Support Brief", "output/support-brief.md")],
 }
 
 PENDING_LABELS = {

@@ -17,8 +17,11 @@ full releases. These posts go to a team/company channel so everyone knows
 what's changing, why, and how to report issues.
 
 ## When to Use
-- **Step 17** (`/announce-ab-test`): When launching an AB test
-- **Step 18** (`/announce-release`): When rolling out to 100% of users
+- **Step 18** (`/create-gtm-materials`): structural patterns for in-app
+  notifications, email announcements, blog posts, and other GTM materials
+  generated when the validated solution is rolled out to existing users.
+- Anywhere else the PM asks to draft an internal announcement (AB test
+  launch, full rollout, milestone communication).
 
 ## AB Test Announcement Template (Step 17)
 
@@ -114,7 +117,7 @@ If data is missing, use `[placeholder]` and add a "Needs clarification" section 
 ```
 
 ## Output
-- `output/announce-ab-test.md` (step 17)
-- `output/announce-release.md` (step 18)
 
-PM reviews, then publishes to the team channel.
+When invoked from step 18 `/create-gtm-materials`, contributes the announcement-style sections to `output/materials/email-announcement.md`, `output/materials/blog-post.md`, etc. (drives the structure / tone, not the file path).
+
+When invoked ad-hoc, write to whatever file the PM asks for. PM reviews, then publishes.
