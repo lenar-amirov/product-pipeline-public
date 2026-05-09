@@ -934,21 +934,6 @@ def cjm_file(pm, name, filename):
     return send_from_directory(str(cjm_dir), filename)
 
 
-@app.route("/<pm>/onboarding")
-def onboarding(pm):
-    """Render ONBOARDING.md as HTML."""
-    if pm not in USERS:
-        abort(404)
-    root = pm_root(pm)
-    onboarding_path = root / "ONBOARDING.md"
-    if not onboarding_path.is_file():
-        abort(404)
-    text = onboarding_path.read_text(encoding="utf-8")
-    MD.reset()
-    html = MD.convert(text)
-    return render_template("onboarding.html", pm=pm, content=html)
-
-
 if __name__ == "__main__":
     import sys
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 5000

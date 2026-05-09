@@ -321,7 +321,7 @@ Structure: Title → Hypothesis → Solution context → Solution → Demo → U
 1. Detect MCP: jira tools → Jira API; linear tools → Linear; gh CLI → GitHub Issues
 2. Create parent first, then children with references
 3. Save tracker URLs to `output/tickets.md`
-4. If no MCP → inform PM, suggest setup (see ONBOARDING.md)
+4. If no MCP → inform PM, suggest setup (see Tracker integration section in README.md)
 
 ---
 

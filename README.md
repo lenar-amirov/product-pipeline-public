@@ -176,16 +176,53 @@ Pick a template or compose your own. Mandatory steps stay locked.
 
 ## Tracker integration
 
-After Solution Research Report, push tickets to your tracker via MCP:
+After Solution Research Report, push tickets to your tracker via MCP. Set the tracker in `CONTEXT.md` → `## Tracker` section, then connect the MCP server:
 
-| Tracker | How |
-|---------|-----|
-| **Jira** | Connect `@anthropic/mcp-atlassian` MCP — Claude pushes Epic → Story → Sub-task |
-| **Linear** | Connect `@anthropic/mcp-linear` MCP — Project → Issue → Sub-issue |
-| **GitHub Issues** | Native via `gh` CLI — Milestone → Issue → Task list |
-| **None** | Markdown only — copy-paste into your tracker manually |
+### Jira
 
-See [ONBOARDING.md](ONBOARDING.md) for setup details.
+Add to your Claude Code MCP settings (`.claude/settings.local.json`):
+
+```json
+{
+  "mcpServers": {
+    "jira": {
+      "command": "npx",
+      "args": ["@anthropic/mcp-atlassian"],
+      "env": {
+        "JIRA_URL": "https://your-company.atlassian.net",
+        "JIRA_EMAIL": "you@company.com",
+        "JIRA_API_TOKEN": "your-api-token"
+      }
+    }
+  }
+}
+```
+
+Get your API token: https://id.atlassian.com/manage-profile/security/api-tokens
+
+### Linear
+
+```json
+{
+  "mcpServers": {
+    "linear": {
+      "command": "npx",
+      "args": ["@anthropic/mcp-linear"],
+      "env": { "LINEAR_API_KEY": "your-api-key" }
+    }
+  }
+}
+```
+
+API key: Linear → Settings → API → Personal API keys.
+
+### GitHub Issues
+
+No extra MCP — Claude Code uses `gh` CLI natively. Run `gh auth status` to verify you're logged in.
+
+### No tracker
+
+Skip MCP. `/create-tickets` writes `output/tickets.md` for manual copy-paste.
 
 ---
 
@@ -195,10 +232,51 @@ See [ONBOARDING.md](ONBOARDING.md) for setup details.
 - Python 3.10+
 - `pip3 install rich` — for the terminal dashboard
 
-Optional (for presentations and web dashboard):
+Optional, install on demand:
+- `pip3 install python-pptx` — when you reach `/create-presentation` (step 10) or `/create-gate2-presentation` (step 15)
+- `pip3 install flask markdown` — only if you want the optional Flask web dashboard at `tools/web/app.py`
+
+---
+
+## Optional: Flask web dashboard
+
+`tools/web/app.py` provides a visual dashboard:
+
 ```bash
-pip3 install -r requirements.txt   # rich, flask, markdown, python-pptx
+pip3 install flask markdown
+PM_USERS=$(cat .pm-local) python3 tools/web/app.py
+# open http://localhost:5000/{your-name}/
 ```
+
+Most users don't need this — `tools/scripts/status.py` (auto-run at session start) shows the same info in the terminal.
+
+---
+
+## FAQ
+
+**How do I continue working?**
+Open Claude Code in the project directory. The SessionStart hook runs `status.py` which loads your last state. Type "continue" and Claude picks up where you stopped.
+
+**How do I change the pipeline configuration?**
+Tell Claude: "reconfigure pipeline" or "switch to quick template" or "enable competitor research". The config lives in `output/status.json` → `pipeline_config`.
+
+**Can I work on multiple initiatives in parallel?**
+Yes. Each initiative is a separate folder with its own `CONTEXT.md`, `status.json`, `decisions.md`. Claude shows all initiatives at session start; you select one.
+
+**What are Problem Research Report and Solution Research Report?**
+Two presentations for stakeholders:
+- **Problem Research Report** (after step 10) — validated problem + solution sketch
+- **Solution Research Report** (after step 15) — designed solution + AB test plan
+
+**What's the difference between step types?**
+- **Core** — pipeline breaks without it
+- **Recommended** — strongly suggested; skipping reduces confidence
+- **Optional** — useful in specific contexts only
+
+**Where are my personal preferences stored?**
+- `pm-profile.md` — your role, company, working style (gitignored, personal)
+- `.product-corrections.md` — accumulated corrections you've taught Claude (gitignored)
+- `.initiatives-digest.md` — auto-generated overview of all your initiatives
 
 ---
 

@@ -5,6 +5,32 @@ All notable changes to Product Discovery will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.7.1] — 2026-05-09
+
+### Removed (cleanup)
+
+- `ONBOARDING.md` — content was duplicating README, CLAUDE.md, and template
+  files. Useful unique parts (Tracker MCP setup, FAQ, web dashboard hint)
+  merged into README.
+- `requirements.txt` — most users only need `rich`. Other dependencies
+  (`python-pptx`, `flask`, `markdown`) install on-demand per feature.
+  README now lists install commands per use case.
+- `tools/web/templates/onboarding.html` and the `/onboarding` Flask route
+  (orphaned after ONBOARDING.md removal).
+- "Help" link in web dashboard header (pointed to removed onboarding route).
+
+### Changed
+
+- README now contains everything a user needs in one file: install,
+  positioning, pipeline overview, configurable templates, tracker
+  integration setup (Jira/Linear/GitHub), FAQ.
+- Skills (`setup-initiative`, `pipeline-steps`) reference README's
+  "Tracker integration" section instead of removed ONBOARDING.md.
+
+Repo went from 84 → 81 tracked files. Top-level is now: CHANGELOG.md,
+CLAUDE.md, LICENSE, README.md, skills/, template/, tools/, .gitignore,
+.claude/, .claude-plugin/.
+
 ## [0.7.0] — 2026-05-09
 
 ### Added — Cross-initiative awareness (Step 3 of 3 personalization phases)
