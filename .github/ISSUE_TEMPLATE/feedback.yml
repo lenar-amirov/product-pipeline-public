@@ -1,0 +1,94 @@
+name: 💬 Feedback / "I tried it"
+description: Share how it went — what worked, what didn't, what's missing
+labels: ["feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for trying Product Discovery. Real feedback shapes the next versions — even one paragraph is valuable.
+
+        **For bugs**, use the Bug Report template instead. Use this one for: "I tried it and...", suggestions, missing features, methodology questions, general thoughts.
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What did you use it for?
+      description: Brief context — what kind of product / problem? You can keep it abstract if confidential. ("A B2B SaaS onboarding flow", "A consumer mobile feature", etc.)
+      placeholder: "Worked on a checkout flow redesign for a marketplace product..."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: progress
+    attributes:
+      label: How far did you get?
+      options:
+        - Just installed and looked around
+        - Ran /product-discovery:init, started an initiative
+        - Got through Phase 1 (problem research)
+        - Reached Problem Research Report (step 10)
+        - Got through Phase 2 (solution design)
+        - Reached Solution Research Report (step 15)
+        - Completed AB test analysis / GTM (steps 16-19)
+        - Used it across multiple initiatives
+    validations:
+      required: true
+
+  - type: textarea
+    id: worked
+    attributes:
+      label: What worked well?
+      description: Specific moments where the pipeline genuinely helped.
+      placeholder: |
+        - The drill-down in FIRST LAUNCH made me sharpen the problem
+        - Living PRD saved me from rewriting context every session
+        - ...
+    validations:
+      required: false
+
+  - type: textarea
+    id: didnt_work
+    attributes:
+      label: What didn't work or felt clunky?
+      description: This is the most useful section — be specific.
+      placeholder: |
+        - Step X felt over-structured / under-structured
+        - Claude kept ignoring rule Y
+        - I expected Z but got W
+        - ...
+    validations:
+      required: false
+
+  - type: textarea
+    id: missing
+    attributes:
+      label: What's missing?
+      description: Steps, skills, integrations, formats — what would you add?
+      placeholder: |
+        - Could use a /retro step
+        - Tracker integration with [system] would help
+        - ...
+    validations:
+      required: false
+
+  - type: dropdown
+    id: recommend
+    attributes:
+      label: Would you recommend it to another PM?
+      options:
+        - "Yes — already mentioned to colleagues"
+        - "Yes, with caveats"
+        - "Maybe — needs more polish first"
+        - "Not yet — wait for [reason in 'didn't work']"
+        - "Not really"
+    validations:
+      required: false
+
+  - type: input
+    id: contact
+    attributes:
+      label: Open to a 15-min chat?
+      description: Optional. If yes — drop your LinkedIn / email and I'll reach out. (Skip if you'd rather stay anonymous.)
+      placeholder: "linkedin.com/in/yourname or you@example.com"
+    validations:
+      required: false

@@ -280,6 +280,17 @@ Two presentations for stakeholders:
 
 ---
 
+## Get in touch
+
+Product Discovery is in early version (0.7.x). Real PM feedback shapes the next iterations.
+
+- 🐛 **Bug?** → [open an issue](https://github.com/lenar-amirov/product-pipeline-public/issues/new?template=bug.yml)
+- 💬 **Tried it? Share how it went** → [feedback issue](https://github.com/lenar-amirov/product-pipeline-public/issues/new?template=feedback.yml)
+- 💭 **Questions, ideas, just want to chat** → [Discussions](https://github.com/lenar-amirov/product-pipeline-public/discussions)
+- 🎉 **Show off your initiative** → [Discussions / Show & Tell](https://github.com/lenar-amirov/product-pipeline-public/discussions/categories/show-and-tell)
+
+---
+
 ## License
 
 MIT

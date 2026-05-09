@@ -1,0 +1,101 @@
+name: 🐛 Bug report
+description: Something broke or didn't work as documented
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug. The more specific you are, the faster it gets fixed.
+
+  - type: input
+    id: version
+    attributes:
+      label: Plugin version
+      description: Run `cat .claude-plugin/plugin.json | grep version` in your scaffolded project, or check `/plugin list` in Claude Code.
+      placeholder: "0.7.2"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where did the bug happen?
+      options:
+        - Plugin install (`/plugin install product-discovery`)
+        - Init scaffold (`/product-discovery:init`)
+        - Session start (welcome screen / status.py)
+        - First launch flow (drill-down + initiative creation)
+        - A specific pipeline step (specify below)
+        - Status dashboard (`status.py`)
+        - Initiatives digest (`scan-initiatives.py`)
+        - Web dashboard (`tools/web/app.py`)
+        - PPTX generation (`generate-pptx.py`)
+        - Other (specify below)
+    validations:
+      required: true
+
+  - type: input
+    id: step
+    attributes:
+      label: If a specific pipeline step — which one?
+      description: e.g. `/analyze-cjm` (step 1), `/validate-problems` (step 6), `/plan-gtm` (step 17)
+      placeholder: "/analyze-cjm (step 1)"
+    validations:
+      required: false
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+      placeholder: "Claude should have generated 3-5 problem hypotheses in output/hypotheses.md..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: What actually happened?
+      description: Include error messages, unexpected output, or describe the wrong behavior. Paste relevant logs / screenshots.
+      placeholder: "Claude responded with general advice but never created the initiative folder..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: What did you do leading up to the bug?
+      placeholder: |
+        1. Cloned a fresh dir
+        2. Ran `/product-discovery:init`
+        3. Opened Claude Code in that dir
+        4. Sent message: "Users abandon checkout on mobile"
+        5. Claude...
+    validations:
+      required: false
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: "macOS 14.5 / Ubuntu 22.04 / Windows 11"
+    validations:
+      required: true
+
+  - type: input
+    id: claude_code
+    attributes:
+      label: Claude Code version
+      description: Run `claude --version`
+      placeholder: "2.1.132"
+    validations:
+      required: true
+
+  - type: input
+    id: python
+    attributes:
+      label: Python version
+      description: Run `python3 --version`
+      placeholder: "3.11.5"
+    validations:
+      required: false
