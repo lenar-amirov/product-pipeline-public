@@ -5,6 +5,19 @@ All notable changes to Product Discovery will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.3.0] — 2026-05-08
+
+### Changed
+
+- **Repositioning**: Product Discovery is now framed as a "tracked initiative
+  pipeline" rather than a generic "AI copilot for product discovery". The
+  README explicitly contrasts with PM skill toolboxes (e.g. pm-skills): they're
+  for one-shot answers, this is for multi-session work on a single initiative.
+- README leads with "Why this, and not a PM skill toolbox?" comparison table.
+- Plugin and marketplace descriptions emphasize: persistent state, living PRD,
+  evidence-typed hypotheses, multi-session continuity.
+- New keywords: `initiative-pipeline`, `living-prd`, `evidence-typing`.
+
 ## [0.2.0] — 2026-05-07
 
 ### Added

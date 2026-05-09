@@ -1,7 +1,7 @@
 {
   "name": "product-discovery",
-  "description": "AI copilot for product discovery — from problem to PRD. Walks PMs through CJM analysis, hypothesis validation, solution design, and presentations.",
-  "version": "0.2.0",
+  "description": "Run a product initiative as a tracked journey — not a toolbox of one-shot answers. Persistent state across sessions: living PRD, evidence-typed hypotheses (REAL/SYNTHETIC/INFERRED), decision log. From one-sentence problem to PRD and dev tickets through 18 configurable steps.",
+  "version": "0.3.0",
   "author": {
     "name": "Lenar Amirov",
     "url": "https://github.com/lenar-amirov"
@@ -13,6 +13,9 @@
     "product-management",
     "product-discovery",
     "pm",
+    "initiative-pipeline",
+    "living-prd",
+    "evidence-typing",
     "research",
     "hypothesis",
     "prd"

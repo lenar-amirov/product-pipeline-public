@@ -8,7 +8,7 @@
     {
       "name": "product-discovery",
       "source": "./",
-      "description": "AI copilot for product discovery — from problem to PRD. Walks PMs through CJM analysis, hypothesis validation, solution design, and presentations.",
+      "description": "Run a product initiative as a tracked journey — not a toolbox of one-shot answers. Persistent state, living PRD, evidence-typed hypotheses across multi-session work.",
       "homepage": "https://github.com/lenar-amirov/product-pipeline-public",
       "license": "MIT"
     }

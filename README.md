@@ -1,12 +1,34 @@
 # Product Discovery
 
-Your AI copilot for product discovery. From a product problem to a validated solution — research, hypotheses, presentations, PRD — all structured and evidence-based.
+**Run a product initiative as a tracked journey — from one-sentence problem to PRD, with persistent state across sessions.**
 
-Product Discovery removes the drudgery — writing briefs, structuring hypotheses, building presentations — so you focus on strategy, design, and talking to users.
+Not a toolbox of one-shot AI answers. A structured pipeline where every session adds to the same initiative — drill-down questions, evidence-typed hypotheses, a PRD that builds incrementally, and a decision log you can come back to next week.
 
 Built on [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Powered by Double Diamond, Teresa Torres' Continuous Discovery, and Marty Cagan's Product Discovery.
 
 > **Requires** Claude Code desktop app or CLI (not the web version — needs persistent local state).
+
+---
+
+## Why this, and not a PM skill toolbox?
+
+There are great PM skill marketplaces (e.g. [pm-skills](https://github.com/phuryn/pm-skills)) that give you 60+ skills you can call ad-hoc: `/write-prd`, `/competitive-analysis`, `/personas`. They're excellent for one-shot answers.
+
+**Product Discovery is different.** It's not a toolbox — it's a journey:
+
+| | PM toolbox (e.g. pm-skills) | Product Discovery (this) |
+|---|---|---|
+| **Unit of work** | One question, one answer | One initiative, many sessions |
+| **State** | Stateless — Claude forgets next time | Persistent: CONTEXT.md, status.json, decisions.md, PRD.md |
+| **PRD** | Generated when you ask | Living document, builds across all 18 steps |
+| **Evidence** | Free-form text | Typed: REAL / SYNTHETIC / INFERRED with confidence 0.0–1.0 |
+| **Continuity** | Each session is a fresh start | Resume exactly where you stopped, with full context |
+| **Best for** | Quick answers on any PM task | Working a real product initiative through to launch |
+
+**Use a PM toolbox** when you want quick help with one specific task.
+**Use Product Discovery** when you've committed to a real initiative and want a tracked path from problem to launch.
+
+(They complement each other — you can install both.)
 
 ---
 
@@ -32,10 +54,10 @@ Then in any project where you want to start a discovery:
 The plugin scaffolds `CLAUDE.md`, `template/`, and `.claude/` into your repo. After scaffolding:
 
 ```bash
-pip install rich        # for the status dashboard
+pip3 install rich        # for the status dashboard (use pip3 on macOS)
 ```
 
-Restart Claude Code so the new `CLAUDE.md` loads.
+Restart Claude Code in the scaffolded directory so the new `CLAUDE.md` loads.
 
 ### Alternative: clone the repo
 
@@ -43,7 +65,7 @@ If you don't want the plugin, clone directly:
 
 ```bash
 git clone https://github.com/lenar-amirov/product-pipeline-public.git my-discovery
-cd my-discovery && pip install rich
+cd my-discovery && pip3 install rich
 ```
 
 Open in [Claude Code](https://docs.anthropic.com/en/docs/claude-code).
@@ -67,22 +89,21 @@ Type one sentence. For example:
 
 > Users add items to cart but never complete checkout on mobile
 
-### 3. Get instant results
+### 3. Claude drills down — then creates an initiative
 
-Product Discovery immediately creates:
+Claude won't immediately give you a polished consulting answer. Instead it asks 2–3 sharp follow-up questions to force specificity:
 
-- **Initiative folder** with all the scaffolding
-- **3-5 problem hypotheses** tied to your product
-- **Research plan** — what data to collect, who to interview
-- **Next steps** — add CJM screenshots for deeper analysis or continue the pipeline
+> "Where exactly do they drop — payment, address, cart? Which segment — new vs returning? What metric should move?"
 
-That's it. You're in the pipeline. Say `continue` and Product Discovery guides you through every step.
+Then it scaffolds an initiative folder, generates 3–5 problem hypotheses (marked `INFERRED` until validated), drafts a research plan, and shows you what's next.
+
+The work is now persisted. Close Claude, come back tomorrow — the initiative resumes exactly where you left off.
 
 ---
 
-## What happens next
+## The pipeline
 
-The pipeline walks you through structured discovery — step by step:
+18 steps across 3 phases. Each step produces a concrete artifact and updates the living PRD.
 
 ```
    Problem Research                    Solution Design              Launch
@@ -101,31 +122,33 @@ The pipeline walks you through structured discovery — step by step:
 └─────────────────────────┘
 ```
 
-Every step produces a concrete artifact — hypotheses, briefs, presentations, PRD — and tracks decisions along the way.
+### What you accumulate over the journey
 
-### What you get at the end
-
-| Artifact | Description |
-|----------|-------------|
-| **Problem Research Report** | Presentation: validated problem + solution sketch |
-| **Solution Research Report** | Presentation: designed solution + AB test plan |
-| **PRD** | Living document built incrementally across all steps |
-| **Research artifacts** | Hypotheses, competitive analysis, survey design, interview synthesis |
-| **AB test design** | Baseline, MDE, sample size, guardrails, decision criteria |
+| Artifact | What it is |
+|----------|-----------|
+| **CONTEXT.md** | The initiative's frame: metric, segment, baseline, constraints, OKR — never re-explained |
+| **status.json** | Current step, pending tasks, pipeline config — Claude resumes from here |
+| **decisions.md** | Log of every meaningful decision and discussion across sessions |
+| **hypotheses.md** | Problem hypotheses with evidence typing (REAL/SYNTHETIC/INFERRED) |
+| **PRD.md** | Living document — sections fill as you progress, not at the end |
+| **Problem Research Report** | Presentation: validated problem + solution sketch (after step 10) |
+| **Solution Research Report** | Presentation: designed solution + AB test plan (after step 15) |
+| **tickets.md** | Dev tickets — pushed to Jira/Linear/GitHub via MCP if connected |
 
 ---
 
-## How it works
+## What's bundled
 
-Product Discovery is a set of prompts and skills that run inside Claude Code. No server, no SaaS — everything stays in your local repo.
-
-| Component | What it does |
-|-----------|-------------|
-| `CLAUDE.md` | Master prompt — pipeline logic, session lifecycle, formats |
-| `template/` | Initiative scaffold — copied for each new initiative |
-| `.claude/skills/` | 19 specialized skills (discovery, personas, funnels, PRD, design critique, pipeline-steps, etc.) |
-| `tools/scripts/status.py` | Terminal dashboard — shows progress at session start |
-| `tools/scripts/generate-pptx.py` | Converts presentation markdown to .pptx |
+| Component | Role |
+|-----------|------|
+| `CLAUDE.md` | Master prompt — session lifecycle, FIRST LAUNCH flow, intent matching |
+| `.claude/settings.json` | `SessionStart` hook that auto-runs the dashboard at every session |
+| `.claude/skills/` | 19 specialized skills — discovery, personas, funnels, PRD, design critique, pipeline-steps, etc. |
+| `.claude/rules/` | Path-scoped rules: output formats, evidence typing |
+| `template/` | Initiative scaffold copied for each new initiative |
+| `tools/scripts/status.py` | Branded terminal dashboard with first-launch onboarding |
+| `tools/scripts/new-initiative.sh` | Initiative scaffolder |
+| `tools/scripts/generate-pptx.py` | Markdown → PowerPoint conversion |
 
 ### Your initiative folder
 
@@ -137,29 +160,44 @@ you/my-initiative/
 └── output/                 ← hypotheses, PRD, presentations, decision log
 ```
 
-### Pipeline is configurable
+### Configurable pipeline
 
-Choose a template or pick individual steps:
+Pick a template or compose your own. Mandatory steps stay locked.
 
 | Template | Steps | Best for |
 |----------|-------|----------|
-| **Quick Discovery** | ~6 core steps | Have data, need structure |
-| **Full Discovery** | All steps | New problem, full research |
+| **Quick Discovery** | ~6 core steps | PM with existing data, tight timeline |
+| **Full Discovery** | All steps | New problem space, full research |
 | **Problem Only** | 5 steps | Just understand the problem |
 | **Solution Only** | 7 steps | Problem known, design solution |
 | **Custom** | Your choice | You know what's needed |
 
 ---
 
+## Tracker integration
+
+After Solution Research Report, push tickets to your tracker via MCP:
+
+| Tracker | How |
+|---------|-----|
+| **Jira** | Connect `@anthropic/mcp-atlassian` MCP — Claude pushes Epic → Story → Sub-task |
+| **Linear** | Connect `@anthropic/mcp-linear` MCP — Project → Issue → Sub-issue |
+| **GitHub Issues** | Native via `gh` CLI — Milestone → Issue → Task list |
+| **None** | Markdown only — copy-paste into your tracker manually |
+
+See [ONBOARDING.md](ONBOARDING.md) for setup details.
+
+---
+
 ## Requirements
 
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — CLI, desktop app, or IDE extension
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — CLI, desktop app, or IDE extension (not web)
 - Python 3.10+
-- `pip install rich` — for the terminal dashboard
+- `pip3 install rich` — for the terminal dashboard
 
 Optional (for presentations and web dashboard):
 ```bash
-pip install -r requirements.txt   # rich, flask, markdown, python-pptx
+pip3 install -r requirements.txt   # rich, flask, markdown, python-pptx
 ```
 
 ---
