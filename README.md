@@ -291,6 +291,14 @@ Product Discovery is in early version (0.7.x). Real PM feedback shapes the next 
 
 ---
 
+## Privacy
+
+Product Discovery is local-first — there is no server, no telemetry, no analytics. Everything lives on your machine. Claude Code processes your conversation through Anthropic; integrations you connect (Jira / Linear MCP) see the ticket data you push.
+
+See [PRIVACY.md](./PRIVACY.md) for full details.
+
+---
+
 ## License
 
 MIT
