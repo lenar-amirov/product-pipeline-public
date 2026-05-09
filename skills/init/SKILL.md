@@ -120,7 +120,7 @@ If `.product-corrections.md` doesn't exist in the target directory, create it wi
 <!-- e.g. Use SIF (Severity × Impact × Frequency), not RICE -->
 
 ## Style
-<!-- e.g. PRDs in Russian for VK products, English for international -->
+<!-- e.g. PRDs in regional language for local market, English for international -->
 <!-- e.g. Don't use phrase "leverage" — corp-speak -->
 
 ## Process
@@ -150,7 +150,7 @@ If `pm-profile.md` doesn't exist in the target directory, create it with this te
 
 ## Active products [auto]
 <!-- Claude appends as you work on initiatives.
-     e.g. - VK Видео (social discovery) — 3 active initiatives -->
+     e.g. - Acme Checkout (mobile commerce) — 3 active initiatives -->
 
 ## Working style [auto]
 <!-- Claude appends as it observes recurring patterns.
@@ -161,7 +161,7 @@ If `pm-profile.md` doesn't exist in the target directory, create it with this te
 ## Recurring stakeholders [auto]
 <!-- Claude appends when the same names show up across initiatives.
      e.g. - VP Product (final approver at Gates)
-          - Lead Designer Аня (involved from sketch step) -->
+          - Lead Designer (involved from sketch step) -->
 
 ## Domain knowledge [auto]
 <!-- Claude appends when it observes constants about your product/market.

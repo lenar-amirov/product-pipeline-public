@@ -41,7 +41,7 @@ The `status.py` welcome screen has already prompted: "What product problem are y
    - No evidence → "Data, complaints, or intuition?"
    - After each answer, reflect back in one line.
 3. **Name + profile + create** — ask one question that captures three things:
-   > "What's your name, role, and company? (one sentence — e.g. 'Lenar, Product Lead at VK on social commerce')"
+   > "What's your name, role, and company? (one sentence — e.g. 'Alex, Senior PM at Acme on checkout flows')"
 
    Then:
    - **First** write `.pm-local` (single line, name only, no trailing newline) via Write tool — this skips an interactive prompt the script can't satisfy from the bash tool

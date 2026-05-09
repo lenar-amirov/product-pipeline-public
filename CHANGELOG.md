@@ -43,8 +43,8 @@ cross-initiative awareness). Together they make Claude remember:
   Non-auto sections (Role, Constraints) require PM confirmation before
   edit.
 - FIRST LAUNCH "Name + create" step now asks one question that captures
-  name + role + company in one sentence (e.g. "Lenar, Product Lead at
-  VK on social commerce"). No additional friction beyond what was there.
+  name + role + company in one sentence (e.g. "Alex, Senior PM at
+  Acme on checkout flows"). No additional friction beyond what was there.
 - New CLAUDE.md RULES entry: **Grow pm-profile.md lazily.** Concrete
   triggers for auto-updates (e.g. mentioned-twice product, repeated
   methodology, recurring stakeholder name).
