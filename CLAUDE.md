@@ -18,7 +18,10 @@ If for any reason the hook output is missing, run `python3 tools/scripts/status.
 
 **After status.py, also read these personal context files at the working directory root** (they're gitignored, personal to this PM):
 
-- `.product-corrections.md` — accumulated rules from past PM corrections. **Apply every rule in this file to your responses for the rest of the session.** If the file is missing, the PM hasn't initialized it yet — that's fine, just note it.
+- `pm-profile.md` — PM's role, company, working style, recurring stakeholders, domain knowledge. **Use as constant context for every response** (e.g. if profile says "uses SIF not RICE", default to SIF). Sections marked `[auto]` should be appended to (not overwritten) when you observe new recurring patterns.
+- `.product-corrections.md` — accumulated rules from past PM corrections. **Apply every rule in this file to your responses for the rest of the session.**
+
+Both files may be missing if the PM hasn't initialized them — that's fine, just note it.
 
 Then check `.pm-local` in the working directory:
 
@@ -36,8 +39,13 @@ The `status.py` welcome screen has already prompted: "What product problem are y
    - No metric → "What number moves if you fix this?"
    - No evidence → "Data, complaints, or intuition?"
    - After each answer, reflect back in one line.
-3. **Name + create** — ask name, then:
-   - **First** write `.pm-local` (single line, no trailing newline) via Write tool — this skips an interactive prompt the script can't satisfy from the bash tool
+3. **Name + profile + create** — ask one question that captures three things:
+   > "What's your name, role, and company? (one sentence — e.g. 'Lenar, Product Lead at VK on social commerce')"
+
+   Then:
+   - **First** write `.pm-local` (single line, name only, no trailing newline) via Write tool — this skips an interactive prompt the script can't satisfy from the bash tool
+   - **If `pm-profile.md` exists**, edit the Role section (Name, Title, Company, Team) with what the PM just told you. Don't ask follow-ups about working style or stakeholders — those will fill in over time as `[auto]`.
+   - **If `pm-profile.md` doesn't exist** (init wasn't run), skip — profile will be created on next init.
    - **Then** run `tools/scripts/new-initiative.sh "<slug>"` (slug derived from problem, kebab-case)
    - **Then** edit `{pm}/{slug}/CONTEXT.md` with what you extracted from the drill-down — leave unverified fields as `[to be validated]`
 4. **Show value** — generate 3-5 problem hypotheses → `{pm}/{slug}/output/hypotheses.md`. Display them + the filled CONTEXT.md to the user.
@@ -193,3 +201,10 @@ Config stored in `output/status.json` → `pipeline_config`.
   - **Universal preference** (style, methodology, domain rule, e.g. "we use SIF not RICE", "iPad counts as desktop") → propose adding to `.product-corrections.md`. Show the proposed entry, ask "add this rule?", only write after PM confirms.
   - **Repeated correction in same session** (PM corrects you twice on the same point) → must add to `.product-corrections.md`, don't ask permission.
 - **Apply `.product-corrections.md` consistently.** Every rule in that file applies to every response in the session. If a rule is unclear or contradicts what the user just said, surface the conflict — don't silently pick.
+- **Grow `pm-profile.md` lazily.** When you observe a recurring pattern that fits a `[auto]` section, append silently:
+  - **Active products** — when the PM mentions a product more than once across sessions
+  - **Working style** — when the PM uses or asks for a specific methodology / format consistently (e.g. third time saying "use SIF" → add to profile)
+  - **Recurring stakeholders** — when the same name shows up across initiatives (e.g. "VP Product approves Gates")
+  - **Domain knowledge** — when you observe a constant about the product or market (e.g. "user base is 80% mobile")
+
+  Don't ask permission for `[auto]` updates — append silently with a one-line "(noted in pm-profile.md)" mention. For non-auto sections (Role, Constraints), ask before editing.

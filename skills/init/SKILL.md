@@ -128,7 +128,50 @@ If `.product-corrections.md` doesn't exist in the target directory, create it wi
 <!-- e.g. Dev estimates require 1-week buffer for QA -->
 ```
 
-(PM profile and initiatives digest will be added in later steps of the init skill — for now only `.product-corrections.md`.)
+**`pm-profile.md`** — personal profile of the PM (role, company, methodology preferences, recurring stakeholders, domain knowledge). Claude reads at every session start to tailor responses without re-asking.
+
+If `pm-profile.md` doesn't exist in the target directory, create it with this template:
+
+```markdown
+# PM Profile
+
+> Your personal profile. Claude reads this at every session start to tailor
+> responses. Fields fill in over time as Claude learns from your work.
+>
+> You can also edit directly. Sections marked [auto] grow automatically;
+> sections without the marker are for you to fill (or for Claude to ask
+> about during FIRST LAUNCH).
+
+## Role
+- **Name**: [filled by init from .pm-local]
+- **Title**: [e.g. Product Lead, Senior PM, etc. — Claude asks during FIRST LAUNCH]
+- **Company**: [your company]
+- **Team**: [your team / area of responsibility]
+
+## Active products [auto]
+<!-- Claude appends as you work on initiatives.
+     e.g. - VK Видео (social discovery) — 3 active initiatives -->
+
+## Working style [auto]
+<!-- Claude appends as it observes recurring patterns.
+     e.g. - Methodology: SIF for problems, ICE for solutions
+          - PRD style: terse, mixed Russian/English OK
+          - Hypothesis format: SIF score + kill-signal + what-to-validate -->
+
+## Recurring stakeholders [auto]
+<!-- Claude appends when the same names show up across initiatives.
+     e.g. - VP Product (final approver at Gates)
+          - Lead Designer Аня (involved from sketch step) -->
+
+## Domain knowledge [auto]
+<!-- Claude appends when it observes constants about your product/market.
+     e.g. - User base ~80% mobile, 20% web
+          - Common segments: новые/возвращающиеся, активные/спящие, платящие -->
+
+## Constraints / context
+<!-- e.g. - Working in a regulated market
+          - Russian-speaking user base primarily -->
+```
 
 ### Step 4: Tell the user what to do next
 

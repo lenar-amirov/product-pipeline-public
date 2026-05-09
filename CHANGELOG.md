@@ -5,6 +5,27 @@ All notable changes to Product Discovery will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.6.0] — 2026-05-09
+
+### Added — PM Profile (Step 2 of 3 personalization phases)
+
+- `pm-profile.md` — personal profile of the PM (Role, Active products,
+  Working style, Recurring stakeholders, Domain knowledge, Constraints).
+  Loaded by Claude at every session start to tailor responses.
+- Sections marked `[auto]` are updated silently by Claude when it
+  observes recurring patterns (e.g. third time PM uses SIF → noted).
+  Non-auto sections (Role, Constraints) require PM confirmation before
+  edit.
+- FIRST LAUNCH "Name + create" step now asks one question that captures
+  name + role + company in one sentence (e.g. "Lenar, Product Lead at
+  VK on social commerce"). No additional friction beyond what was there.
+- New CLAUDE.md RULES entry: **Grow pm-profile.md lazily.** Concrete
+  triggers for auto-updates (e.g. mentioned-twice product, repeated
+  methodology, recurring stakeholder name).
+
+Coming next:
+- 0.7.0 — Cross-initiative awareness (`.initiatives-digest.md`)
+
 ## [0.5.0] — 2026-05-09
 
 ### Added — Product corrections (Step 1 of 3 personalization phases)
