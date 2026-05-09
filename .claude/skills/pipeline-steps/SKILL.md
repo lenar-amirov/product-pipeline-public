@@ -325,34 +325,121 @@ Structure: Title → Hypothesis → Solution context → Solution → Demo → U
 
 ---
 
-## STEP 16 — `/support-task` (Optional)
+## STEP 16 — `/analyze-ab-test` (Recommended)
+
+**Type**: Pause (waiting for AB test data) → Autonomous (when data arrives)
+**Input**: `output/ab-test-design.md` + `research/ab-test-results.md` (raw test data from analyst)
+**Output**: `output/ab-test-analysis.md`
+**Skills**: `funnel-analysis-builder` + `multi-source-signal-synthesiser`
+
+**External dependency** (optional): if PM has [pm-skills](https://github.com/phuryn/pm-skills) installed, prefer `pm-data-analytics:ab-test-analysis` skill or `/analyze-test` command — it has dedicated stat-sig validation tooling.
+
+When the AB test concludes and data is in `research/ab-test-results.md`, analyze:
+1. **Statistical significance**: p-value, confidence interval, sample size validation. Flag if underpowered.
+2. **Primary metric**: did it move? Effect size, vs MDE from `ab-test-design.md`.
+3. **Guardrails**: did any guardrail metric break? (engagement, churn, error rate, performance)
+4. **Segments**: where did it work / not work? Heterogeneous treatment effects.
+5. **Counter-metrics**: did anything we feared moved against us?
+6. **Decision**: **Ship / Extend / Stop / Iterate** — with explicit reasoning tied to the win criteria from the design.
+
+Evidence typing: REAL, confidence 0.7-0.95 (depending on sample size and stat-sig).
+
+**Branching**:
+- Ship → proceed to step 17 `/plan-gtm`
+- Extend (need more power) → wait, re-analyze later
+- Iterate (partial signal) → back to step 7 with refined hypothesis
+- Stop → write retrospective to `output/decisions.md`, mark initiative as `archived` in status.json
+
+**Tracking**: close `pending.ab_test_analysis` if active.
+
+---
+
+## STEP 17 — `/plan-gtm` (Core)
+
+**Type**: Autonomous → PM reviews
+**Input**: `output/PRD.md` + `output/ab-test-analysis.md` (if present) + `CONTEXT.md`
+**Output**: `output/gtm-plan.md`
+**Skills**: `strategic-narrative-generator` (for narrative structure)
+
+GTM plan for **rolling out to existing product users** (this is not net-new product launch — existing users are getting a new feature/initiative).
+
+**External dependency** (optional): if PM has [pm-skills](https://github.com/phuryn/pm-skills) installed, leverage their `pm-go-to-market:gtm-strategy`, `beachhead-segment`, `ideal-customer-profile` skills, or run `/plan-launch` first and adapt.
+
+Plan must cover:
+
+1. **Activation segment**: which subset of current users gets this first? (cohort, behavior, plan tier, geo)
+   - Beachhead: smallest segment that proves the value
+   - Expansion path: how we go from beachhead → broader rollout
+2. **Value proposition for current users**: why should they care? (one sentence, then 3 bullet expansion)
+   - Pain it solves for them specifically (different from net-new user value prop)
+   - What changes in their workflow
+3. **Rollout plan**: phased vs full
+   - Phase 1: % users (or named cohort), success criteria, decision gate
+   - Phase 2: expansion criteria
+   - Full rollout: when, who decides
+   - Kill switches: when to pause
+4. **Channels** for activation (where current users will encounter the feature):
+   - In-app: notification, banner, modal, tooltip, empty state
+   - Lifecycle: email, push, SMS
+   - Owned: blog, changelog, help center
+   - Direct: CSM/sales for high-touch accounts
+5. **Success metrics**:
+   - Adoption rate (target % of activation segment using feature within X days)
+   - Activation funnel (saw → tried → repeated)
+   - Retention impact (does it improve the broader retention metric)
+   - Counter-metrics to watch (drop in primary engagement, support load)
+6. **Risk mitigation**:
+   - What if adoption is lower than expected — escalation plan
+   - What if support load spikes — staffing plan
+   - What if guardrails break — rollback procedure
+
+Show plan to PM for review. After approval, proceed to step 18.
+
+---
+
+## STEP 18 — `/create-gtm-materials` (Recommended)
+
+**Type**: Autonomous → PM reviews each artifact
+**Input**: `output/gtm-plan.md` + `output/PRD.md` + `output/solution-sketch.md`
+**Output**: `output/gtm-materials.md` (index) + individual material files in `output/materials/`
+**Skills**: `ab-test-announcement-wizard` (for communication patterns) + `user-persona-builder` (to tailor copy per segment)
+
+**External dependency** (optional): if PM has [pm-skills](https://github.com/phuryn/pm-skills) installed, leverage `pm-marketing-growth:value-prop-statements`, `positioning-ideas` for richer copy variants.
+
+Generate the actual materials referenced in the GTM plan. For each channel in the plan, produce one ready-to-publish artifact:
+
+1. **In-app**:
+   - `output/materials/in-app-notification.md` — first-touch notification (1 line, 1 CTA)
+   - `output/materials/in-app-feature-banner.md` — banner copy with persistent display
+   - `output/materials/in-app-empty-state.md` — empty-state copy if feature has one
+2. **Lifecycle**:
+   - `output/materials/email-announcement.md` — subject lines (3 variants), body, CTA
+   - `output/materials/push-notification.md` — push copy if applicable
+3. **Owned**:
+   - `output/materials/blog-post.md` — full blog/changelog entry with screenshots placeholders
+   - `output/materials/help-center-article.md` — help doc explaining the feature
+4. **Internal enablement**:
+   - `output/materials/sales-enablement.md` — talking points for sales/CSM
+   - `output/materials/support-faq.md` — anticipated questions + answers (subset of step 19 support brief)
+5. **Press/External** (if applicable):
+   - `output/materials/press-release.md` — only if this is a notable launch
+
+Each material:
+- Tailored to the segment from the GTM plan
+- Includes alternative versions where relevant (A/B copy)
+- References screenshots/assets needed (placeholders if not yet produced)
+- Notes who owns the asset (PM, marketing, design, support)
+
+**Tracking**: activate `pending.gtm_materials_review` until PM signs off.
+
+---
+
+## STEP 19 — `/support-task` (Optional)
 
 **Type**: Autonomous → Pause
-**Input**: `output/PRD.md` + `output/solution-sketch.md` + `output/ab-test-design.md`
+**Input**: `output/PRD.md` + `output/solution-sketch.md` + `output/ab-test-design.md` + `output/gtm-plan.md`
 **Output**: `output/support-brief.md`
 
 Create support brief: what's changing, who's affected, support scenarios (5-10), FAQ, limitations, timeline, PM contact.
 
 **Tracking**: activate `pending.support_brief`.
-
----
-
-## STEP 17 — `/announce-ab-test` (Optional)
-
-**Type**: Autonomous → PM publishes
-**Input**: `output/PRD.md` + `output/ab-test-design.md`
-**Output**: `output/announce-ab-test.md`
-**Skills**: `ab-test-announcement-wizard`
-
-Generate internal AB test announcement.
-
----
-
-## STEP 18 — `/announce-release` (Optional)
-
-**Type**: Autonomous → PM publishes
-**Input**: `output/PRD.md` + AB test results
-**Output**: `output/announce-release.md`
-**Skills**: `ab-test-announcement-wizard` (adapt for release)
-
-Generate internal release announcement.

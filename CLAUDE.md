@@ -100,6 +100,9 @@ PM won't always use `/commands`. Match their intent to the right step:
 | "I need a presentation", "prep for the report" | 10 or 15 (check which gate is next) |
 | "let's plan the AB test", "how do we test this" | 14 `/design-ab-test` |
 | "create tickets", "break this into tasks" | `/create-tickets` |
+| "AB test results came in", "analyze the experiment" | 16 `/analyze-ab-test` |
+| "plan the rollout", "how do we launch", "GTM for this" | 17 `/plan-gtm` |
+| "draft launch materials", "in-app announcement", "rollout copy" | 18 `/create-gtm-materials` |
 | "continue", "what's next", "where were we" | Check status.json → suggest next |
 
 When unsure — check `output/status.json` for current step, then suggest the logical next one.
@@ -125,9 +128,10 @@ When unsure — check `output/status.json` for current step, then suggest the lo
 | 14 | `/design-ab-test` | Recommended | `product-discovery-template`, `funnel-analysis-builder` |
 | 15 | `/create-gate2-presentation` | Core | `strategic-narrative-generator` |
 | — | `/create-tickets` | After Gate 2 | `user-story-generator` |
-| 16 | `/support-task` | Optional | — |
-| 17 | `/announce-ab-test` | Optional | `ab-test-announcement-wizard` |
-| 18 | `/announce-release` | Optional | `ab-test-announcement-wizard` |
+| 16 | `/analyze-ab-test` | Recommended | `funnel-analysis-builder`, `multi-source-signal-synthesiser` |
+| 17 | `/plan-gtm` | Core | `strategic-narrative-generator` |
+| 18 | `/create-gtm-materials` | Recommended | `ab-test-announcement-wizard`, `user-persona-builder` |
+| 19 | `/support-task` | Optional | — |
 
 ---
 

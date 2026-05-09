@@ -153,7 +153,7 @@ Reconfigure anytime: tell Claude "reconfigure pipeline" or "enable competitor re
 | 9 | `/review-design` | Recommended | Heuristic evaluation + iteration |
 | 10 | `/create-presentation` | Core | Problem Research Report |
 
-### Phase 2: Solution Development -> Solution Research Report
+### Phase 2: Solution Development + Validation -> Solution Research Report
 | # | Command | Type | What it does |
 |---|---------|------|-------------|
 | 11 | `/create-design-brief` | Recommended | Brief for designer |
@@ -161,15 +161,16 @@ Reconfigure anytime: tell Claude "reconfigure pipeline" or "enable competitor re
 | 13 | `/finalize-prd` | Core | Complete PRD with user stories |
 | 14 | `/design-ab-test` | Recommended | AB test: baseline, MDE, sample, guardrails |
 | 15 | `/create-gate2-presentation` | Core | Solution Research Report |
+| 16 | `/analyze-ab-test` | Recommended | Stat-sig analysis + ship/extend/iterate decision |
 
 After Solution Research Report: `/create-tickets` to generate dev tickets and push them to Jira/Linear/GitHub Issues via MCP.
 
-### Phase 3: Launch Preparation
+### Phase 3: Launch (rollout to existing users)
 | # | Command | Type | What it does |
 |---|---------|------|-------------|
-| 16 | `/support-task` | Optional | Support brief: FAQ, scenarios |
-| 17 | `/announce-ab-test` | Optional | AB test announcement |
-| 18 | `/announce-release` | Optional | Release announcement |
+| 17 | `/plan-gtm` | Core | GTM plan: activation segment, value prop, channels, rollout phases |
+| 18 | `/create-gtm-materials` | Recommended | Launch materials: in-app, email, blog, FAQ, sales enablement |
+| 19 | `/support-task` | Optional | Support brief: FAQ, scenarios |
 
 ### Validation branching (step 6)
 
@@ -213,9 +214,12 @@ my-initiative/
 │   ├── ab-test-design.md          <- step 14
 │   ├── gate2-presentation.md      <- step 15
 │   ├── gate2-presentation.pptx    <- step 15
-│   ├── support-brief.md           <- step 16
-│   ├── announce-ab-test.md        <- step 17
-│   └── announce-release.md        <- step 18
+│   ├── tickets.md                 <- /create-tickets (post-Gate)
+│   ├── ab-test-analysis.md        <- step 16
+│   ├── gtm-plan.md                <- step 17
+│   ├── gtm-materials.md           <- step 18 (index)
+│   ├── materials/                 <- step 18 (in-app, email, blog, FAQ, sales)
+│   └── support-brief.md           <- step 19
 └── CLAUDE.md                      <- instructions for Claude
 ```
 

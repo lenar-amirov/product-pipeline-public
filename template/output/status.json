@@ -23,7 +23,8 @@
     "15":   { "status": "pending", "date": null, "summary": null },
     "16":   { "status": "pending", "date": null, "summary": null },
     "17":   { "status": "pending", "date": null, "summary": null },
-    "18":   { "status": "pending", "date": null, "summary": null }
+    "18":   { "status": "pending", "date": null, "summary": null },
+    "19":   { "status": "pending", "date": null, "summary": null }
   },
   "pending": {
     "analytics_brief": null,
@@ -34,6 +35,8 @@
     "design_brief": null,
     "gate1_challenge": null,
     "gate2_challenge": null,
+    "ab_test_analysis": null,
+    "gtm_materials_review": null,
     "support_brief": null
   },
   "pipeline_config": {
@@ -59,9 +62,10 @@
       "finalize_prd":            { "enabled": true,  "type": "core" },
       "design_ab_test":          { "enabled": true,  "type": "recommended" },
       "create_gate2":            { "enabled": true,  "type": "core" },
-      "support_task":            { "enabled": false, "type": "optional" },
-      "announce_ab_test":        { "enabled": false, "type": "optional" },
-      "announce_release":        { "enabled": false, "type": "optional" }
+      "analyze_ab_test":         { "enabled": true,  "type": "recommended" },
+      "plan_gtm":                { "enabled": true,  "type": "core" },
+      "create_gtm_materials":    { "enabled": true,  "type": "recommended" },
+      "support_task":            { "enabled": false, "type": "optional" }
     }
   }
 }

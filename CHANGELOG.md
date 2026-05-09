@@ -5,6 +5,47 @@ All notable changes to Product Discovery will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.4.0] — 2026-05-09
+
+### Added
+
+- **Step 16 `/analyze-ab-test`** in Phase 2 — analyze AB test results for
+  statistical significance, primary metric movement vs MDE, guardrails,
+  segments. Produces ship/extend/iterate/stop decision with reasoning.
+  Optional companion: `pm-skills:pm-data-analytics:ab-test-analysis`
+  (`/analyze-test`) for dedicated stat-sig tooling.
+- **Step 17 `/plan-gtm`** in Phase 3 — full GTM plan for rolling out the
+  validated solution to **existing product users** (not net-new launch).
+  Covers activation segment, value prop, channels, rollout phases,
+  success metrics, risk mitigation. Optional companion:
+  `pm-skills:pm-go-to-market:gtm-strategy` (`/plan-launch`).
+- **Step 18 `/create-gtm-materials`** in Phase 3 — generates the actual
+  materials referenced in the GTM plan: in-app notifications, email
+  copy, blog posts, help center articles, sales/CSM enablement, support
+  FAQ. Stores in `output/materials/`. Optional companion:
+  `pm-skills:pm-marketing-growth:value-prop-statements`,
+  `positioning-ideas`.
+- New template stubs: `output/gtm-plan.md`, `output/gtm-materials.md`,
+  `output/materials/` directory.
+- New pending labels in dashboard: `ab_test_analysis`,
+  `gtm_materials_review`.
+
+### Removed
+
+- **Step 17 `/announce-ab-test`** and **Step 18 `/announce-release`**
+  (the old single-channel announcement steps). Replaced with
+  `/create-gtm-materials` which generates a multi-channel package.
+
+### Changed
+
+- Phase 3 renamed: "Launch Preparation" → "Launch (rollout to existing
+  users)" — clarifies that GTM here is for existing product users
+  receiving a new feature, not net-new product launch.
+- `/support-task` moved from step 16 to step 19.
+- Pipeline now has 19 steps (was 18).
+- Step 16 ab-test-analysis and step 17 plan-gtm are Recommended/Core,
+  enabled by default in `full` template.
+
 ## [0.3.0] — 2026-05-08
 
 ### Changed

@@ -106,16 +106,16 @@ The work is now persisted. Close Claude, come back tomorrow — the initiative r
 18 steps across 3 phases. Each step produces a concrete artifact and updates the living PRD.
 
 ```
-   Problem Research                    Solution Design              Launch
-┌─────────────────────────┐  ┌──────────────────────────┐  ┌──────────────┐
-│ CJM Analysis            │  │ Design Brief             │  │ Support Brief│
-│ Synthetic Research      │  │ Dev Estimate             │  │ AB Test Post │
-│ Competitor Research     │  │ Finalize PRD             │  │ Release Post │
-│ Research Briefs         │  │ AB Test Design           │  └──────────────┘
-│ Validate Problems       │  │                          │
-│ Solution Hypotheses     │  │   Solution Research      │
-│ Sketch Solution         │  │       Report ▶           │
-│ Design Review           │  └──────────────────────────┘
+   Problem Research              Solution Design + Validate         Launch
+┌─────────────────────────┐  ┌──────────────────────────────┐  ┌──────────────┐
+│ CJM Analysis            │  │ Design Brief                 │  │ GTM Plan     │
+│ Synthetic Research      │  │ Dev Estimate                 │  │ GTM Materials│
+│ Competitor Research     │  │ Finalize PRD                 │  │ Support Brief│
+│ Research Briefs         │  │ AB Test Design               │  └──────────────┘
+│ Validate Problems       │  │ Solution Research Report ▶   │
+│ Solution Hypotheses     │  │ AB Test Analysis             │
+│ Sketch Solution         │  │  → Ship / Extend / Iterate   │
+│ Design Review           │  └──────────────────────────────┘
 │                         │
 │   Problem Research      │
 │       Report ▶          │

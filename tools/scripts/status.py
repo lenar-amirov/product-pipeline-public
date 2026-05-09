@@ -44,9 +44,10 @@ PIPELINE_STEPS = {
     13: "Finalize PRD",
     14: "AB Test Design",
     15: "Solution Research Report",
-    16: "Support Brief",
-    17: "Announce AB Test",
-    18: "Announce Release",
+    16: "AB Test Analysis",
+    17: "GTM Plan",
+    18: "GTM Materials",
+    19: "Support Brief",
 }
 
 PENDING_LABELS = {
@@ -55,6 +56,8 @@ PENDING_LABELS = {
     "audience_brief": "Send audience brief",
     "analytics_results": "Waiting for analytics results",
     "survey_results": "Waiting for survey results",
+    "ab_test_analysis": "Waiting for AB test data",
+    "gtm_materials_review": "GTM materials awaiting PM review",
     "design_brief": "Send brief to designer",
     "support_brief": "Send brief to support",
     "gate1_challenge": "Present Problem Research Report",
