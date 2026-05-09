@@ -9,3 +9,6 @@ logs/
 
 # Local user data (not committed to public repo)
 .pm-local
+.product-corrections.md
+pm-profile.md
+.initiatives-digest.md

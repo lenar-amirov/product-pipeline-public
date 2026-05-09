@@ -90,6 +90,46 @@ ls "$TARGET/CLAUDE.md" "$TARGET/template" "$TARGET/.claude/skills" "$TARGET/tool
 
 For overwrite mode, set `COPY_FLAG=-f` before running.
 
+### Step 3.5: Create personal context files (if missing)
+
+These files are personal to the PM and should NOT be overwritten if they already exist. Use the Write tool with `if not exists` semantics — check first via `ls`, only create when absent.
+
+**`.product-corrections.md`** — accumulated rules from PM corrections. Claude reads at every session start.
+
+If `.product-corrections.md` doesn't exist in the target directory, create it with this template:
+
+```markdown
+# Product Corrections — [PM Name]
+
+> Personal log of corrections you've given Claude. Claude reads this at every
+> session start and applies these rules. Append new entries — don't delete
+> (history matters).
+>
+> Add corrections by:
+>   1. Editing this file directly
+>   2. Telling Claude: "Add to corrections: ..."
+>   3. When you push back during a session, Claude will offer to add it here
+
+## Metrics
+<!-- e.g. We measure conversion to purchase, NOT add-to-cart (added 2026-04-15) -->
+
+## Segments
+<!-- e.g. "Mobile users" excludes iPad — we count iPad as desktop -->
+
+## Methodology
+<!-- e.g. Use SIF (Severity × Impact × Frequency), not RICE -->
+
+## Style
+<!-- e.g. PRDs in Russian for VK products, English for international -->
+<!-- e.g. Don't use phrase "leverage" — corp-speak -->
+
+## Process
+<!-- e.g. Always need VP Product approval before Gates -->
+<!-- e.g. Dev estimates require 1-week buffer for QA -->
+```
+
+(PM profile and initiatives digest will be added in later steps of the init skill — for now only `.product-corrections.md`.)
+
 ### Step 4: Tell the user what to do next
 
 After successful copy, show the user this exact set of next steps. **The cd step is critical** — Claude loads CLAUDE.md from the working directory, so the user MUST be in the scaffolded directory when they restart Claude Code.

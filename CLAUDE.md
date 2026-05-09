@@ -16,6 +16,10 @@ A `SessionStart` hook in `.claude/settings.json` runs `python3 tools/scripts/sta
 
 If for any reason the hook output is missing, run `python3 tools/scripts/status.py` yourself before doing anything else.
 
+**After status.py, also read these personal context files at the working directory root** (they're gitignored, personal to this PM):
+
+- `.product-corrections.md` — accumulated rules from past PM corrections. **Apply every rule in this file to your responses for the rest of the session.** If the file is missing, the PM hasn't initialized it yet — that's fine, just note it.
+
 Then check `.pm-local` in the working directory:
 
 - **No `.pm-local` file** → FIRST LAUNCH
@@ -184,3 +188,8 @@ Config stored in `output/status.json` → `pipeline_config`.
 - Respect pipeline_config: skip disabled steps, warn about skipped recommended steps
 - Use `ambiguity-resolver` when PM input is vague or contradictory at any step
 - After every session — SESSION END (status.json + decisions.md + git commit)
+- **Recognize corrections proactively.** When the PM pushes back ("no", "wrong", "we don't measure X", "don't suggest Y"), this is a teaching moment. Don't just adjust the response — categorize and record:
+  - **Local fact** (this initiative only, e.g. "our baseline is 1.8% not 2%") → append to `output/decisions.md`
+  - **Universal preference** (style, methodology, domain rule, e.g. "we use SIF not RICE", "iPad counts as desktop") → propose adding to `.product-corrections.md`. Show the proposed entry, ask "add this rule?", only write after PM confirms.
+  - **Repeated correction in same session** (PM corrects you twice on the same point) → must add to `.product-corrections.md`, don't ask permission.
+- **Apply `.product-corrections.md` consistently.** Every rule in that file applies to every response in the session. If a rule is unclear or contradicts what the user just said, surface the conflict — don't silently pick.

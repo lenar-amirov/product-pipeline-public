@@ -5,6 +5,27 @@ All notable changes to Product Discovery will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.5.0] — 2026-05-09
+
+### Added — Product corrections (Step 1 of 3 personalization phases)
+
+- `.product-corrections.md` — personal log of accumulated corrections,
+  loaded by Claude at every session start. Five sections: Metrics,
+  Segments, Methodology, Style, Process. Created by `init` skill if
+  missing; never overwritten if exists. Gitignored (personal).
+- CLAUDE.md SESSION START now reads `.product-corrections.md` after
+  status.py and applies every rule in the file to all responses.
+- New CLAUDE.md RULES entry: **Recognize corrections proactively.**
+  When PM pushes back, Claude categorizes (local fact / universal
+  preference / repeated correction) and either appends to decisions.md
+  or proposes addition to `.product-corrections.md`.
+- New CLAUDE.md RULES entry: **Apply corrections consistently.**
+  Every rule in the file applies to every response.
+
+Coming next:
+- 0.6.0 — PM profile (`pm-profile.md`)
+- 0.7.0 — Cross-initiative awareness (`.initiatives-digest.md`)
+
 ## [0.4.0] — 2026-05-09
 
 ### Added
