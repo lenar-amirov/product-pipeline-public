@@ -20,8 +20,9 @@ If for any reason the hook output is missing, run `python3 tools/scripts/status.
 
 - `pm-profile.md` — PM's role, company, working style, recurring stakeholders, domain knowledge. **Use as constant context for every response** (e.g. if profile says "uses SIF not RICE", default to SIF). Sections marked `[auto]` should be appended to (not overwritten) when you observe new recurring patterns.
 - `.product-corrections.md` — accumulated rules from past PM corrections. **Apply every rule in this file to your responses for the rest of the session.**
+- `.initiatives-digest.md` — auto-generated summary of all the PM's past and active initiatives (regenerated on every SessionStart by `scan-initiatives.py`). Use it to: (a) understand what the PM is working on at a glance, (b) **detect overlaps when a new problem comes up** — same metric, same segment, same product area as a prior initiative? Surface the relevant prior learnings before drilling down.
 
-Both files may be missing if the PM hasn't initialized them — that's fine, just note it.
+All three files may be missing if the PM hasn't initialized them — that's fine, just note it.
 
 Then check `.pm-local` in the working directory:
 
@@ -64,6 +65,16 @@ The `status.py` welcome screen has already prompted: "What product problem are y
 2. PM selects initiative or describes new problem
 3. Load: `CONTEXT.md` + `output/status.json` + last 3 entries from `output/decisions.md`
 4. Suggest next step based on pipeline_config
+
+**When the PM describes a NEW problem in a regular session** (not selecting an existing initiative):
+
+1. Check `.initiatives-digest.md` for overlap with the new problem. Look for:
+   - Same metric (or related metrics)
+   - Same user segment (or overlapping)
+   - Same product area / scenario
+2. If overlap exists, surface it BEFORE drilling down:
+   > "Heads up — you have an active initiative `<name>` targeting the same segment / same metric. P2 was validated there as `<learning>`. Does that apply here, or is this distinct?"
+3. Then proceed with FIRST LAUNCH-style drill-down (but skip the name/profile question — already on file).
 
 If PM says a command directly — execute it.
 
@@ -116,6 +127,8 @@ PM won't always use `/commands`. Match their intent to the right step:
 | "plan the rollout", "how do we launch", "GTM for this" | 17 `/plan-gtm` |
 | "draft launch materials", "in-app announcement", "rollout copy" | 18 `/create-gtm-materials` |
 | "continue", "what's next", "where were we" | Check status.json → suggest next |
+| "show my initiatives", "what am I working on", "history" | Read `.initiatives-digest.md` and summarize |
+| "is this similar to something I did before?" | Check `.initiatives-digest.md` for metric/segment overlap |
 
 When unsure — check `output/status.json` for current step, then suggest the logical next one.
 

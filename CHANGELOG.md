@@ -5,6 +5,32 @@ All notable changes to Product Discovery will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.7.0] — 2026-05-09
+
+### Added — Cross-initiative awareness (Step 3 of 3 personalization phases)
+
+- `tools/scripts/scan-initiatives.py` — walks `{pm}/*/output/status.json`,
+  `CONTEXT.md`, `validated-hypotheses.md`. Generates `.initiatives-digest.md`
+  with two sections: Active (current/in-progress) and Archived (done).
+  For each: name, current step, progress, metric, segment, baseline→target,
+  validated hypotheses. Filters out unfilled placeholders.
+- `.claude/settings.json` SessionStart hook now also runs scan-initiatives.py
+  (before status.py, so digest is fresh when status.py displays).
+- `.initiatives-digest.md` is gitignored (auto-generated, personal).
+- CLAUDE.md SESSION START reads the digest after status.py.
+- CLAUDE.md REGULAR SESSION now has explicit overlap detection: when PM
+  describes a new problem in a regular session, Claude checks digest for
+  same-metric/same-segment matches and surfaces relevant prior learnings
+  BEFORE drilling down.
+- New intent matching: "show my initiatives" → summarize from digest;
+  "is this similar to something I did before" → check overlap.
+
+This completes the 3-phase personalization plan (corrections, profile,
+cross-initiative awareness). Together they make Claude remember:
+- Past **corrections** (.product-corrections.md)
+- PM's **identity** (pm-profile.md)
+- All **prior work** (.initiatives-digest.md)
+
 ## [0.6.0] — 2026-05-09
 
 ### Added — PM Profile (Step 2 of 3 personalization phases)
