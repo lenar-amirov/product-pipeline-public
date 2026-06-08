@@ -120,6 +120,7 @@ PM won't always use `/commands`. Match their intent to the right step:
 | "I got analytics results", "here's the data from analyst" | 6 `/validate-problems` |
 | "let's think about solutions", "how do we solve this" | 7 `/solution-hypotheses` |
 | "draw the screens", "what does it look like" | 8 `/sketch-solution` |
+| "make a prototype", "build it in Claude Design", "сделай прототип", "нарисуй в Claude Design" | 8 `/sketch-solution` |
 | "I need a presentation", "prep for the report" | 10 or 15 (check which gate is next) |
 | "let's plan the AB test", "how do we test this" | 14 `/design-ab-test` |
 | "create tickets", "break this into tasks" | `/create-tickets` |
@@ -188,6 +189,7 @@ Config stored in `output/status.json` → `pipeline_config`.
 | "survey brief sent" | close `pending.survey_brief`, activate `pending.survey_results` |
 | "audience brief sent" | close `pending.audience_brief` |
 | "design brief sent" | close `pending.design_brief` |
+| "design ready: ..." | close `pending.design_export`, write the prototype link to the Prototype field in `output/solution-sketch.md` |
 | "analytics results: ..." | write to `research/analytics-data.md`, close `pending.analytics_results` |
 | "survey results: ..." | write to `research/survey-results.md`, close `pending.survey_results` |
 | "interview notes: ..." | write to `research/interview-notes.md` |
@@ -219,5 +221,6 @@ Config stored in `output/status.json` → `pipeline_config`.
   - **Working style** — when the PM uses or asks for a specific methodology / format consistently (e.g. third time saying "use SIF" → add to profile)
   - **Recurring stakeholders** — when the same name shows up across initiatives (e.g. "VP Product approves Gates")
   - **Domain knowledge** — when you observe a constant about the product or market (e.g. "user base is 80% mobile")
+  - **Design preferences** — when the PM consistently chooses a design engine / platform / design system (e.g. "always Claude Design", "mobile-first", "tokens at design/tokens.json"). Maintain a `## Design preferences [auto]` section (default renderer / platform / design system) that Step 8's `design_config` inherits from.
 
   Don't ask permission for `[auto]` updates — append silently with a one-line "(noted in pm-profile.md)" mention. For non-auto sections (Role, Constraints), ask before editing.

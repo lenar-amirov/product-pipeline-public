@@ -195,15 +195,44 @@ Pyramid principle: data → insight → conclusion → recommendation.
 
 ## STEP 8 — `/sketch-solution` (Core)
 
-**Type**: PM comments
+**Type**: Hybrid — autonomous draft + optional PM handoff
 **Input**: `output/solution-hypotheses.md`
-**Output**: `output/solution-sketch.md`
+**Output**: `output/design-prototype-brief.md`, `design/prototype-draft.html`, `output/solution-sketch.md`
 **PRD**: → §6 update, §7
 **Skills**: `ui-pattern-library`
 
-1. Select UI patterns, create `output/solution-sketch.md`: screens, elements, user flow
-2. Figma MCP if connected
-3. Update PRD §6, fill §7
+The step is a **sketchable, tool-agnostic prototype engine** with a soft gate. It reads
+`design_config` from `status.json` and adapts; Claude Design is the recommended default, not a
+hard dependency.
+
+**Read `design_config` first** (block in `status.json`, next to `pipeline_config`):
+`renderer` (claude-design | html | figma | text), `fidelity` (lofi | hifi),
+`platform`, `scope` (single | flow | ask), `design_system` (generate | tokens-file | figma-lib),
+`variants`.
+- **Backward compatible**: if there is no `design_config` block, use the template defaults; a
+  missing `pending.design_export` is not an error — never crash on old initiatives.
+- Defaults inherit: `pm-profile.md` Design preferences → `design_config` (initiative override) →
+  ask at runtime only when a field is `ask`. If `scope: ask`, ask the PM:
+  "Top-1 hypothesis, or a multi-screen flow across the top 2–3?"
+- `renderer: text` → legacy text-only behavior (no HTML). `renderer: figma` → Figma MCP branch
+  (if connected).
+
+### 8a — autonomous (never stalls the pipeline)
+1. Select UI patterns (`ui-pattern-library`) and generate **two artifacts**:
+   - `output/design-prototype-brief.md` — fill placeholders from `design_config` + hypotheses + tokens.
+   - `design/prototype-draft.html` — a self-contained draft prototype on those tokens.
+2. Create/update `output/solution-sketch.md`: screens, elements, user flow, screen→S[N]→patterns table.
+3. PM sees a result immediately — the step is complete even with no handoff.
+
+### Handoff (soft gate — encouraged, not blocking)
+PM takes the brief + draft into the renderer (Claude Design: web-capture, inline knobs, share
+links → export to `design/prototype.html`). Activate `pending.design_export` as a **soft** reminder;
+correct degradation if skipped (draft remains current). On `design ready: <link>` → close it.
+
+### 8b — fold back in
+"Current prototype" = `design/prototype.html` if present, else `design/prototype-draft.html` (the
+export supersedes the draft; the draft is kept as fallback). `solution-sketch.md` always links to
+the current one. Update PRD §6, fill §7.
 
 ---
 

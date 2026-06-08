@@ -64,6 +64,7 @@ The plugin supports — but does not require — these integrations:
 | **Linear MCP** (`@anthropic/mcp-linear`) | If you set Tracker → Linear | Same as above, in Linear format |
 | **GitHub Issues** (via `gh` CLI) | If you set Tracker → GitHub Issues | Same as above, sent to your specified repo |
 | **Figma MCP** | If you connect it (used at step 8 sketch / wireframes) | The Figma file URLs you reference |
+| **Claude Design** (claude.ai/design) | **Only if you opt into the step 8 handoff** — the draft prototype is generated and stays local; nothing is shared unless you choose to take the brief there | The prototype brief and screens you paste in |
 | **Anthropic web search** | When Claude runs WebSearch (e.g., during competitor research) | The search query — handled by Anthropic |
 
 You install these MCP servers separately and you control their credentials. The plugin only invokes them when relevant pipeline steps run, with data you've already authored locally. We do not proxy any of this through our own servers — there are no servers.

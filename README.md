@@ -114,7 +114,7 @@ The work is now persisted. Close Claude, come back tomorrow — the initiative r
 │ Research Briefs         │  │ AB Test Design               │  └──────────────┘
 │ Validate Problems       │  │ Solution Research Report ▶   │
 │ Solution Hypotheses     │  │ AB Test Analysis             │
-│ Sketch Solution         │  │  → Ship / Extend / Iterate   │
+│ Sketch Solution ▸proto  │  │  → Ship / Extend / Iterate   │
 │ Design Review           │  └──────────────────────────────┘
 │                         │
 │   Problem Research      │
@@ -130,6 +130,7 @@ The work is now persisted. Close Claude, come back tomorrow — the initiative r
 | **status.json** | Current step, pending tasks, pipeline config — Claude resumes from here |
 | **decisions.md** | Log of every meaningful decision and discussion across sessions |
 | **hypotheses.md** | Problem hypotheses with evidence typing (REAL/SYNTHETIC/INFERRED) |
+| **Solution Sketch + prototype** | Clickable prototype from step 8 — tool-agnostic renderer (Claude Design by default, degrades to HTML/text); draft generated locally, optional handoff for higher fidelity |
 | **PRD.md** | Living document — sections fill as you progress, not at the end |
 | **Problem Research Report** | Presentation: validated problem + solution sketch (after step 10) |
 | **Solution Research Report** | Presentation: designed solution + AB test plan (after step 15) |

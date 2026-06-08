@@ -14,7 +14,7 @@ Ensure explicit alignment on goals, constraints, stakeholders, and success crite
 
 ## Checklist
 
-Guide the PM through these 10 areas. For each area, ask a focused question, then write the answer to CONTEXT.md.
+Guide the PM through these areas. For each area, ask a focused question, then write the answer to CONTEXT.md (areas 1–9), `pipeline_config` (area 10), or `design_config` (area 11).
 
 ### 1. Outcome
 **Ask**: "What metric are we trying to improve, and by how much?"
@@ -85,10 +85,21 @@ If PM picks a template with disabled recommended steps, show warning for each:
 Note: Competitor research is disabled. Your solution may unknowingly duplicate existing products.
 ```
 
+### 11. Design Setup (optional — has sensible defaults)
+**Ask**: "For Step 8, which design engine, platform, and design system should I assume?"
+- Get: `renderer` (claude-design | html | figma | text), `platform` (mobile | desktop | responsive),
+  `design_system` (generate | tokens-file | figma-lib)
+- Write the answer to the `design_config` block in `status.json` (separate from `pipeline_config`).
+- If PM has Design preferences in `pm-profile.md`, use those as defaults and don't re-ask.
+- If PM skips: keep template defaults (`claude-design` / `mobile` / `generate`, `scope: ask`).
+- Mention: "Claude Design is the recommended default, but Step 8 degrades to plain HTML or text —
+  you're never locked into one tool."
+
 ## Output
 
 1. **CONTEXT.md** — all checklist answers written to appropriate fields
 2. **pipeline_config in status.json** — template name + per-step enabled/type config
+3. **design_config in status.json** — renderer / platform / fidelity / design_system / scope / variants
 
 ## Tips
 

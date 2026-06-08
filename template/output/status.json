@@ -33,6 +33,7 @@
     "analytics_results": null,
     "survey_results": null,
     "design_brief": null,
+    "design_export": null,
     "gate1_challenge": null,
     "gate2_challenge": null,
     "ab_test_analysis": null,
@@ -67,5 +68,13 @@
       "create_gtm_materials":    { "enabled": true,  "type": "recommended" },
       "support_task":            { "enabled": false, "type": "optional" }
     }
+  },
+  "design_config": {
+    "renderer": "claude-design",
+    "fidelity": "lofi",
+    "platform": "mobile",
+    "scope": "ask",
+    "design_system": "generate",
+    "variants": 1
   }
 }

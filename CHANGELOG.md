@@ -5,6 +5,33 @@ All notable changes to Product Discovery will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.8.0] — 2026-06-08
+
+### Added — Step 8 universal prototype engine
+
+- **Step 8 `/sketch-solution` is now a tool-agnostic prototype engine** with a soft gate.
+  - **8a (autonomous)** generates a `design-prototype-brief.md` plus a self-contained
+    `design/prototype-draft.html` on `ui-pattern-library` tokens — the PM sees a result
+    immediately and the pipeline never stalls.
+  - **Optional handoff** to a renderer (Claude Design by default: web-capture, inline knobs,
+    share links) exports `design/prototype.html`, which supersedes the draft. Graceful
+    degradation: no handoff → the draft stays current.
+  - **8b** folds the "current" prototype (`prototype.html` if present, else the draft) back into
+    `solution-sketch.md` and the PRD.
+- **`design_config` block in `status.json`** (separate from `pipeline_config`): `renderer`
+  (claude-design | html | figma | text), `fidelity`, `platform`, `scope`, `design_system`,
+  `variants`. Defaults inherit from a new `## Design preferences [auto]` section in `pm-profile.md`.
+- **`pending.design_export`** — soft reminder gate, closed by the `design ready: <link>`
+  confirmation command.
+- `/setup-initiative` gained an optional area 11 (design engine / platform / design system).
+- Web dashboard (`tools/web/app.py`) surfaces the brief, prototype folder, and the new pending.
+
+### Notes
+
+- **Backward compatible**: initiatives without `design_config` use template defaults; a missing
+  `pending.design_export` is not an error.
+- Naming chosen to avoid collision with step 11's `design-brief.md` / `pending.design_brief`.
+
 ## [0.7.2] — 2026-05-09
 
 ### Removed (further cleanup)

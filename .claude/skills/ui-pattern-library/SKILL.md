@@ -44,6 +44,16 @@ Establish a single source of truth for design decisions:
 ### Component API Design
 Create consistent, predictable interfaces with clear prop naming, sensible defaults, and comprehensive variant support.
 
+### Export design tokens as a renderer prompt (Step 8 bridge)
+When `/sketch-solution` runs, turn the resolved tokens above into the `## Prompt for {{renderer}}`
+block of `output/design-prototype-brief.md` and into `design/prototype-draft.html`:
+- **`design_system: generate`** → emit a minimal token set (colors / spacing / typography) inline
+  and mark it `[to be validated]`.
+- **`design_system: tokens-file`** → read the PM's `design/tokens.json` and reference it verbatim.
+- **`design_system: figma-lib`** → reference the Figma library via Figma MCP instead of inline tokens.
+Keep the prompt renderer-agnostic — the same tokens must render under `claude-design`, `html`, or
+`figma`. This is the bridge from this skill into the Step 8 brief.
+
 ## Essential UI Patterns
 
 ### Navigation Patterns
