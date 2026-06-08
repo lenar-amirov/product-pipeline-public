@@ -7,6 +7,8 @@ Two modes:
   - Regular (has .pm-local): initiative status list
 """
 
+from __future__ import annotations
+
 import json
 import glob
 import os
@@ -64,7 +66,7 @@ PENDING_LABELS = {
     "gate2_challenge": "Present Solution Research Report",
 }
 
-console = Console()
+console = Console() if HAS_RICH else None
 
 
 def find_pm() -> Optional[str]:
