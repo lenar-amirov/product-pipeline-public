@@ -31,13 +31,16 @@ def parse_context(context_path: Path) -> dict:
         return {}
     text = context_path.read_text(encoding='utf-8')
     fields = {}
+    # Values may span multiple lines (lists, sub-bullets) — capture until the
+    # next bold field at line start, a heading, a blank line, or end of text.
+    _VALUE = r'(.+?)(?=\n\*\*|\n#|\n\n|\Z)'
     patterns = {
-        'metric': r'\*\*(?:Metric we\'re improving|Метрика, которую улучшаем)\*\*:\s*(.+)',
-        'baseline': r'\*\*(?:Current baseline|Текущий baseline)\*\*:\s*(.+)',
-        'target': r'\*\*(?:Target result|Целевой результат)\*\*:\s*(.+)',
-        'horizon': r'\*\*(?:Horizon|Горизонт)\*\*:\s*(.+)',
-        'segment': r'\*\*(?:Segment|Сегмент)\*\*:\s*(.+)',
-        'why_now': r'\*\*(?:Why now|Почему сейчас)\*\*:\s*(.+)',
+        'metric': r'\*\*(?:Metric we\'re improving|Метрика, которую улучшаем)\*\*:\s*' + _VALUE,
+        'baseline': r'\*\*(?:Current baseline|Текущий baseline)\*\*:\s*' + _VALUE,
+        'target': r'\*\*(?:Target result|Целевой результат)\*\*:\s*' + _VALUE,
+        'horizon': r'\*\*(?:Horizon|Горизонт)\*\*:\s*' + _VALUE,
+        'segment': r'\*\*(?:Segment|Сегмент)\*\*:\s*' + _VALUE,
+        'why_now': r'\*\*(?:Why now|Почему сейчас)\*\*:\s*' + _VALUE,
     }
     placeholder_markers = [
         r'\[X%?\]', r'\[Y%?\]', r'\[to be validated\]',
@@ -46,16 +49,17 @@ def parse_context(context_path: Path) -> dict:
         r'\[web / iOS', r'\[registration',
     ]
     for key, pattern in patterns.items():
-        m = re.search(pattern, text)
+        m = re.search(pattern, text, re.DOTALL)
         if m:
-            val = m.group(1).strip()
+            # Collapse a multi-line value into a single digest line
+            val = ' '.join(m.group(1).split())
             # Skip if matches a known placeholder marker
             if any(re.search(p, val, re.IGNORECASE) for p in placeholder_markers):
                 continue
             # Skip if value is mostly bracketed placeholder text
             if val.startswith('[') and val.find(']') > 0 and len(val) < 80:
                 continue
-            fields[key] = val[:120]
+            fields[key] = val[:200]
     return fields
 
 

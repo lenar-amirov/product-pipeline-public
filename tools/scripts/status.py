@@ -23,9 +23,11 @@ try:
     HAS_RICH = True
 except ImportError:
     HAS_RICH = False
+    Console = None
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+console = None
 
 PIPELINE_STEPS = {
     0: "Setup",
@@ -63,8 +65,6 @@ PENDING_LABELS = {
     "gate1_challenge": "Present Problem Research Report",
     "gate2_challenge": "Present Solution Research Report",
 }
-
-console = Console()
 
 
 def find_pm() -> Optional[str]:
@@ -146,7 +146,9 @@ def load_initiatives(pm: str) -> list:
     return initiatives
 
 
-def progress_bar(done: int, total: int, width: int = 20) -> Text:
+def progress_bar(done: int, total: int, width: int = 20):
+    if not HAS_RICH:
+        return None
     if total == 0:
         return Text("?" * width, style="dim")
     filled = round(done / total * width)
@@ -158,6 +160,8 @@ def progress_bar(done: int, total: int, width: int = 20) -> Text:
 
 
 def render_header():
+    if not console:
+        return
     title = Text()
     title.append("\u25c6 ", style="bright_blue bold")
     title.append("Product Discovery", style="bold white")
@@ -170,6 +174,8 @@ def render_header():
 
 def render_onboarding():
     """First launch — show example and invite the user to start."""
+    if not console:
+        return
     console.print()
 
     # Example block
@@ -198,6 +204,8 @@ def render_onboarding():
 
 def render_initiatives(initiatives: list):
     """Regular launch — show initiative status."""
+    if not console:
+        return
     if not initiatives:
         console.print("  No initiatives yet.", style="dim")
         console.print("  Describe your product problem or say [bold]create initiative <name>[/bold]")
@@ -266,10 +274,12 @@ def render_plain():
 
 
 def main():
+    global console
     if not HAS_RICH:
         render_plain()
         return
 
+    console = Console()
     pm = find_pm()
     render_header()
 

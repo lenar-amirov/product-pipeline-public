@@ -8,9 +8,20 @@ This is **not optional**. Before you reply to anything — even a casual "hi", a
 
 Why this matters: this product is a structured discovery pipeline. If you skip SESSION START, you become a generic chatbot and the pipeline value is lost. The user's data won't be saved. Decisions won't be tracked. The PRD won't build. **Every session must start with the procedure below.**
 
----
+## TRACKER INTEGRATION
 
-## SESSION START
+Jira and Confluence connect via MCP. The config lives in `.mcp.json` at the repo root — that file is **gitignored** because it holds your real API token.
+
+### Quick setup
+
+1. Copy `.mcp.json.example` to `.mcp.json`
+2. Fill in your Jira/Confluence URL and API token (Atlassian Cloud: https://id.atlassian.com/manage-profile/security/api-tokens)
+3. If your company uses a different Jira/Confluence MCP server package, replace the `command`/`args` accordingly
+4. Restart Claude Code and approve the MCP servers when prompted
+
+**Never put tokens in `.claude/settings.json`** — that file is tracked by git and would leak them. (`mcpServers` is not a valid field in Claude Code `settings*.json` anyway — MCP servers belong in `.mcp.json`.)
+
+---
 
 A `SessionStart` hook in `.claude/settings.json` runs `python3 tools/scripts/status.py` automatically when this session begins. The hook output (welcome screen or initiative list) appears in your context as a system notification. **Read that output first** — it tells you which mode to enter.
 
@@ -86,9 +97,9 @@ After every completed step or significant discussion:
 
 1. **Update `output/status.json`** — step status (`done`/`paused`/`in_progress`/`pending`/`skipped`), date, 1-2 sentence summary.
 2. **Append to `output/decisions.md`** — date, what we did, key decisions, open questions, next step.
-3. **Git commit + push** — `git add {pm}/{initiative}/`, commit, pull --rebase, push. If push fails — warn, don't block.
+3. **Git commit (only if the PM keeps initiatives in their own private repo)** — initiative folders (`{pm}/…`) are gitignored here by design: your data stays local (see PRIVACY.md). Never commit initiative data or tokens to this public repo. If the PM has set up a separate private repo for their initiatives, commit + push there; if push fails — warn, don't block.
 
-**No session ends without all three.**
+**No session ends without the first two.**
 
 ---
 

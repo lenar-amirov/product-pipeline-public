@@ -1,0 +1,24 @@
+{
+  "_comment": "Copy this file to .mcp.json (gitignored) and fill in your Jira/Confluence URL and API token. For Atlassian Cloud get a token at https://id.atlassian.com/manage-profile/security/api-tokens. Replace the npm package with the MCP server your company uses if different.",
+  "mcpServers": {
+    "jira": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@mcp-servers/jira@latest"],
+      "env": {
+        "JIRA_URL": "https://your-company.atlassian.net",
+        "JIRA_TOKEN": "your-api-token"
+      }
+    },
+    "confluence": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@mcp-servers/confluence@latest"],
+      "env": {
+        "CONFLUENCE_URL": "https://your-company.atlassian.net/wiki",
+        "CONFLUENCE_EMAIL": "your-email@company.com",
+        "CONFLUENCE_TOKEN": "your-api-token"
+      }
+    }
+  }
+}

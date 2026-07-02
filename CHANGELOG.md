@@ -5,6 +5,41 @@ All notable changes to Product Discovery will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.7.3] — 2026-07-02
+
+### Security
+
+- **Initiative folders (`{pm}/…`) are now gitignored.** Previously SESSION END
+  instructed committing and pushing initiative data into this public repo,
+  contradicting the local-first promise in PRIVACY.md. Every top-level
+  directory except the tool's own (`template/`, `tools/`, `skills/`,
+  `.claude*/`, `.github/`) is ignored; SESSION END in CLAUDE.md no longer
+  commits initiative data (use your own private repo if you want history).
+- **MCP credentials moved out of tracked files.** TRACKER INTEGRATION docs
+  told users to put `mcpServers` into `.claude/settings*.json` — an invalid
+  Claude Code settings field and, for `settings.json`, a tracked file that
+  would leak tokens. Config now lives in gitignored `.mcp.json`; new
+  `.mcp.json.example` ships as a placeholder template.
+
+### Fixed
+
+- `tools/scripts/status.py` crashed with `NameError` on machines without
+  `rich` (module-level `Console()` ran before the `HAS_RICH` check), which
+  broke the SessionStart hook — the product's entry point — on fresh forks.
+  The plain-text fallback now works.
+- `tools/scripts/scan-initiatives.py` truncated multi-line CONTEXT.md fields
+  at the first line break, so `.initiatives-digest.md` contained sentences cut
+  mid-phrase (e.g. a Baseline listing only its header line). Field values are
+  now captured up to the next field/heading and collapsed into one line; the
+  per-field cap raised 120 → 200 chars.
+
+### Added
+
+- `template/.claude/settings.json` is now actually tracked. The whole
+  `template/.claude/` directory was missing from the repo (swallowed by
+  `**/settings.local.json` plus never being added), so scaffolded initiatives
+  got no SessionStart hook config.
+
 ## [0.7.2] — 2026-05-09
 
 ### Removed (further cleanup)

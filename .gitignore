@@ -12,3 +12,16 @@ logs/
 .product-corrections.md
 pm-profile.md
 .initiatives-digest.md
+
+# Local MCP config with real credentials (copy from .mcp.json.example)
+.mcp.json
+
+# Initiative data is personal — never committed to the public repo.
+# Ignore every top-level directory except the tool's own folders.
+/*/
+!/template/
+!/tools/
+!/skills/
+!/.claude/
+!/.claude-plugin/
+!/.github/
