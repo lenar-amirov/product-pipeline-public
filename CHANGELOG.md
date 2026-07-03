@@ -5,6 +5,53 @@ All notable changes to Product Discovery will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.9.0] — 2026-07-03
+
+Jobs-first release: the pipeline stops being the interface and becomes the
+bookkeeping. See docs/ROADMAP-0.8.md (epics E5–E10).
+
+### Changed (E5+E6 — jobs-first interface, zero-setup)
+
+- **JOBS CATALOG replaces the intent table** in CLAUDE.md: ~9 standalone
+  jobs (`/hypotheses` `/ingest` `/brief` `/validate` `/solutions` `/sketch`
+  `/challenge` `/tickets` `/next`); each works without an initiative and
+  offers persistence after delivering value. Legacy `/commands` remain as
+  aliases.
+- **FIRST LAUNCH inverted**: run the matching job immediately, deliver the
+  result, then offer to save as an initiative. CONTEXT.md fills
+  incrementally; no upfront checklist. Pipeline **templates
+  (quick/full/…) are deprecated** — never offered.
+- `new-initiative.sh`: sed metacharacter escaping in initiative names;
+  jobs-first next-steps output.
+
+### Added (E7+E8 — advisor and dependencies)
+
+- `next-advisor` skill (`/next`): diagnoses state — stalled dependencies →
+  evidence violations → ready-but-unstarted work → frame gaps → uncovered
+  hypotheses — instead of "next is step N". Dashboard prints a
+  `! … — ask /next` hint when issues exist.
+- `dependencies[]` in status.json: owner, deadline, jira key, blocked
+  hypotheses. Dashboard shows age and OVERDUE; on overdue Claude must offer
+  chase / move deadline / switch to synthetic (with confidence downgrade) /
+  conscious skip. Legacy `pending.*` values now parse their leading ISO
+  date, so ages display for old initiatives.
+
+### Added (E9 — ingestion)
+
+- `ingest` skill (`/ingest`): deck/export/Confluence/pasted data →
+  extracted metrics with exact locations → mapped onto open hypotheses
+  (upgrade / refute / flag `data_inconsistency` / new / inbox-notes), typed
+  by source.
+- `tools/scripts/render-pdf.py`: PDF → PNG with no Python deps
+  (pdftoppm → mutool → compiled Swift/CoreGraphics fallback).
+
+### Added (E10 — anti-generic guarantee)
+
+- Anti-generic self-check in `.claude/rules/output-formats.md`: no
+  unsourced claims, no placeholder advice, proof surfaces REAL-only,
+  frequency honesty, numbers cross-checked. Wired as a mandatory step into
+  `strategic-narrative-generator` and `product-requirements-doc`.
+
 ## [0.8.0] — 2026-07-03
 
 ### Added (E1 — hypothesis registry, see docs/ROADMAP-0.8.md)

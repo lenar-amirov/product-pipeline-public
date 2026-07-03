@@ -80,3 +80,23 @@ PRD is filled incrementally:
 - Steps 7-8 → §6 Solution, §7 Scope
 - Step 12 → §9 NFR, §10 Dependencies
 - Step 13 → §8 User Stories, §11 Open questions
+
+## Anti-generic self-check (every generated artifact)
+
+Before delivering ANY artifact (presentation, PRD, brief, GTM material),
+verify against this checklist and fix violations — do not show the draft:
+
+1. **No claim without a source.** Every number and factual statement carries
+   `[source: file/slide/page]` or maps to a registry hypothesis id. A claim
+   you cannot source is an opinion — label it as such or cut it.
+2. **No placeholder advice.** Lines like "ensure compliance", "improve UX",
+   "conduct user research", "align with stakeholders" without a concrete
+   what/where/how are filler — cut or make specific to THIS initiative.
+3. **Proof surfaces are REAL-only.** In presentations, "proof" slides may
+   cite only REAL evidence; SYNTHETIC/INFERRED goes to speaker notes as
+   context (see evidence-typing.md). In PRDs, §4 Validated problems cites
+   only confirmed registry entries.
+4. **Frequency honesty.** "Users say X" requires "N of M sources" — one
+   synthetic persona is not "users".
+5. **Numbers cross-check.** If two numbers in the artifact disagree with
+   each other or with the registry — stop and reconcile before delivering.

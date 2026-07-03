@@ -185,3 +185,11 @@ Every claim in a Gate presentation must include a source:
 - **Evidence typing**: If the claim is based on SYNTHETIC data, mark it: `[Synthetic — needs validation]`
 - **No unsourced claims**: If you can't trace a claim to a file, either find the source or remove the claim
 - Qualitative data (interviews, synthetic) is illustration only — don't present as proof without quantitative backing
+
+## Mandatory self-check before delivering
+
+Run the anti-generic checklist from `.claude/rules/output-formats.md`
+(§ Anti-generic self-check): no unsourced claims, no placeholder advice,
+proof slides REAL-only, frequency honesty ("N of M sources"), numbers
+cross-checked against the hypothesis registry. Fix violations before
+showing the draft — never deliver and apologize later.

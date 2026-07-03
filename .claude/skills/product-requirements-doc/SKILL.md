@@ -182,3 +182,10 @@ For agile environments, create living documents:
 - **Story-level details**: Specific implementation requirements
 - **Regular updates**: Reflect learnings and changes
 - **Version control**: Track changes and decisions over time
+## Mandatory self-check before delivering
+
+Run the anti-generic checklist from `.claude/rules/output-formats.md`
+(§ Anti-generic self-check). Specifically for PRDs: §4 Validated problems
+cites only confirmed hypotheses from `output/hypotheses.json`; every metric
+in §3 matches the registry and CONTEXT.md; no "TBD-style" filler presented
+as content.
