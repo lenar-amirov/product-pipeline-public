@@ -7,6 +7,15 @@ description: Detailed instructions for each pipeline step (0-18). Read this when
 
 Read the relevant step below when PM invokes a pipeline command.
 
+**Hypothesis registry (all steps).** Hypothesis STATE (status, evidence type,
+confidence, sources, history) lives in `output/hypotheses.json` — manage it via
+`python3 tools/scripts/hypotheses.py` (`add` / `set` / `validate` / `render`).
+`set` records history automatically. Narrative markdown (hypotheses.md,
+validated-hypotheses.md) stays authored prose and must not contradict the
+registry. After changing the registry run `hypotheses.py render <dir>` to
+refresh `output/registry.md`. Legacy initiatives: convert once with
+`python3 tools/scripts/migrate-hypotheses.py <dir>`.
+
 ---
 
 ## STEP 0 — `/setup-initiative` (Core)
@@ -35,7 +44,7 @@ After checklist — write CONTEXT.md and set pipeline_config in status.json.
 
 **Type**: Autonomous
 **Input**: `CONTEXT.md` + `/CJM/` materials
-**Output**: `output/hypotheses.md`
+**Output**: `output/hypotheses.json` (registry) + `output/hypotheses.md` (analysis)
 **PRD**: → §1, §2
 **Skills**: `consulting-problem-solving` (MECE) + `user-persona-builder`
 
@@ -60,7 +69,9 @@ Pick the path with the PM, then proceed.
    If no CJM — work from PM's verbal description; mark each hypothesis as INFERRED.
 3. For each step: what user sees, does, where friction occurs
 4. Use MECE structure from `consulting-problem-solving`
-5. Form 5-15 problem hypotheses in `output/hypotheses.md`
+5. Form 5-15 problem hypotheses: register each via `hypotheses.py add`
+   (id, title, type, confidence, track), narrative analysis in
+   `output/hypotheses.md`, then `hypotheses.py render`
 6. Create 2-3 initial personas from `user-persona-builder`
 7. Add `## Blind spots` — what's unclear (especially valuable when no CJM was provided)
 8. Fill PRD §1, §2
@@ -85,7 +96,8 @@ NOT applicable if: rare expertise needed, physical context matters, sensitive to
 1. 4-5 personas: different patterns, context, experience
 2. Problem interview: 5-7 questions per persona, "quotes"
 3. Synthesis: patterns in 3+ personas → high priority
-4. Update `output/hypotheses.md`
+4. Update `output/hypotheses.md`; confidence changes go through
+   `hypotheses.py set <id> --confidence ... --note "..."`
 
 **Part C — real research task:**
 Create `research/qual-research-brief.md` with justification + interview guide.
@@ -173,6 +185,12 @@ Three sub-steps (PM chooses how many):
 For each hypothesis: ✅/❌/⚠️, evidence, recalculated SIF.
 Pyramid principle: data → insight → conclusion → recommendation.
 
+Record every verdict in the registry — this writes history automatically:
+`hypotheses.py set <id> --status confirmed --type REAL --confidence 0.75
+--add-source "research/analytics-data.md::where exactly"`. Then
+`hypotheses.py validate` (must be clean) and `hypotheses.py render`.
+Narrative reasoning goes to `output/validated-hypotheses.md`.
+
 **Branching**: confirmed → step 7 | partially → narrow | none → step 1 | insufficient → repeat
 
 ---
@@ -185,11 +203,14 @@ Pyramid principle: data → insight → conclusion → recommendation.
 **PRD**: → §6
 **Skills**: `product-discovery-template`
 
-1. For each ✅ problem: 2-3 solution hypotheses with assumption map
-2. Comparative table with ICE, top-1 recommendation
-3. Business viability check per hypothesis:
+1. Take ✅/🎯 problems from the registry (`hypotheses.py show <dir>`) —
+   not from prose
+2. For each: 2-3 solution hypotheses with assumption map
+3. Comparative table with ICE, top-1 recommendation
+4. Business viability check per hypothesis:
    - Unit economics, cannibalization, dependencies, compliance, effort S/M/L
-4. Fill PRD §6
+5. Link solutions back: `hypotheses.py set <id> --link-solution S1`
+6. Fill PRD §6
 
 ---
 

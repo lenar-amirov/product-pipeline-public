@@ -5,6 +5,24 @@ All notable changes to Product Discovery will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [Unreleased] — 0.8.0-dev
+
+### Added (E1 — hypothesis registry, see docs/ROADMAP-0.8.md)
+
+- `output/hypotheses.json` — machine-readable single source of truth for
+  hypothesis state (status, evidence type, confidence, sources, history).
+  Narrative markdown stays authored prose; `output/registry.md` is a
+  generated view.
+- `tools/scripts/hypotheses.py` — registry engine (add / set / validate /
+  render / show), stdlib-only. `set` writes history automatically;
+  `validate` enforces evidence-typing confidence ranges and requires
+  sources for REAL.
+- `tools/scripts/migrate-hypotheses.py` — best-effort conversion of legacy
+  `hypotheses.md` / `validated-hypotheses.md` into the registry.
+- `template/output/hypotheses.json` — empty registry with `_schema` docs.
+- Pipeline steps 1/2/6/7 and evidence-typing rule updated to route all
+  hypothesis state changes through the registry.
+
 ## [0.7.3] — 2026-07-02
 
 ### Security

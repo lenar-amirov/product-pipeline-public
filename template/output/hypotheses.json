@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "_schema": {
+    "_": "Single source of truth for hypothesis STATE. Narrative analysis stays in hypotheses.md / validated-hypotheses.md; this file holds status, evidence type, confidence, sources, history. Manage via tools/scripts/hypotheses.py (add / set / validate / render) — `set` writes history automatically. Generated view: output/registry.md.",
+    "id": "P1 / H1 — short unique id",
+    "title": "one-line hypothesis statement",
+    "status": "draft | testing | confirmed | refuted | reframed | parked",
+    "evidence_type": "REAL (0.6-1.0) | SYNTHETIC (0.2-0.4) | INFERRED (0.3-0.5) | AMBIGUOUS (0.1-0.3)",
+    "confidence": "0.0-1.0, must fit the evidence_type range",
+    "sources": [{"file": "research/analytics-data.md", "ref": "where exactly", "type": "REAL", "date": "YYYY-MM-DD"}],
+    "history": [{"date": "YYYY-MM-DD", "change": "what changed"}],
+    "solutions": ["S1 — linked solution-hypothesis ids"],
+    "flags": ["data_inconsistency — sources disagree, confidence capped at 0.6"]
+  },
+  "hypotheses": []
+}

@@ -45,39 +45,35 @@
 
 ## 0.8 «Фундамент»
 
-### E1. Реестр гипотез — машиночитаемое состояние (L)
+### E1. Реестр гипотез — машиночитаемое состояние (L) ✅ сделано
 
-`output/hypotheses.yaml` — единственный источник истины; markdown-файлы
-становятся генерируемыми представлениями.
+`output/hypotheses.json` — единственный источник истины о СОСТОЯНИИ гипотез
+(статус, тип, confidence, источники, история). Нарративные markdown-файлы
+остаются авторской аналитикой; генерируемое представление — `output/registry.md`.
 
-```yaml
-# output/hypotheses.yaml (пример вымышленный)
-- id: H4
-  title: "Пользователи бросают чекаут из-за недоверия к оплате"
-  status: confirmed              # draft | testing | confirmed | refuted | parked
-  evidence_type: REAL            # REAL | SYNTHETIC | INFERRED | AMBIGUOUS
-  confidence: 0.7                # валидируется против диапазона типа
-  sources:
-    - file: research/analytics-data.md
-      ref: "дашборд оплат, стр. 3"
-      type: REAL
-      date: 2026-06-10
-  history:
-    - date: 2026-06-10
-      change: "INFERRED 0.4 → REAL 0.7 (внутренняя аналитика)"
-  solutions: [S2]
+> Решение по формату: JSON вместо YAML из роадмапа v1 — PyYAML не входит в
+> стандартную библиотеку, а урок 0.7.x (краш SessionStart без `rich`) требует,
+> чтобы ядро работало на голом python3. Нарратив не генерируется из реестра —
+> живые реестры оказались богатой прозой, которую нельзя терять.
+
+```json
+{ "id": "H4", "title": "Пользователи бросают чекаут из-за недоверия к оплате",
+  "status": "confirmed", "evidence_type": "REAL", "confidence": 0.7,
+  "sources": [{"file": "research/analytics-data.md", "ref": "дашборд оплат, стр. 3"}],
+  "history": [{"date": "2026-06-10", "change": "SYNTHETIC 0.3 → REAL 0.7"}] }
 ```
 
-Критерии приёмки: md-реестры генерируются из YAML; REAL невозможен без
-источников; переходы типов пишутся в history автоматически; миграционный
-скрипт конвертирует существующие md-реестры (dogfood на инициативе автора).
+Критерии приёмки (выполнены): `registry.md` генерируется из JSON; REAL
+невозможен без источников; переходы пишутся в history автоматически (`set`);
+миграционный скрипт сконвертировал реальный реестр автора (13 гипотез),
+валидатор нашёл известный дефект (confidence вне диапазона REAL).
 
 **Изменения в репозитории:**
-- NEW `tools/scripts/hypotheses.py` — load/validate/render (md-views из YAML)
-- NEW `tools/scripts/migrate-hypotheses.py` — конвертация legacy md → YAML
-- NEW `template/output/hypotheses.yaml` (пустой с комментарием-схемой)
-- MOD `.claude/skills/pipeline-steps/SKILL.md` — шаги 1/6/7 читают и пишут YAML
-- MOD `.claude/rules/evidence-typing.md` — ссылка на реестр как носитель типов
+- NEW `tools/scripts/hypotheses.py` — add/set/validate/render/show
+- NEW `tools/scripts/migrate-hypotheses.py` — конвертация legacy md → JSON
+- NEW `template/output/hypotheses.json` (пустой, `_schema` с описанием полей)
+- MOD `.claude/skills/pipeline-steps/SKILL.md` — шаги 1/2/6/7 ведут реестр
+- MOD `.claude/rules/evidence-typing.md` — реестр как носитель типов
 
 ### E2. Evidence ledger и валидаторы (M)
 

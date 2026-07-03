@@ -11,6 +11,13 @@ Every piece of evidence in hypotheses, validation, and PRD must be typed by sour
 | **INFERRED** | 0.3–0.5 | Logical deductions from other evidence, competitive analogues |
 | **AMBIGUOUS** | 0.1–0.3 | Contradictory signals, unclear data, unverified claims |
 
+## Registry
+
+Types and confidence live in `output/hypotheses.json` — the single source of
+truth, managed via `tools/scripts/hypotheses.py` (`set` records history
+automatically, `validate` enforces the ranges above and requires sources for
+REAL). Narrative markdown must not contradict the registry.
+
 ## Rules
 
 - When REAL contradicts SYNTHETIC — REAL wins. Document the delta.
