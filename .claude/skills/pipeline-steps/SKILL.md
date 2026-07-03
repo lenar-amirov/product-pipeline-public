@@ -5,7 +5,15 @@ description: Detailed instructions for each pipeline step (0-18). Read this when
 
 # Pipeline Step Instructions
 
-Read the relevant step below when PM invokes a pipeline command.
+Read the relevant step below when PM invokes a pipeline command or a job.
+
+**Jobs → steps.** Jobs are the primary interface (CLAUDE.md → JOBS CATALOG):
+`/hypotheses` → steps 1–2 · `/brief` → 4/5/11 · `/validate` → 6 ·
+`/solutions` → 7 · `/sketch` → 8 · `/tickets` → create-tickets ·
+`/ingest` → skill `ingest` · `/next` → skill `next-advisor`.
+Every job runs standalone: no initiative → work on chat context, type
+evidence INFERRED, offer to persist afterwards; initiative exists → read and
+write its registry and artifacts as described per step.
 
 **Hypothesis registry (all steps).** Hypothesis STATE (status, evidence type,
 confidence, sources, history) lives in `output/hypotheses.json` — manage it via

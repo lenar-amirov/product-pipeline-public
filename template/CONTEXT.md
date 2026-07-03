@@ -1,5 +1,8 @@
 # Initiative: [INITIATIVE_NAME]
 
+> Fills in **incrementally** as jobs run — a field mentioned in conversation
+> gets recorded here; the rest stays bracketed. No upfront checklist required.
+
 **Product Manager**: [PM_NAME]
 
 ## Outcome

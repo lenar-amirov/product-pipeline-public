@@ -3,28 +3,116 @@
   "initiative": "",
   "created": "",
   "steps": {
-    "0":    { "status": "pending", "date": null, "summary": null },
-    "1":    { "status": "pending", "date": null, "summary": null },
-    "2":    { "status": "pending", "date": null, "summary": null },
-    "3":    { "status": "pending", "date": null, "summary": null },
-    "4":    { "status": "pending", "date": null, "summary": null },
-    "5":    { "status": "pending", "date": null, "summary": null },
-    "5.5":  { "status": "pending", "date": null, "summary": null },
-    "6":    { "status": "pending", "date": null, "summary": null },
-    "7":    { "status": "pending", "date": null, "summary": null },
-    "8":    { "status": "pending", "date": null, "summary": null },
-    "8.5":  { "status": "pending", "date": null, "summary": null },
-    "9":    { "status": "pending", "date": null, "summary": null },
-    "10":   { "status": "pending", "date": null, "summary": null },
-    "11":   { "status": "pending", "date": null, "summary": null },
-    "12":   { "status": "pending", "date": null, "summary": null },
-    "13":   { "status": "pending", "date": null, "summary": null },
-    "14":   { "status": "pending", "date": null, "summary": null },
-    "15":   { "status": "pending", "date": null, "summary": null },
-    "16":   { "status": "pending", "date": null, "summary": null },
-    "17":   { "status": "pending", "date": null, "summary": null },
-    "18":   { "status": "pending", "date": null, "summary": null },
-    "19":   { "status": "pending", "date": null, "summary": null }
+    "0": {
+      "status": "pending",
+      "date": null,
+      "summary": null
+    },
+    "1": {
+      "status": "pending",
+      "date": null,
+      "summary": null
+    },
+    "2": {
+      "status": "pending",
+      "date": null,
+      "summary": null
+    },
+    "3": {
+      "status": "pending",
+      "date": null,
+      "summary": null
+    },
+    "4": {
+      "status": "pending",
+      "date": null,
+      "summary": null
+    },
+    "5": {
+      "status": "pending",
+      "date": null,
+      "summary": null
+    },
+    "5.5": {
+      "status": "pending",
+      "date": null,
+      "summary": null
+    },
+    "6": {
+      "status": "pending",
+      "date": null,
+      "summary": null
+    },
+    "7": {
+      "status": "pending",
+      "date": null,
+      "summary": null
+    },
+    "8": {
+      "status": "pending",
+      "date": null,
+      "summary": null
+    },
+    "8.5": {
+      "status": "pending",
+      "date": null,
+      "summary": null
+    },
+    "9": {
+      "status": "pending",
+      "date": null,
+      "summary": null
+    },
+    "10": {
+      "status": "pending",
+      "date": null,
+      "summary": null
+    },
+    "11": {
+      "status": "pending",
+      "date": null,
+      "summary": null
+    },
+    "12": {
+      "status": "pending",
+      "date": null,
+      "summary": null
+    },
+    "13": {
+      "status": "pending",
+      "date": null,
+      "summary": null
+    },
+    "14": {
+      "status": "pending",
+      "date": null,
+      "summary": null
+    },
+    "15": {
+      "status": "pending",
+      "date": null,
+      "summary": null
+    },
+    "16": {
+      "status": "pending",
+      "date": null,
+      "summary": null
+    },
+    "17": {
+      "status": "pending",
+      "date": null,
+      "summary": null
+    },
+    "18": {
+      "status": "pending",
+      "date": null,
+      "summary": null
+    },
+    "19": {
+      "status": "pending",
+      "date": null,
+      "summary": null
+    }
   },
   "pending": {
     "analytics_brief": null,
@@ -40,32 +128,104 @@
     "support_brief": null
   },
   "pipeline_config": {
-    "template": "full",
+    "template": "custom",
     "steps": {
-      "setup":                   { "enabled": true,  "type": "core" },
-      "analyze_cjm":             { "enabled": true,  "type": "core" },
-      "synthetic_research":      { "enabled": true,  "type": "recommended" },
-      "competitor_research":     { "enabled": true,  "type": "recommended" },
-      "generate_research":       { "enabled": true,  "type": "recommended" },
-      "create_survey_audience":  { "enabled": false, "type": "optional" },
-      "customer_research_pause": { "enabled": true,  "type": "recommended" },
-      "validate_quick":          { "enabled": true,  "type": "core" },
-      "validate_survey":         { "enabled": true,  "type": "recommended" },
-      "validate_interviews":     { "enabled": false, "type": "optional" },
-      "solution_hypotheses":     { "enabled": true,  "type": "core" },
-      "sketch_solution":         { "enabled": true,  "type": "core" },
-      "user_test_concept":       { "enabled": false, "type": "optional" },
-      "review_design":           { "enabled": true,  "type": "recommended" },
-      "create_presentation":     { "enabled": true,  "type": "core" },
-      "create_design_brief":     { "enabled": true,  "type": "recommended" },
-      "estimate_with_dev":       { "enabled": true,  "type": "core" },
-      "finalize_prd":            { "enabled": true,  "type": "core" },
-      "design_ab_test":          { "enabled": true,  "type": "recommended" },
-      "create_gate2":            { "enabled": true,  "type": "core" },
-      "analyze_ab_test":         { "enabled": true,  "type": "recommended" },
-      "plan_gtm":                { "enabled": true,  "type": "core" },
-      "create_gtm_materials":    { "enabled": true,  "type": "recommended" },
-      "support_task":            { "enabled": false, "type": "optional" }
+      "setup": {
+        "enabled": true,
+        "type": "core"
+      },
+      "analyze_cjm": {
+        "enabled": true,
+        "type": "core"
+      },
+      "synthetic_research": {
+        "enabled": true,
+        "type": "recommended"
+      },
+      "competitor_research": {
+        "enabled": true,
+        "type": "recommended"
+      },
+      "generate_research": {
+        "enabled": true,
+        "type": "recommended"
+      },
+      "create_survey_audience": {
+        "enabled": false,
+        "type": "optional"
+      },
+      "customer_research_pause": {
+        "enabled": true,
+        "type": "recommended"
+      },
+      "validate_quick": {
+        "enabled": true,
+        "type": "core"
+      },
+      "validate_survey": {
+        "enabled": true,
+        "type": "recommended"
+      },
+      "validate_interviews": {
+        "enabled": false,
+        "type": "optional"
+      },
+      "solution_hypotheses": {
+        "enabled": true,
+        "type": "core"
+      },
+      "sketch_solution": {
+        "enabled": true,
+        "type": "core"
+      },
+      "user_test_concept": {
+        "enabled": false,
+        "type": "optional"
+      },
+      "review_design": {
+        "enabled": true,
+        "type": "recommended"
+      },
+      "create_presentation": {
+        "enabled": true,
+        "type": "core"
+      },
+      "create_design_brief": {
+        "enabled": true,
+        "type": "recommended"
+      },
+      "estimate_with_dev": {
+        "enabled": true,
+        "type": "core"
+      },
+      "finalize_prd": {
+        "enabled": true,
+        "type": "core"
+      },
+      "design_ab_test": {
+        "enabled": true,
+        "type": "recommended"
+      },
+      "create_gate2": {
+        "enabled": true,
+        "type": "core"
+      },
+      "analyze_ab_test": {
+        "enabled": true,
+        "type": "recommended"
+      },
+      "plan_gtm": {
+        "enabled": true,
+        "type": "core"
+      },
+      "create_gtm_materials": {
+        "enabled": true,
+        "type": "recommended"
+      },
+      "support_task": {
+        "enabled": false,
+        "type": "optional"
+      }
     }
   }
 }
