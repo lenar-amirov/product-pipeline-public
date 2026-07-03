@@ -23,6 +23,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Pipeline steps 1/2/6/7 and evidence-typing rule updated to route all
   hypothesis state changes through the registry.
 
+### Added (E2 — evidence validators)
+
+- `tools/scripts/validate-evidence.py` — SessionStart evidence audit: one
+  line per initiative (confirmed REAL / open / refuted / flagged) plus
+  violations; wired into root and template `.claude/settings.json` hooks.
+- `data_inconsistency` flag (`hypotheses.py set <id> --flag/--unflag`):
+  while sources disagree, confidence above 0.6 is reported as a violation
+  every session until reconciled.
+- Evidence-typing rule gains "Operational rules" — contradictions,
+  upgrades and downgrades go through the registry so history captures
+  every transition.
+
 ## [0.7.3] — 2026-07-02
 
 ### Security

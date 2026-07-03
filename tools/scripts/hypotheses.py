@@ -278,6 +278,14 @@ def cmd_set(args) -> int:
         if args.link_solution not in h["solutions"]:
             h["solutions"].append(args.link_solution)
             changes.append(f"solution linked: {args.link_solution}")
+    if args.flag:
+        h.setdefault("flags", [])
+        if args.flag not in h["flags"]:
+            h["flags"].append(args.flag)
+            changes.append(f"flag set: {args.flag}")
+    if args.unflag and args.unflag in h.get("flags", []):
+        h["flags"].remove(args.unflag)
+        changes.append(f"flag cleared: {args.unflag}")
     if not changes and not args.note:
         print("nothing to change")
         return 0
@@ -372,6 +380,8 @@ def main() -> int:
     sp.add_argument("--note")
     sp.add_argument("--add-source", help='FILE::REF')
     sp.add_argument("--link-solution")
+    sp.add_argument("--flag", help='e.g. data_inconsistency')
+    sp.add_argument("--unflag")
 
     args = p.parse_args()
     handler = {

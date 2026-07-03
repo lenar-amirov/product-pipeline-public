@@ -6,6 +6,10 @@
           {
             "type": "command",
             "command": "python3 ../../tools/scripts/scan-initiatives.py"
+          },
+          {
+            "type": "command",
+            "command": "python3 ../../tools/scripts/validate-evidence.py ."
           }
         ]
       }

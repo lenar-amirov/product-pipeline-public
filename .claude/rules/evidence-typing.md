@@ -25,3 +25,16 @@ REAL). Narrative markdown must not contradict the registry.
 - Confidence upgrades when validated: SYNTHETIC → REAL after user interviews confirm
 - Never present SYNTHETIC evidence as fact — always mark explicitly
 - In presentations: only REAL evidence in "proof" slides. SYNTHETIC goes in speaker notes as context.
+
+## Operational rules (enforced by validate-evidence.py on SessionStart)
+
+- **Contradictory sources** for the same metric → set the flag immediately:
+  `hypotheses.py set <id> --flag data_inconsistency --note "source A says X, source B says Y"`.
+  While flagged, confidence above 0.6 is a violation — downgrade or reconcile
+  with the analyst before any gate. Clear with `--unflag data_inconsistency`
+  once reconciled (history records both).
+- **Upgrades and downgrades** go only through `hypotheses.py set --type ...
+  --confidence ... --add-source ...` — never edit narrative markdown alone;
+  the registry history must show every transition.
+- Confidence outside the type's range is a violation the audit reports every
+  session until fixed — retype the evidence or fix the number.

@@ -10,6 +10,10 @@
           {
             "type": "command",
             "command": "python3 tools/scripts/status.py"
+          },
+          {
+            "type": "command",
+            "command": "python3 tools/scripts/validate-evidence.py"
           }
         ]
       }

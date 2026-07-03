@@ -75,22 +75,27 @@
 - MOD `.claude/skills/pipeline-steps/SKILL.md` — шаги 1/2/6/7 ведут реестр
 - MOD `.claude/rules/evidence-typing.md` — реестр как носитель типов
 
-### E2. Evidence ledger и валидаторы (M)
+### E2. Evidence ledger и валидаторы (M) ✅ сделано
 
-Валидация на SessionStart и перед гейтами: confidence в диапазоне типа;
-у REAL есть источник с файлом и датой; флаг `data_inconsistency` при
-расхождении источников >10% (гипотеза не может держать confidence >0.6 до
-сверки); сводка «N confirmed REAL / testing / refuted».
+Валидация на SessionStart: confidence в диапазоне типа; у REAL есть источник;
+флаг `data_inconsistency` ставится при обнаружении противоречия источников
+(`set --flag`), и пока он стоит, confidence >0.6 — нарушение, о котором аудит
+напоминает каждую сессию; сводка «N confirmed REAL / open / refuted / flagged».
 
-Критерии приёмки: прогон на реальной инициативе автора находит оба известных
-дефекта (confidence вне диапазона; несверённая метрика) без ложных
-срабатываний.
+> Уточнение против v1: автодетекция расхождения «>10%» невозможна без
+> структурированных метрик — флаг ставится осознанно в момент обнаружения
+> противоречия, а инструмент принуждает к последствиям (кап confidence,
+> напоминание каждую сессию, история установки/снятия).
+
+Критерии приёмки (выполнены): прогон на реальной инициативе автора находит оба
+известных дефекта (confidence вне диапазона REAL; несверенная метрика двух
+страниц дека) без ложных срабатываний.
 
 **Изменения в репозитории:**
 - NEW `tools/scripts/validate-evidence.py`
-- MOD `.claude/settings.json` — вызов валидатора в SessionStart-хуке
-- MOD `.claude/rules/evidence-typing.md` — операционные правила (downgrade при
-  противоречии, авто-апгрейд SYNTHETIC → REAL)
+- MOD `tools/scripts/hypotheses.py` — `set --flag/--unflag`
+- MOD `.claude/settings.json` + `template/.claude/settings.json` — хук
+- MOD `.claude/rules/evidence-typing.md` — операционные правила
 
 ### E3. Digest, статус и константы — производные от реестра (M)
 
