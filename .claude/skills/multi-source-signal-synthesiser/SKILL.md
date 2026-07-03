@@ -103,3 +103,11 @@ Every signal must be tagged with evidence type and confidence score:
 | P1: ... | Analytics + Survey + Interviews | 0.93 | Confirmed |
 | P2: ... | Synthetic only | 0.35 | Needs validation |
 | P3: ... | Analytics + contradicts Survey | 0.55 | Investigate segment split |
+
+## Output to the registry (mandatory)
+
+Every verdict this synthesis produces MUST land in the hypothesis registry —
+`hypotheses.py set <id> --status confirmed|refuted|testing --type <T>
+--confidence <C> --add-source "research/<file>::<where>"` per hypothesis.
+Conflicting sources → `--flag data_inconsistency` instead of silently
+averaging. A synthesis that only writes prose is invisible to gates and /next.

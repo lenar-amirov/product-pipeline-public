@@ -264,3 +264,10 @@ class PrivacyAwareAnalytics {
 - Implement automated anomaly detection and alerting
 - Set up regular cohort and funnel analysis reports
 - Create self-service analytics capabilities for product teams
+## Output to the registry
+
+Design tracking FROM the open hypotheses: for each testing/draft hypothesis
+in `output/hypotheses.json`, name the event/metric that would confirm or
+refute it (this is the acceptance test of the schema). When data starts
+flowing, findings go through `hypotheses.py set` typed REAL — see
+.claude/rules/evidence-typing.md § Who writes.

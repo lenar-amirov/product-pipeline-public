@@ -38,3 +38,14 @@ REAL). Narrative markdown must not contradict the registry.
   the registry history must show every transition.
 - Confidence outside the type's range is a violation the audit reports every
   session until fixed — retype the evidence or fix the number.
+
+## Who writes to the registry
+
+Any skill that produces a VERDICT, FINDING or PRIORITY about the product or
+its users must record it in `output/hypotheses.json` — not only in prose:
+- new insight → `hypotheses.py add <id> --title ... --type ... --confidence ...`
+- evidence for/against an existing hypothesis → `hypotheses.py set <id>
+  --status ... --type ... --confidence ... --add-source "file::where"`
+- solution decided → `hypotheses.py set <id> --link-solution S<N>`
+A finding that lives only in a markdown file is invisible to the coverage
+map, the gates, and `/next`.

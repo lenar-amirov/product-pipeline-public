@@ -269,3 +269,8 @@ Format in all documents:
 - Ignoring negative feedback
 - Analysis paralysis - perfectionism over progress
 - Skipping synthesis and jumping to solutions
+## Output to the registry
+
+After scoring and the viability check, link every surviving solution to its
+problem hypothesis: `hypotheses.py set <problem-id> --link-solution S<N>` —
+the OST and the coverage map (Solution phase) are built from these links.

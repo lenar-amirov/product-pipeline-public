@@ -139,3 +139,10 @@ When PM provides results:
 2. If fail criteria triggered — discuss with PM whether to iterate on sketch (back to step 8) or proceed with caveats
 3. Update `output/solution-sketch.md` changelog with test findings
 4. Log in `output/decisions.md`
+
+## Output to the registry
+
+When the PM enters results, do not stop at prose: `hypotheses.py set <id>
+--status confirmed --type REAL --confidence 0.8 --add-source
+"research/concept-test-results.md::task N, M of K users"` (downgrade or
+refute if the test failed) — then `hypotheses.py render`.

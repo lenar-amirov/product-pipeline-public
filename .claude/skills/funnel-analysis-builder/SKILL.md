@@ -243,3 +243,10 @@ class FunnelMonitor:
 - Design for horizontal scaling with distributed processing
 - Implement data quality monitoring and automated alerts
 - Consider caching strategies for frequently accessed funnel reports
+## Output to the registry
+
+A drop-off finding is evidence: map each funnel insight onto the hypothesis
+it supports or contradicts and record it — `hypotheses.py set <id> --type
+REAL --confidence <C> --add-source "research/analytics-data.md::<funnel,
+step>"`. A drop-off matching no hypothesis is a candidate `hypotheses.py
+add` (ask the PM). See .claude/rules/evidence-typing.md § Who writes.

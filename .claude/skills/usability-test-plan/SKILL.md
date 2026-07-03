@@ -207,3 +207,9 @@ Track usability improvements over time with consistent methodology:
 ```
 
 Remember that usability testing is most effective when integrated into an iterative design process, with findings directly informing design decisions and subsequent validation cycles.
+## Output to the registry
+
+Test findings are REAL evidence: after the sessions, update each touched
+hypothesis — `hypotheses.py set <id> --type REAL --confidence <C>
+--add-source "research/<results-file>::task N, M of K participants"`.
+Frequency honesty: "M of K participants" — one user is not "users".
