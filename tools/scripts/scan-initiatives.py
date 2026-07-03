@@ -19,6 +19,9 @@ from datetime import date
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from pipeline_constants import enabled_total, find_current_step, MAX_STEP  # noqa: E402
+
 
 def find_pm():
     pm_file = REPO_ROOT / ".pm-local"
@@ -76,6 +79,27 @@ def parse_hypotheses(hyps_path: Path) -> list:
     return [(num, title.strip()) for num, title in hyps[:8]]
 
 
+def parse_registry(init_dir: Path) -> dict:
+    """Hypothesis verdicts from output/hypotheses.json (E1 registry)."""
+    path = init_dir / "output" / "hypotheses.json"
+    if not path.exists():
+        return {}
+    try:
+        with open(path, encoding="utf-8") as f:
+            hyps = json.load(f).get("hypotheses", [])
+    except (json.JSONDecodeError, OSError):
+        return {}
+    return {
+        "confirmed": [h["id"] for h in hyps
+                      if h.get("status") in ("confirmed", "reframed")
+                      and h.get("evidence_type") == "REAL"],
+        "refuted": [h["id"] for h in hyps if h.get("status") == "refuted"],
+        "open": [h["id"] for h in hyps
+                 if h.get("status") in ("draft", "testing")],
+        "flagged": [h["id"] for h in hyps if h.get("flags")],
+    }
+
+
 def get_status(status_path: str) -> dict:
     try:
         with open(status_path) as f:
@@ -96,38 +120,18 @@ def scan_initiatives(pm: str) -> list:
         status = get_status(status_path)
         context = parse_context(init_dir / "CONTEXT.md")
         validated = parse_hypotheses(init_dir / "output" / "validated-hypotheses.md")
+        registry = parse_registry(init_dir)
 
         steps = status.get("steps", {})
-        config_steps = status.get("pipeline_config", {}).get("steps", {})
         done = sum(
             1 for s in steps.values()
             if isinstance(s, dict) and s.get("status") == "done"
         )
-        if config_steps:
-            total = sum(
-                1 for v in config_steps.values()
-                if isinstance(v, dict) and v.get("enabled")
-            )
-        else:
-            total = 19
-
-        # Find current step
-        current_step = None
-        for num in range(19, -1, -1):
-            s = steps.get(str(num), {})
-            if isinstance(s, dict) and s.get("status") in ("in_progress", "paused"):
-                current_step = num
-                break
-            elif isinstance(s, dict) and s.get("status") == "done":
-                current_step = num + 1
-                break
-
-        # Fresh initiative (all pending) — current step is 0
-        if current_step is None and steps:
-            current_step = 0
+        total = enabled_total(status.get("pipeline_config", {}))
+        current_step = find_current_step(steps)
 
         # Archived = either explicitly archived or all enabled steps done
-        is_active = current_step is None or current_step < 19
+        is_active = current_step is None or current_step < MAX_STEP
 
         out.append({
             'name': name,
@@ -138,6 +142,7 @@ def scan_initiatives(pm: str) -> list:
             'active': is_active,
             'context': context,
             'validated': validated,
+            'registry': registry,
         })
     return out
 
@@ -176,7 +181,19 @@ def render(initiatives: list) -> str:
                 lines.append(f"- **Segment**: {ctx['segment']}")
             if 'why_now' in ctx:
                 lines.append(f"- **Why now**: {ctx['why_now']}")
-            if i['validated']:
+            reg = i.get('registry') or {}
+            if reg:
+                parts = []
+                if reg.get('confirmed'):
+                    parts.append("✅ REAL: " + ", ".join(reg['confirmed']))
+                if reg.get('refuted'):
+                    parts.append("❌ " + ", ".join(reg['refuted']))
+                if reg.get('open'):
+                    parts.append(f"открыто: {len(reg['open'])}")
+                if reg.get('flagged'):
+                    parts.append("⚠️ flags: " + ", ".join(reg['flagged']))
+                lines.append("- **Hypotheses**: " + " · ".join(parts))
+            elif i['validated']:
                 vstr = ", ".join(f"P{n}" for n, _ in i['validated'])
                 lines.append(f"- **Validated hypotheses**: {vstr}")
             lines.append("")

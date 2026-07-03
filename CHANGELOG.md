@@ -35,6 +35,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   upgrades and downgrades go through the registry so history captures
   every transition.
 
+### Changed (E3 — single source of truth for pipeline structure)
+
+- `tools/scripts/pipeline_constants.py` — canonical step list (0–19 plus
+  sub-steps 5.5/8.5), labels, commands, phases, `enabled_total()` and
+  `find_current_step()`. status.py, scan-initiatives.py, tools/web/app.py
+  and static_export.py now import it instead of keeping four diverged
+  copies (fallback totals were 18 vs 19 vs 21; app.py lacked step 0;
+  status.py's current-step scan never reached step 19).
+- Digest now reports hypothesis verdicts from the registry
+  ("✅ REAL: … · ❌ … · открыто: N · ⚠️ flags: …") instead of relying
+  solely on regex-parsed CONTEXT.md fields.
+
+### Fixed
+
+- `tools/web/app.py` failed to import on Python < 3.12 (f-string with a
+  backslash escape) — the web dashboard could not start at all on the
+  system Python of current macOS.
+
 ## [0.7.3] — 2026-07-02
 
 ### Security

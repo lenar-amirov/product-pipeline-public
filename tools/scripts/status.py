@@ -29,42 +29,13 @@ except ImportError:
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 console = None
 
-PIPELINE_STEPS = {
-    0: "Setup",
-    1: "CJM Analysis",
-    2: "Synthetic Research",
-    3: "Competitor Research",
-    4: "Research Briefs",
-    5: "Survey Audience",
-    6: "Validate Problems",
-    7: "Solution Hypotheses",
-    8: "Sketch Solution",
-    9: "Design Review",
-    10: "Problem Research Report",
-    11: "Design Brief",
-    12: "Dev Estimate",
-    13: "Finalize PRD",
-    14: "AB Test Design",
-    15: "Solution Research Report",
-    16: "AB Test Analysis",
-    17: "GTM Plan",
-    18: "GTM Materials",
-    19: "Support Brief",
-}
-
-PENDING_LABELS = {
-    "analytics_brief": "Send brief to analyst",
-    "survey_brief": "Send survey brief",
-    "audience_brief": "Send audience brief",
-    "analytics_results": "Waiting for analytics results",
-    "survey_results": "Waiting for survey results",
-    "ab_test_analysis": "Waiting for AB test data",
-    "gtm_materials_review": "GTM materials awaiting PM review",
-    "design_brief": "Send brief to designer",
-    "support_brief": "Send brief to support",
-    "gate1_challenge": "Present Problem Research Report",
-    "gate2_challenge": "Present Solution Research Report",
-}
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from pipeline_constants import (  # noqa: E402
+    STEP_LABELS as PIPELINE_STEPS,
+    PENDING_LABELS,
+    enabled_total,
+    find_current_step,
+)
 
 
 def find_pm() -> Optional[str]:
@@ -89,33 +60,16 @@ def load_initiatives(pm: str) -> list:
 
         steps = status.get("steps", {})
         config = status.get("pipeline_config", {})
-        config_steps = config.get("steps", {})
         template_name = config.get("template", "full")
         pending = status.get("pending", {})
 
         done = sum(1 for s in steps.values()
                    if isinstance(s, dict) and s.get("status") == "done")
 
-        if config_steps:
-            total = sum(1 for v in config_steps.values()
-                        if isinstance(v, dict) and v.get("enabled"))
-        else:
-            total = 18
+        total = enabled_total(config)
 
-        current_step = None
         current_cmd = None
-        for num in range(18, -1, -1):
-            s = steps.get(str(num), {})
-            if isinstance(s, dict) and s.get("status") in ("in_progress", "paused"):
-                current_step = num
-                break
-            elif isinstance(s, dict) and s.get("status") == "done":
-                current_step = num + 1
-                break
-
-        # Fresh initiative — no step started yet, point to 0
-        if current_step is None and steps:
-            current_step = 0
+        current_step = find_current_step(steps)
 
         if current_step is not None and current_step in PIPELINE_STEPS:
             current_cmd = PIPELINE_STEPS[current_step]

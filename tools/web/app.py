@@ -6,6 +6,7 @@ import os
 import re
 import secrets
 import shutil
+import sys
 from datetime import date, datetime
 from pathlib import Path
 
@@ -30,27 +31,8 @@ def pm_root(pm):
 
 # --- Constants ---
 
-PIPELINE_STEPS = [
-    (1,  "analyze-cjm",              "Phase 1", "CJM Analysis"),
-    (2,  "synthetic-research",        "Phase 1", "Synthetic Research"),
-    (3,  "competitor-research",       "Phase 1", "Competitor Research"),
-    (4,  "generate-research",         "Phase 1", "Research Brief"),
-    (5,  "create-survey-audience",    "Phase 1", "Survey Audience"),
-    (6,  "validate-problems",         "Phase 1", "Validation"),
-    (7,  "solution-hypotheses",       "Phase 1", "Solution Hypotheses"),
-    (8,  "sketch-solution",           "Phase 1", "Solution Sketch"),
-    (9,  "review-design",             "Phase 1", "Design Review"),
-    (10, "create-presentation",       "Phase 1", "Problem Research Report"),
-    (11, "create-design-brief",       "Phase 2", "Design Brief"),
-    (12, "estimate-with-dev",         "Phase 2", "Dev Estimate"),
-    (13, "finalize-prd",              "Phase 2", "Finalize PRD"),
-    (14, "design-ab-test",            "Phase 2", "AB Test Design"),
-    (15, "create-gate2-presentation", "Phase 2", "Solution Research Report"),
-    (16, "analyze-ab-test",           "Phase 2", "AB Test Analysis"),
-    (17, "plan-gtm",                  "Phase 3", "GTM Plan"),
-    (18, "create-gtm-materials",      "Phase 3", "GTM Materials"),
-    (19, "support-task",              "Phase 3", "Support Brief"),
-]
+sys.path.insert(0, str(PIPELINE_ROOT / "tools" / "scripts"))
+from pipeline_constants import MAIN_STEPS as PIPELINE_STEPS  # noqa: E402
 
 STEP_ARTIFACTS = {
     1:  [("Problem Hypotheses", "output/hypotheses.md")],
@@ -388,7 +370,7 @@ def generate_context_md(name, pm, fields):
         "## Context",
         f"**Why now**: {v('why_now', '[what changed]')}",
         f"**What we tried before**: {v('tried', '[previous attempts]')}",
-        f"**Constraints**: {v('constraints', '[can\\'t touch X / no budget for Y / ...]')}",
+        "**Constraints**: " + v('constraints', "[can't touch X / no budget for Y / ...]"),
         f"**Related initiatives**: {v('links', '[what it affects / what it depends on]')}",
         "",
         "## CJM",

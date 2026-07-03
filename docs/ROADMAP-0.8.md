@@ -97,15 +97,18 @@
 - MOD `.claude/settings.json` + `template/.claude/settings.json` — хук
 - MOD `.claude/rules/evidence-typing.md` — операционные правила
 
-### E3. Digest, статус и константы — производные от реестра (M)
+### E3. Digest, статус и константы — производные от реестра (M) ✅ сделано
 
-Digest собирает вердикты из `hypotheses.yaml` («подтверждено REAL: H2, H4;
-опровергнуто: H1; открыто: H5/H6») вместо regex-парсинга CONTEXT.md; прогресс
-считается от включённых шагов (фикс «4/18 vs 4/20»); единый модуль констант
-убирает 4 разъехавшиеся копии списка шагов.
+Digest собирает вердикты из реестра («✅ REAL: … · ❌ … · открыто: N ·
+⚠️ flags: …») вместо только regex-парсинга CONTEXT.md; прогресс считается от
+включённых шагов; единый модуль констант убрал 4 разъехавшиеся копии списка
+шагов (fallback-итоги были 18 vs 19 vs 21; app.py не знал шага 0; status.py
+не доходил до шага 19). Попутно найден и починен пре-существующий
+SyntaxError в app.py (f-string с backslash — дашборд не стартовал на
+Python < 3.12).
 
 **Изменения в репозитории:**
-- NEW `tools/scripts/pipeline_constants.py` — шаги/лейблы/фазы, импорт всеми
+- NEW `tools/scripts/pipeline_constants.py` — шаги/лейблы/фазы/хелперы
 - MOD `tools/scripts/status.py`, `tools/scripts/scan-initiatives.py`,
   `tools/web/app.py`, `tools/web/static_export.py` — импорт констант,
   digest из реестра
