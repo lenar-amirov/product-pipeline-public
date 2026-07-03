@@ -1,10 +1,6 @@
 ---
 name: design-critique-template
-description: Conducts structured heuristic evaluation of design decisions and
-  provides prioritized feedback. Use when user needs to review mockups, assess
-  UX, check design before handoff to development, or says "critique the design",
-  "review mockup", "evaluate the interface", "heuristic evaluation", "what's
-  wrong with the UX".
+description: Conducts structured heuristic evaluation of design decisions and provides prioritized feedback. Use when user needs to review mockups, assess UX, check design before handoff to development, or says "critique the design", "review mockup", "evaluate the interface", "heuristic evaluation", "what's wrong with the UX".
 ---
 # Design Critique Template
 

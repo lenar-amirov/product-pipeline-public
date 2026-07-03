@@ -17,13 +17,13 @@ full releases. These posts go to a team/company channel so everyone knows
 what's changing, why, and how to report issues.
 
 ## When to Use
-- **Step 18** (`/create-gtm-materials`): structural patterns for in-app
+- **`/create-gtm-materials`**: structural patterns for in-app
   notifications, email announcements, blog posts, and other GTM materials
   generated when the validated solution is rolled out to existing users.
 - Anywhere else the PM asks to draft an internal announcement (AB test
   launch, full rollout, milestone communication).
 
-## AB Test Announcement Template (Step 17)
+## AB Test Announcement Template (experiment launch)
 
 ### Required Inputs
 - `output/PRD.md` — what the feature does
@@ -78,7 +78,7 @@ what's changing, why, and how to report issues.
 - Lead with what changed, not why it's brilliant
 - Include experiment IDs so anyone can look it up
 
-## Release Announcement Template (Step 18)
+## Release Announcement Template (GTM rollout)
 
 Adapt the AB test template for full rollout:
 

@@ -154,7 +154,7 @@ Include evolving characteristics:
 - Validate assumptions through ongoing user testing
 - Retire outdated personas that no longer represent significant user segments
 
-## Early-Stage Personas (Synthetic Research — Step 2)
+## Early-Stage Personas (synthetic research, before real data)
 
 When real user interviews aren't available yet, build personas from secondary data as a starting point. Mark all outputs as **SYNTHETIC** evidence.
 
@@ -211,7 +211,7 @@ Q3: "What did you try before giving up / finding a workaround?"
 
 ### Upgrading to REAL
 
-After step 5.5 (customer research pause), update personas:
+After real customer research (interviews/survey) arrives, update personas:
 - Replace SYNTHETIC traits with interview-backed REAL evidence
 - Adjust confidence scores based on actual user data
 - Retire personas that don't match real user segments
