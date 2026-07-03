@@ -5,6 +5,50 @@ All notable changes to Product Discovery will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.1.0] — 2026-07-03
+
+Skill portfolio rationalization: every skill now has exactly one clear
+role in the jobs-first architecture. 23 skills before, 23 after — but
+6 removed/merged, 6 added, 4 refocused.
+
+### Removed / merged
+
+- `ab-test-announcement-wizard` removed — announcement structure folded
+  into pipeline-steps STEP 18 (its only consumer).
+- `usability-test-plan` + `user-test-concept` → **`user-testing`** with
+  two modes (quick concept test / full study); shared registry-output and
+  frequency-honesty rules; `/user-test-concept` stays as an alias.
+- `funnel-analysis-builder` + `product-analytics-setup` →
+  **`tracking-and-funnels`**: schema derived from open hypotheses, funnel
+  reading with definitions/windows discipline, quality checks; SQL walls
+  and Amplitude/GA4/GDPR textbook content dropped (~500 → 70 lines).
+- `product-discovery-template` → **`solution-scoring`** (assumption map +
+  ICE/SIF + business viability for /solutions); its parallel discovery
+  framework duplicated the pipeline itself and is gone.
+
+### Added
+
+- **`problem-structuring`** — MECE / pyramid / 80-20 extracted as the
+  pipeline's structuring engine (steps 1/3/6);
+  `consulting-problem-solving` remains as a standalone advanced mode, no
+  longer referenced by pipeline steps.
+- **`experiment-design`** — MDE, sample size, guardrails, pre-registered
+  decision criteria, and "is an AB test even the right instrument"
+  (step 14 engine, extracted from the deleted discovery template).
+- **`interview-analysis`** — notes → coding → patterns with frequency
+  honesty → registry verdicts; fills the 6c method gap (interviews are
+  the highest-confidence qualitative REAL source and had no method).
+
+### Refocused
+
+- `ambiguity-resolver` — honest role: structuring briefs HANDED DOWN by
+  stakeholders (out-of-scope boundaries, decision owner); the PM's own
+  vague problems are FIRST LAUNCH territory.
+- `design-critique-template` — hypothesis-fit is now the first and
+  decisive critique pass; heuristics second; findings that overturn
+  solution assumptions go to the registry.
+- `setup-initiative`, pipeline-steps STEP 18 — see above.
+
 ## [1.0.1] — 2026-07-03
 
 Full skill-layer revision after the 1.0 redesign (audited by a two-agent

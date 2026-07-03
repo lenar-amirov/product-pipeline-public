@@ -55,7 +55,7 @@ After checklist — write CONTEXT.md and show the Frame coverage before/after.
 **Input**: `CONTEXT.md` + `/CJM/` materials
 **Output**: `output/hypotheses.json` (registry) + `output/hypotheses.md` (analysis)
 **PRD**: → §1, §2
-**Skills**: `consulting-problem-solving` (MECE) + `user-persona-builder`
+**Skills**: `problem-structuring` (MECE) + `user-persona-builder`
 
 ⚠️ Only PROBLEM hypotheses. No solutions.
 
@@ -79,7 +79,7 @@ Pick the path with the PM, then proceed.
 2. Analyze CJM materials if present (PNG/JPG directly, .fig via Figma MCP, .pdf via Read).
    If no CJM — work from PM's verbal description; mark each hypothesis as INFERRED.
 3. For each step: what user sees, does, where friction occurs
-4. Use MECE structure from `consulting-problem-solving`
+4. Use MECE structure from `problem-structuring`
 5. Form 5-15 problem hypotheses: register each via `hypotheses.py add`
    (id, title, type, confidence, track), narrative analysis in
    `output/hypotheses.md`, then `hypotheses.py render`
@@ -121,7 +121,7 @@ Create `research/qual-research-brief.md` with justification + interview guide.
 **Input**: `CONTEXT.md` + `output/hypotheses.md`
 **Output**: `research/competitive-analysis.md` + `research/competitive/`
 **PRD**: → §5
-**Skills**: `consulting-problem-solving`
+**Skills**: `problem-structuring` (scenario analogues need the same exclusivity discipline)
 
 Look for **scenario analogues** — products where similar problem is solved.
 
@@ -139,7 +139,7 @@ Look for **scenario analogues** — products where similar problem is solved.
 **Type**: Autonomous
 **Input**: `CONTEXT.md` + `output/hypotheses.md`
 **Output**: `research/analytics-brief.md` + `research/survey-questions.md`
-**Skills**: `funnel-analysis-builder` + `product-analytics-setup` + `usability-test-plan`
+**Skills**: `tracking-and-funnels` + `user-testing` (if qual research is in scope)
 
 1. For each hypothesis — what data needed
 2. `research/analytics-brief.md`: goals, metrics, funnels, event schema
@@ -157,7 +157,7 @@ default +7d) + `blocks` = the hypothesis ids this data validates.
 **Type**: Autonomous
 **Input**: `research/survey-questions.md`
 **Output**: `research/survey-audience-brief.md`
-**Skills**: `funnel-analysis-builder` + `product-analytics-setup`
+**Skills**: `tracking-and-funnels`
 
 1. Translate screening questions into behavioral analytics signals
 2. `research/survey-audience-brief.md`: criteria, period, format, SQL pseudocode
@@ -186,7 +186,7 @@ or `/ingest` anything that comes through the side door earlier.
 **Input**: `output/hypotheses.md` + research data
 **Output**: `output/validated-hypotheses.md`
 **PRD**: → §3, §4
-**Skills**: `funnel-analysis-builder` + `consulting-problem-solving` + `multi-source-signal-synthesiser`
+**Skills**: `tracking-and-funnels` + `problem-structuring` (pyramid) + `multi-source-signal-synthesiser` + `interview-analysis` (for 6c)
 
 Three sub-steps (PM chooses how many):
 
@@ -197,7 +197,7 @@ Three sub-steps (PM chooses how many):
 - Input: survey-results.md → confidence REAL 0.8-0.9
 
 **6c. Interview validation** (Optional) — qualitative depth
-- Input: interview-notes.md → confidence REAL 0.9-1.0
+- Input: interview-notes.md → confidence REAL 0.9-1.0 (method: `interview-analysis`)
 
 For each hypothesis: ✅/❌/⚠️, evidence, recalculated SIF.
 Pyramid principle: data → insight → conclusion → recommendation.
@@ -219,7 +219,7 @@ Solution Tree. Narrative reasoning goes to `output/validated-hypotheses.md`.
 **Input**: `output/validated-hypotheses.md`
 **Output**: `output/solution-hypotheses.md`
 **PRD**: → §6
-**Skills**: `product-discovery-template`
+**Skills**: `solution-scoring` (assumption map + ICE + viability)
 
 1. Take ✅/🎯 problems from the registry (`hypotheses.py show <dir>`) —
    not from prose
@@ -246,12 +246,12 @@ Solution Tree. Narrative reasoning goes to `output/validated-hypotheses.md`.
 
 ---
 
-## STEP 8.5 — `/user-test-concept` (Optional)
+## STEP 8.5 — `/user-test-concept` (Optional; alias for user-testing concept mode)
 
 **Type**: Pause — PM conducts test
 **Input**: `output/solution-sketch.md`
 **Output**: `research/concept-test-results.md`
-**Skills**: `user-test-concept`
+**Skills**: `user-testing` (concept mode)
 
 Generate: concept test scenario (15 min, 3-5 users), questions per screen, success/fail criteria.
 PM conducts → enters results → hypotheses updated with REAL evidence.
@@ -302,7 +302,7 @@ rehearse before it.
 
 **Type**: Autonomous → Pause
 **Output**: `output/design-brief.md` + (optional) `output/ux-research-brief.md`
-**Skills**: `usability-test-plan`
+**Skills**: `user-testing` (study mode)
 
 **Tracking**: create a dependency (`kind: design`, owner = designer,
 deadline, blocks = step 8/9 artifacts).
@@ -332,7 +332,7 @@ Fill §8 (User Stories), §11 (Open questions). Check consistency. Status → Re
 
 **Type**: PM + analyst
 **Output**: `output/ab-test-design.md`
-**Skills**: `product-discovery-template` + `funnel-analysis-builder` + `product-analytics-setup`
+**Skills**: `experiment-design` + `tracking-and-funnels`
 
 Calculate: baseline, MDE, sample size, duration, segmentation, guardrails, decision criteria.
 
@@ -384,7 +384,7 @@ deadline = the review date). Offer `/challenge` to rehearse before it.
 **Type**: Pause (waiting for AB test data) → Autonomous (when data arrives)
 **Input**: `output/ab-test-design.md` + `research/ab-test-results.md` (raw test data from analyst)
 **Output**: `output/ab-test-analysis.md`
-**Skills**: `funnel-analysis-builder` + `multi-source-signal-synthesiser`
+**Skills**: `tracking-and-funnels` + `multi-source-signal-synthesiser`
 
 **External dependency** (optional): if PM has [pm-skills](https://github.com/phuryn/pm-skills) installed, prefer `pm-data-analytics:ab-test-analysis` skill or `/analyze-test` command — it has dedicated stat-sig validation tooling.
 
@@ -462,9 +462,20 @@ Show plan to PM for review. After approval, proceed to step 18.
 **Type**: Autonomous → PM reviews each artifact
 **Input**: `output/gtm-plan.md` + `output/PRD.md` + `output/solution-sketch.md`
 **Output**: `output/gtm-materials.md` (index) + individual material files in `output/materials/`
-**Skills**: `ab-test-announcement-wizard` (for communication patterns) + `user-persona-builder` (to tailor copy per segment)
+**Skills**: `user-persona-builder` (to tailor copy per segment)
 
 **External dependency** (optional): if PM has [pm-skills](https://github.com/phuryn/pm-skills) installed, leverage `pm-marketing-growth:value-prop-statements`, `positioning-ideas` for richer copy variants.
+
+**Internal announcement structure** (AB test launch or release — for team
+channels): 1 what's happening (one sentence) · 2 what changes for users
+(test vs control, screenshot) · 3 hypothesis (test) / measured results
+(release) · 4 context: problem + evidence from the registry · 5 expected /
+actual metric movement + guardrails · 6 rollout details (platforms,
+segments, dates) · 7 experiment IDs / feature flags · 8 contacts.
+Tone: informative not promotional; reader has 30 seconds; lead with what
+changed. Missing data → `[placeholder]` + a "Needs clarification" checklist.
+Releasing without an AB test → say so explicitly ("based on <research>
+validation, no AB test") + monitoring plan.
 
 Generate the actual materials referenced in the GTM plan. For each channel in the plan, produce one ready-to-publish artifact:
 

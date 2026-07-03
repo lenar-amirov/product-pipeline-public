@@ -28,7 +28,7 @@ without the dev lead is INFERRED — mark it and list it as an open question.
    each unknown widens the estimate — ask the dev lead to size the
    widening.
 5. **Integration points for tracking** — where the analytics events (from
-   `product-analytics-setup`) will be emitted; flag anything the solution
+   `tracking-and-funnels`) will be emitted; flag anything the solution
    makes unmeasurable.
 
 ## Output

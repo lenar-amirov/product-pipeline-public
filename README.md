@@ -145,7 +145,7 @@ The work is now persisted. Close Claude, come back tomorrow — the initiative r
 |-----------|------|
 | `CLAUDE.md` | Master prompt — session lifecycle, FIRST LAUNCH flow, intent matching |
 | `.claude/settings.json` | `SessionStart` hooks: dashboard, initiatives digest, evidence audit |
-| `.claude/skills/` | 19 specialized skills — discovery, personas, funnels, PRD, design critique, pipeline-steps, etc. |
+| `.claude/skills/` | 23 specialized skills — problem structuring, ingestion, validation, scoring, gates rehearsal, PRD, post-launch review, etc. |
 | `.claude/rules/` | Path-scoped rules: output formats, evidence typing |
 | `template/` | Initiative scaffold copied for each new initiative |
 | `tools/scripts/status.py` | Branded terminal dashboard with first-launch onboarding |

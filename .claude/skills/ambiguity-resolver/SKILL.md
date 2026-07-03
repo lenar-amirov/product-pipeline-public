@@ -1,9 +1,6 @@
 ---
 name: ambiguity-resolver
-description: Structures vague opportunities and unclear briefs into actionable
-one-page problem statements. Use when user has a vague brief, undefined problem,
-unclear opportunity, or says "we need to figure out what to do about X", "can
-you help me make sense of this", or "I've been asked to look into Y".
+description: Structures a brief HANDED DOWN by a stakeholder (boss, exec, another team) into a one-page problem statement with scope boundaries and a named decision owner. Use when the PM says "мне спустили задачу", "I've been asked to look into Y", "руководство хочет X", "CEO попросил разобраться" — a request the PM didn't originate. For the PM's own vague problem, the FIRST LAUNCH drill-down covers it.
 metadata:
   author: Mohit Aggarwal
   version: 1.0.0
@@ -14,9 +11,11 @@ metadata:
 # Ambiguity Resolver Skill
 
 ## Purpose
-Turn vague briefs and half-formed opportunities into structured, actionable
-problem statements — so you can reply with clarity instead of asking for three
-more meetings.
+Turn a brief **handed down by someone else** into a structured problem
+statement — so the PM can reply to the stakeholder with clarity instead of
+booking three more meetings. Distinctive value vs the normal drill-down:
+explicit OUT-of-scope boundaries and a named decision owner, which protect
+the PM when the request inevitably mutates.
 
 ## Three-Stage Process
 
