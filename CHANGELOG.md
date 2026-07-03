@@ -5,6 +5,40 @@ All notable changes to Product Discovery will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.0.1] — 2026-07-03
+
+Full skill-layer revision after the 1.0 redesign (audited by a two-agent
+review + init/rules pass).
+
+### Fixed (migration leftovers)
+
+- pipeline-steps: all 8 `activate pending.*` trackings → `dependencies[]`
+  creation; steps 0/5.5 no longer mention templates/pendings; step 1 no
+  longer blocks on empty CONTEXT.md (zero-setup).
+- setup-initiative: template picker removed; reframed as the Frame-phase
+  filler required by gates — never a forced first step.
+- next-advisor diagnoses `dependencies[]` + the coverage map;
+  post-launch-review closes its dependency; strategic-narrative sources
+  point at the registry; output-formats states markdown is a narrative
+  view of `hypotheses.json`.
+- init skill: copies `.mcp.json.example` and `.gitignore`, 3-hook
+  settings snippet, `rich` marked optional, frontmatter `name` added.
+
+### Changed (registry as mandatory output)
+
+- evidence-typing rule gains "Who writes to the registry"; concrete
+  `hypotheses.py` commands wired into multi-source-signal-synthesiser,
+  funnel-analysis-builder, product-analytics-setup, usability-test-plan,
+  user-test-concept, product-discovery-template.
+- Three generic skills rewritten tool-specific (613 → 141 lines):
+  system-design-doc (PM feasibility view), technical-spec-document
+  (implementation blueprint with sharp boundary), ui-pattern-library
+  (pattern selection from the hypothesis mechanism for /sketch).
+- Frontmatter hygiene: consulting-problem-solving description 1406 → 416
+  chars; design-critique-template single-line YAML; step-number
+  references generalized in user-persona-builder and
+  ab-test-announcement-wizard.
+
 ## [1.0.0] — 2026-07-03
 
 The map-and-gates release completes the redesign started in 0.8: hypotheses
