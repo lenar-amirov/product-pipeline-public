@@ -281,6 +281,11 @@ Product Discovery is at **1.0** — hypothesis registry, jobs-first interface, e
 
 Product Discovery is local-first — there is no server, no telemetry, no analytics. Everything lives on your machine. Claude Code processes your conversation through Anthropic; integrations you connect (Jira / Linear MCP) see the ticket data you push.
 
+Extra guard for contributors: `tools/scripts/install-hooks.sh` installs a
+pre-push hook that blocks pushes containing initiative folders, credential
+files, token-like values, or your personal markers from a gitignored
+`.leak-patterns` file.
+
 See [PRIVACY.md](./PRIVACY.md) for full details.
 
 ---

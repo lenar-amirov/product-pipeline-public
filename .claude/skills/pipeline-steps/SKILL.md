@@ -374,7 +374,10 @@ deadline = the review date). Offer `/challenge` to rehearse before it.
 **Phase B — Push via MCP (after PM confirms):**
 1. Detect MCP: jira tools → Jira API; linear tools → Linear; gh CLI → GitHub Issues
 2. Create parent first, then children with references
-3. Save tracker URLs to `output/tickets.md`
+3. Save tracker URLs to `output/tickets.md`; label everything
+   `initiative:<slug>` and record epic/story keys in status.json
+   `dependencies[]` (kind: delivery, owner: dev lead) — the two-way Jira
+   loop (CLAUDE.md) polls these at session start
 4. If no MCP → inform PM, suggest setup (see Tracker integration section in README.md)
 
 ---

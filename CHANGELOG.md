@@ -5,6 +5,21 @@ All notable changes to Product Discovery will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.2.0] — 2026-07-03
+
+### Added
+
+- **Pre-push leak guard**: `tools/scripts/check-leaks.py` blocks outgoing
+  pushes containing initiative folders / personal top-level paths,
+  credential files (.mcp.json, settings.local.json, …), token-like values,
+  or personal markers from a gitignored `.leak-patterns` file.
+  `tools/scripts/install-hooks.sh` installs it as a git pre-push hook.
+- **Two-way Jira loop** (CLAUDE.md): at session start, open dependencies
+  with a `jira` key are polled via MCP — closed issues prompt "mark done +
+  ingest results", changed descriptions get noted; `/brief` and `/tickets`
+  label created issues `initiative:<slug>` and record keys back into
+  `dependencies[]`. Degrades silently without MCP.
+
 ## [1.1.0] — 2026-07-03
 
 Skill portfolio rationalization: every skill now has exactly one clear

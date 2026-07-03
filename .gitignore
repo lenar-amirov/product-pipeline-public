@@ -26,3 +26,6 @@ pm-profile.md
 !/.claude/
 !/.claude-plugin/
 !/.github/
+
+# Personal leak-guard patterns
+.leak-patterns

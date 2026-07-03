@@ -209,6 +209,19 @@ Rules:
 - Legacy `pending.*` keys still render on the dashboard for old
   initiatives; migrate them to `dependencies[]` when you touch them.
 
+**Two-way Jira loop** (when the Jira MCP is connected):
+- **At session start**, if any open dependency carries a `jira` key —
+  fetch those issues' statuses (batch, quietly). Closed/resolved → tell
+  the PM and offer: mark the dependency done + `/ingest` or `/validate`
+  the results. Description or due date changed since we wrote it → one-line
+  note; record meaningful changes in decisions.md.
+- **When creating work in Jira** (`/brief` → analyst task, `/tickets`):
+  add the label `initiative:<slug>` and write the issue key into the
+  dependency's `jira` field in the same move — otherwise the loop can't
+  close.
+- MCP not connected or the call fails → skip silently; the dashboard's
+  age/OVERDUE display keeps working without Jira.
+
 ---
 
 ## RULES
