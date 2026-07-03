@@ -27,9 +27,12 @@ assumption is untestable is a faith project; say so.
 
 - **Impact**: expected movement of the initiative metric — anchor in
   registry numbers (segment sizes, measured effects), not vibes.
-- **Confidence**: driven by the underlying hypothesis' evidence_type —
-  REAL-backed problems justify high confidence in the problem, NOT in the
-  solution; solution confidence starts low until tested.
+- **Confidence** — numeric, staged by validation depth (REAL-backed
+  problems justify confidence in the PROBLEM, not the solution):
+  0.1–0.3 untested idea or external analogy · 0.4–0.6 after a concept
+  test or a competitive analogue with the same mechanism on a comparable
+  audience · 0.7+ only after an experiment on OUR users. A number outside
+  its stage is the same violation as evidence-typing ranges.
 - **Ease**: S/M/L from the dev lead when available, gut S/M/L otherwise
   (mark INFERRED).
 
@@ -41,8 +44,13 @@ self-check applies.
 
 Unit economics sketch · cannibalization risk · dependencies (teams/systems
 → candidates for status.json `dependencies[]`) · compliance flags · effort
-S/M/L. Verdict per solution: green / yellow (proceed with named risk) /
-red (park with reason).
+S/M/L. Verdict per solution:
+- **RED** — any single disqualifier: unit economics negative at target
+  scale, hard compliance blocker, or effort L with confidence ≤0.3.
+  One red parks the solution regardless of its ICE score (a great score
+  on a non-viable solution is how teams burn quarters).
+- **YELLOW** — proceed with a NAMED risk and an owner for it.
+- **GREEN** — no known disqualifiers.
 
 ## 4. Output
 

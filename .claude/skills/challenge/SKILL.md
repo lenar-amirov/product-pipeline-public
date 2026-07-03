@@ -11,8 +11,11 @@ where the evidence is thin.
 
 ## 0. Preconditions first
 
-Run `python3 tools/scripts/validate-evidence.py --gate <dir>`. If GATE
-BLOCKED — stop: report the blockers and the fastest way to clear each one.
+Run `python3 tools/scripts/validate-evidence.py --gate <dir>` — it checks
+three things: ≥2 hypotheses confirmed REAL, zero registry violations
+(ranges, unreconciled data_inconsistency), Frame complete (metric /
+baseline / target / kill criteria). If GATE BLOCKED — stop: report the
+blockers and the fastest way to clear each one.
 Rehearsing a deck built on unreconciled numbers wastes the PM's time.
 
 ## 1. Load the ammunition

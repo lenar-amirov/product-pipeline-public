@@ -53,6 +53,9 @@ needs task-level measurement.
 
 Findings are REAL evidence: `hypotheses.py set <id> --type REAL
 --confidence <C> --add-source "research/<results-file>::task N, M of K
-users"` — confirm, downgrade or refute the touched solution/problem
+users"`. Anchor C in the result, not enthusiasm: concept mode — 4-5/5
+clear success ≈ 0.7–0.8, 3/5 mixed ≈ 0.6, fail criteria triggered →
+refute or downgrade; study mode — scale by severity found and share of
+the segment affected — confirm, downgrade or refute the touched solution/problem
 hypotheses; then `hypotheses.py render`. Frequency honesty: "M of K users",
 one user is not "users". Log the verdict in decisions.md.

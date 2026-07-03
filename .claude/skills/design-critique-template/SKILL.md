@@ -45,3 +45,11 @@ changes; unresolved disagreements go to decisions.md as open questions.
 If the critique overturns a solution assumption — that's registry news:
 flag it to the PM (`hypotheses.py set <id> --note ...`), don't bury it in
 design comments.
+
+## Anti-patterns
+
+- Critiquing taste ("I'd make it blue") instead of hypothesis fit and
+  heuristics — unfalsifiable feedback teaches nothing.
+- A defect list with no severity — the designer can't sequence fixes.
+- Reviewing the mockup without opening the solution hypothesis — you'll
+  approve a beautiful screen that tests nothing.

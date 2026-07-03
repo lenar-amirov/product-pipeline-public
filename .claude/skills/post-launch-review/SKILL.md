@@ -20,6 +20,11 @@ moved. This job is the difference between a pipeline and a feedback system.
 - Target from `CONTEXT.md` (Frame): metric, baseline → target.
 - Actual: ask the PM for current numbers or `/ingest` the fresh export.
 - Verdict: **hit / partial / miss** — with the honest delta, not adjectives.
+- On partial/miss, reconcile with the discovery signal: which validated
+  hypothesis over-promised, was it the evidence (source too weak), the
+  sizing (pool smaller than estimated), or the execution (shipped thing ≠
+  tested thing)? That diagnosis — not the miss itself — is what the
+  knowledge base and the next initiative need.
 
 ## 2. Production verdicts for hypotheses
 

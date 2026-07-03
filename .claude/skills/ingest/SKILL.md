@@ -53,7 +53,12 @@ For each extracted finding, classify:
 Internal analytics/dashboards/decks of your own product = REAL. External
 benchmarks and competitor numbers = INFERRED (0.3–0.5) — they are analogies,
 not facts about your product. Surveys of your users = REAL. Someone's
-opinion slide without data = AMBIGUOUS.
+opinion slide without data = AMBIGUOUS (0.1–0.3).
+
+Source quality check before typing anything REAL: who produced it, what
+data window, does its total reconcile with numbers already in the registry?
+A REAL source with an unknown window or an unreconciled total enters at the
+bottom of the REAL range (0.6), not the top.
 
 ## 5. Deliver
 

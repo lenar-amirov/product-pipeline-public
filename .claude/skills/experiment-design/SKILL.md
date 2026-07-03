@@ -23,15 +23,21 @@ and slow; don't default to it. State the choice and why.
   Baseline comes from the registry/CONTEXT.md, never from memory.
 - **Primary metric** — exactly one; the same definition the dashboard uses
   (metric-definition mismatches are how gates die — see /challenge).
-- **MDE** — the smallest effect worth shipping (business floor), not the
-  effect you hope for.
+- **MDE** — the smallest **business-meaningful** effect (the shipping
+  floor), NOT the smallest statistically detectable one and not the effect
+  you hope for. A result can be significant and still worthless — sizing
+  the test to detect 0.2% when only 2%+ changes the roadmap wastes weeks.
 - **Sample size & duration** — from baseline, MDE, power 0.8, α 0.05;
   respect weekly seasonality (full weeks only). If the segment is too small
   for the MDE — say the test is infeasible and go back to instrument choice.
 - **Guardrails** — metrics that must NOT degrade (engagement, latency,
   support load) with explicit thresholds.
-- **Decision criteria BEFORE launch**: ship / iterate / kill thresholds
-  written down — no post-hoc goalpost moving.
+- **Decision criteria are pre-registered**: ship / iterate / kill
+  thresholds written into this doc BEFORE launch — post-hoc goalpost
+  moving is how p-hacking enters product work. Division of power: the
+  primary metric decides ship/no-ship; a guardrail breach pauses the test
+  and triggers investigation — it neither silently vetoes nor gets
+  explained away after the fact.
 
 ## 2. Tracking readiness
 

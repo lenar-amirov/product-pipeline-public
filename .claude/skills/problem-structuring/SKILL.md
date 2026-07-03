@@ -20,10 +20,16 @@ partner-led, deliverable-heavy consulting engagement use
 3. **Branches must be mutually exclusive, collectively exhaustive.** Test:
    every lost user lands in exactly one branch. If a case fits two branches
    — re-split. If no branch fits — add "other/unknown" and size it.
-4. **Leaves become hypotheses** (`hypotheses.py add`): each leaf = a
-   falsifiable claim about WHY users are lost there, with a segment size
-   estimate. 5–15 hypotheses is the healthy range.
-5. **Name the blind spots explicitly** — branches you cannot size with
+4. **Leaves localize the gap; hypotheses explain it.** A leaf states WHERE
+   the metric is lost ("high-frequency viewers never click") with a size
+   estimate. For each sized leaf write 1–3 falsifiable hypotheses about WHY
+   ("recommendations are irrelevant for this segment") and register them
+   (`hypotheses.py add`). Don't collapse the two: one leaf often has
+   competing explanations, and validating decides between them. 5–15
+   hypotheses total is the healthy range.
+5. **Stop drilling** when a leaf is testable with one data pull or one
+   experiment — deeper splits past that point are decoration.
+6. **Name the blind spots explicitly** — branches you cannot size with
    current data. These become research questions for `/brief`.
 
 ## Pyramid principle (for validated findings)
@@ -38,8 +44,9 @@ ends with "so, in conclusion".
 Size every branch before drilling: 80% of the metric gap usually sits in
 2–3 leaves. Depth-first into the biggest branch beats breadth-first
 completeness. The registry's segment-size fields carry the sizing;
-priorities follow SIF (Severity × Impact × Frequency) per
-output-formats.md.
+priorities follow **SIF = Severity × Impact × Frequency** (each 1–10:
+how painful per affected user × share of the metric gap / segment size ×
+how often the situation recurs) — format in output-formats.md.
 
 ## Anti-patterns
 

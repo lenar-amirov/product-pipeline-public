@@ -5,6 +5,36 @@ All notable changes to Product Discovery will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.2.1] — 2026-07-03
+
+Skill audit against the canonical skill-creator checklist + domain-expert
+review (two-agent pass over all 24 skills; 0 critical, 3 medium, batch of
+minor findings — all fixed).
+
+### Fixed (domain corrections)
+
+- `problem-structuring`: leaves localize the gap, hypotheses explain it —
+  the two are no longer conflated; SIF formula spelled out; "stop
+  drilling" rule added.
+- `solution-scoring`: numeric confidence stages for solutions (0.1–0.3
+  untested → 0.4–0.6 concept-tested → 0.7+ experiment on our users);
+  viability RED criteria defined (one disqualifier parks the solution
+  regardless of ICE).
+- `experiment-design`: MDE explicitly business-meaningful (not merely
+  detectable); decision criteria pre-registered; primary decides,
+  guardrail breach pauses — not silently vetoes.
+- Minor: ingest source-quality check + AMBIGUOUS range; challenge spells
+  out gate criteria; post-launch-review miss diagnosis (evidence vs sizing
+  vs execution); user-testing result→confidence anchors; funnel SQL
+  PARTITION BY note; design-critique anti-patterns.
+
+### Changed
+
+- `pipeline-steps` restructured per progressive disclosure: SKILL.md is
+  now a 63-line navigation layer (jobs map, registry rules, step index);
+  per-step details moved to `references/steps.md` with a table of
+  contents — only the section being executed gets loaded.
+
 ## [1.2.0] — 2026-07-03
 
 ### Added

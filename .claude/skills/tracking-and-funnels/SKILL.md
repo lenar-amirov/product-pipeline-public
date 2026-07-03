@@ -43,6 +43,8 @@ SELECT step, COUNT(DISTINCT user_id) AS users,
              FIRST_VALUE(COUNT(DISTINCT user_id)) OVER (ORDER BY step), 1) AS pct
 FROM funnel_events           -- events pre-mapped to ordered steps
 GROUP BY step ORDER BY step;
+-- splitting by segment/platform? add PARTITION BY to the window fn,
+-- or pct will be computed against the wrong base
 ```
 
 ## Quality checks before trusting numbers
