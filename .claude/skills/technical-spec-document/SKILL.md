@@ -1,218 +1,45 @@
 ---
 name: technical-spec-document
-description: Creates detailed technical specification documents that translate requirements into implementation blueprints for development teams. Use when user needs a tech spec, component documentation, or says "technical spec", "tech spec", "implementation spec", "specification document", "технический документ", "спецификация".
+description: Translates PRD requirements into an implementation blueprint agreed with the dev team — scope by component, behavior-level contracts, acceptance mapping, estimate structure. Use at dev-estimate time or when the user says "tech spec", "implementation spec", "спецификация", "технический документ". Complements system-design-doc (that one captures constraints; this one specifies what gets built).
 ---
-You are an expert in creating comprehensive technical specification documents that serve as definitive blueprints for software development projects. You excel at translating complex requirements into clear, actionable specifications that guide development teams, architects, and stakeholders through implementation.
 
-## Document Structure and Organization
+# Technical Spec (implementation blueprint)
 
-Follow this proven hierarchical structure for maximum clarity:
+Boundary: **this skill = what will be built for THIS initiative**, agreed
+with the dev team. What the system already looks like and what constrains
+us is `system-design-doc`.
 
-```markdown
-# Technical Specification: [Project Name]
+The spec's customer is the dev team; its source of truth is PRD §6–8
+(which traces to confirmed hypotheses in the registry). Nothing enters the
+spec without tracing back to a requirement — and no requirement leaves
+without acceptance criteria.
 
-## 1. Executive Summary
-- Project overview (2-3 sentences)
-- Key objectives and success metrics
-- Timeline and resource requirements
+## Structure
 
-## 2. System Overview
-- High-level architecture diagram
-- Component relationships
-- Technology stack decisions
+1. **Scope by component** — for each affected component (from
+   system-design-doc): what changes, and what explicitly does NOT change
+   (the out-of-scope list prevents estimate creep).
+2. **Contracts at behavior level** — new/changed interfaces described as
+   inputs → outputs → errors. Enough for the dev team to design against;
+   not pretending to be their design.
+3. **Acceptance mapping** — every user story from PRD §8 → which
+   component(s) deliver it → how we verify (feeds `/tickets`
+   Given/When/Then directly).
+4. **Tracking requirements** — events the solution must emit so the AB
+   test (step 14) and post-launch review can measure it. A solution that
+   ships unmeasurable is a spec bug.
+5. **Estimate structure** — S/M/L per component with the dev lead's
+   confidence; unknowns from system-design-doc widen ranges explicitly.
 
-## 3. Detailed Requirements
-### 3.1 Functional Requirements
-### 3.2 Non-Functional Requirements
-### 3.3 Constraints and Assumptions
+## Output
 
-## 4. Technical Design
-### 4.1 Architecture Components
-### 4.2 Data Models
-### 4.3 API Specifications
-### 4.4 Security Considerations
+`output/dev-estimate.md` (spec section) + PRD §9–10 updates. Feeds
+`/tickets` — Epics/Stories are generated from the acceptance mapping, so
+sloppy mapping here becomes sloppy tickets there.
 
-## 5. Implementation Plan
-### 5.1 Development Phases
-### 5.2 Dependencies and Risks
-### 5.3 Testing Strategy
-```
+## Anti-patterns
 
-## Requirements Documentation Best Practices
-
-Write requirements using the MoSCoW prioritization method:
-
-```markdown
-### FR-001: User Authentication [MUST HAVE]
-**Description**: Users must authenticate using OAuth 2.0
-**Acceptance Criteria**:
-- Support Google, GitHub, and Microsoft SSO
-- Session timeout after 24 hours
-- Failed login attempts locked after 5 tries
-**Dependencies**: OAuth service configuration
-**Effort**: 5 story points
-```
-
-Use this template for consistent requirement documentation:
-- Unique ID (FR/NFR-XXX format)
-- Priority level (Must/Should/Could/Won't)
-- Clear acceptance criteria
-- Dependencies and effort estimation
-
-## API Specification Standards
-
-Document APIs using OpenAPI 3.0 format with comprehensive examples:
-
-```yaml
-paths:
-  /api/v1/users:
-    post:
-      summary: Create new user
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [email, name]
-              properties:
-                email:
-                  type: string
-                  format: email
-                  example: "user@example.com"
-                name:
-                  type: string
-                  minLength: 2
-                  maxLength: 100
-      responses:
-        '201':
-          description: User created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        '400':
-          description: Invalid input data
-```
-
-Include error handling, rate limiting, and authentication requirements for each endpoint.
-
-## Data Model Documentation
-
-Use Entity Relationship Diagrams and detailed schema definitions:
-
-```sql
--- User table with comprehensive constraints
-CREATE TABLE users (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    email VARCHAR(255) UNIQUE NOT NULL,
-    name VARCHAR(100) NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW(),
-    is_active BOOLEAN DEFAULT TRUE,
-    
-    CONSTRAINT valid_email CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$')
-);
-
--- Indexes for performance
-CREATE INDEX idx_users_email ON users(email);
-CREATE INDEX idx_users_active ON users(is_active) WHERE is_active = TRUE;
-```
-
-Document relationships, constraints, and indexing strategies with performance implications.
-
-## Architecture Decision Records (ADRs)
-
-Include ADRs for major technical decisions:
-
-```markdown
-## ADR-001: Database Selection
-
-**Status**: Accepted
-**Date**: 2024-01-15
-**Deciders**: Architecture Team
-
-### Context
-Need to select primary database for user data and application state.
-
-### Decision
-PostgreSQL 15+ with read replicas
-
-### Rationale
-- ACID compliance required for financial data
-- JSON support for flexible schemas
-- Proven scalability in similar applications
-- Strong ecosystem and tooling
-
-### Consequences
-- **Positive**: Data consistency, rich query capabilities
-- **Negative**: More complex than NoSQL for simple operations
-- **Risks**: Scaling writes may require sharding strategy
-```
-
-## Security and Compliance Specifications
-
-Document security requirements with specific implementation details:
-
-```markdown
-### Security Requirements
-
-#### Authentication & Authorization
-- JWT tokens with RS256 signing
-- Token expiration: 1 hour (access), 7 days (refresh)
-- Role-based access control (RBAC) implementation
-
-#### Data Protection
-- Encryption at rest: AES-256
-- Encryption in transit: TLS 1.3+
-- PII data pseudonymization for analytics
-
-#### Compliance Standards
-- GDPR: Right to deletion, data portability
-- SOC 2 Type II: Audit logging, access controls
-- PCI DSS: If handling payment data
-```
-
-## Implementation Timeline and Milestones
-
-Create detailed project phases with clear deliverables:
-
-```markdown
-### Phase 1: Foundation (Weeks 1-4)
-**Deliverables**:
-- Database schema implementation
-- Basic authentication service
-- CI/CD pipeline setup
-
-**Acceptance Criteria**:
-- [ ] All database migrations run successfully
-- [ ] Unit test coverage > 80%
-- [ ] Automated deployment to staging environment
-
-**Dependencies**: 
-- Infrastructure provisioning complete
-- Development environment setup
-
-**Risk Mitigation**:
-- Daily standups for blocker identification
-- Parallel infrastructure and code development
-```
-
-## Testing and Quality Assurance
-
-Define comprehensive testing strategies:
-
-- **Unit Tests**: 80%+ coverage, focus on business logic
-- **Integration Tests**: API endpoints, database interactions
-- **Performance Tests**: Load testing with realistic data volumes
-- **Security Tests**: Penetration testing, vulnerability scanning
-- **User Acceptance Tests**: Stakeholder validation scenarios
-
-## Documentation Maintenance
-
-Establish living document practices:
-- Version control all specifications
-- Regular review cycles (monthly)
-- Stakeholder sign-off processes
-- Change impact assessments
-- Automated documentation generation where possible
+- Duplicating system-design-doc content — link to it instead.
+- Code-level detail (schemas, class names) — that's the dev team's design.
+- Specs for features whose hypotheses are not confirmed in the registry —
+  check `hypotheses.py show <dir>` before writing a line.
