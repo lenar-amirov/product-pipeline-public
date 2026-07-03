@@ -40,6 +40,27 @@ try:
     import hypotheses as _registry
 except ImportError:
     _registry = None
+try:
+    import coverage as _coverage
+except ImportError:
+    _coverage = None
+
+
+def _coverage_map(status_path: str) -> dict:
+    """Coverage line + focus for the dashboard ({} if unavailable)."""
+    if _coverage is None:
+        return {}
+    try:
+        init_dir = Path(status_path).parent.parent
+        phases = _coverage.compute_coverage(init_dir)
+        focus = _coverage.focus_phase(phases)
+        return {
+            "line": _coverage.format_line(phases),
+            "focus": focus["name"] if focus else None,
+            "missing": (focus or {}).get("missing", []),
+        }
+    except Exception:
+        return {}
 
 
 def _count_evidence_issues(status_path: str) -> int:
@@ -132,6 +153,7 @@ def load_initiatives(pm: str) -> list:
             "pending": pending_items,
             "dependencies": deps,
             "evidence_issues": _count_evidence_issues(path),
+            "coverage": _coverage_map(path),
         })
 
     return initiatives
@@ -204,16 +226,16 @@ def render_initiatives(initiatives: list):
         return
 
     for init in initiatives:
-        name_text = Text(f"  {init['name']}", style="bold white")
-        console.print(name_text, end="  ")
-        console.print(progress_bar(init['done'], init['total']))
+        console.print(Text(f"  {init['name']}", style="bold white"))
 
-        template_label = init.get('template', 'full')
-        if init['current_cmd']:
-            console.print(f"    \u2192 Step {init['current_step']}: {init['current_cmd']}  ({template_label} template)",
-                         style="dim")
-        else:
-            console.print(f"    ({template_label} template)", style="dim")
+        cov = init.get('coverage') or {}
+        if cov.get('line'):
+            console.print(f"    {cov['line']}", style="cyan")
+            if cov.get('focus'):
+                missing = "; ".join(cov.get('missing', [])[:3])
+                console.print(f"    focus \u2192 {cov['focus']}: missing {missing}", style="dim")
+        elif init['current_cmd']:
+            console.print(f"    \u2192 Step {init['current_step']}: {init['current_cmd']}", style="dim")
 
         for p in init['pending']:
             days_str = f" ({p['days']}d)" if p['days'] > 0 else ""
@@ -272,10 +294,14 @@ def render_plain():
         return
 
     for init in initiatives:
-        bar_filled = round(init['done'] / max(init['total'], 1) * 20) if init['total'] else 0
-        bar = "#" * bar_filled + "." * (20 - bar_filled)
-        print(f"  {init['name']}  [{bar}]  {init['done']}/{init['total']}  ({init.get('template', 'full')} template)")
-        if init['current_cmd']:
+        print(f"  {init['name']}")
+        cov = init.get('coverage') or {}
+        if cov.get('line'):
+            print(f"    {cov['line']}")
+            if cov.get('focus'):
+                missing = "; ".join(cov.get('missing', [])[:3])
+                print(f"    focus -> {cov['focus']}: missing {missing}")
+        elif init['current_cmd']:
             print(f"    -> Step {init['current_step']}: {init['current_cmd']}")
         for p in init['pending']:
             days_str = f" ({p['days']}d)" if p['days'] > 0 else ""

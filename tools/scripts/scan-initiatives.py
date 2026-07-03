@@ -21,6 +21,10 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipeline_constants import enabled_total, find_current_step, MAX_STEP  # noqa: E402
+try:
+    import coverage as _coverage
+except ImportError:
+    _coverage = None
 
 
 def find_pm():
@@ -143,6 +147,8 @@ def scan_initiatives(pm: str) -> list:
             'context': context,
             'validated': validated,
             'registry': registry,
+            'coverage_line': (_coverage.format_line(_coverage.compute_coverage(init_dir))
+                              if _coverage else None),
         })
     return out
 
@@ -169,7 +175,9 @@ def render(initiatives: list) -> str:
         lines.append("## Active")
         lines.append("")
         for i in active:
-            lines.append(f"### {i['name']} — Step {i['current_step']}, {i['progress']}")
+            lines.append(f"### {i['name']}")
+            if i.get('coverage_line'):
+                lines.append(f"- **Coverage**: {i['coverage_line']}")
             ctx = i['context']
             if 'metric' in ctx:
                 lines.append(f"- **Metric**: {ctx['metric']}")
