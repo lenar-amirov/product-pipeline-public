@@ -113,19 +113,20 @@ Python < 3.12).
   `tools/web/app.py`, `tools/web/static_export.py` — импорт констант,
   digest из реестра
 
-### E4. Технический долг аудита 0.7.x (M)
+### E4. Технический долг аудита 0.7.x (M) ✅ сделано
 
 **Изменения в репозитории:**
 - MOD `.claude/skills/setup-initiative/SKILL.md`,
-  `.claude/skills/user-test-concept/SKILL.md` — добавить frontmatter
-  (сейчас не триггерятся по смыслу)
+  `.claude/skills/user-test-concept/SKILL.md` — добавлен frontmatter
+  (скиллы снова триггерятся по смыслу)
 - MOD `tools/scripts/generate-pptx.py` — фикс корня поиска инициатив
-  (сейчас не работает вообще)
-- MOD `tools/web/app.py` — `debug=False`, bind 127.0.0.1, экранирование
-  markdown (XSS), `resolve().is_relative_to()` против traversal, whitelist
-  расширений загрузки
-- MOD `README.md` — digest/scan-initiatives, веб-дашборд, static_export,
-  актуальная версия; таблица «PM Copilot vs официальный Anthropic PM-плагин»
+- MOD `tools/web/app.py` — bind 127.0.0.1 + debug off по умолчанию
+  (PIPELINE_HOST/PIPELINE_DEBUG для переопределения), санитайзер
+  рендеренного markdown (script/iframe/on*/javascript:), resolve-проверка
+  путей вместо substring-`..`, whitelist расширений загрузки
+- MOD `README.md` — digest, реестр гипотез, веб-дашборд и static_export
+  задокументированы; MCP через `.mcp.json`; Python 3.9+; сравнение с
+  pm-skills и официальным Anthropic PM-плагином
 
 ---
 

@@ -80,16 +80,55 @@ ADMIN_USER = os.environ.get("PM_ADMIN", USERS[0])
 
 MD = markdown.Markdown(extensions=["extra", "tables", "fenced_code"])
 
+# Defense-in-depth for rendered markdown: strip active content (scripts,
+# event handlers, javascript: URLs). The dashboard is a local viewer of the
+# PM's own files — this guards against pasted/imported content, it is not a
+# substitute for a full sanitizer.
+_BLOCK_RE = re.compile(
+    r"<\s*(script|style|iframe|object|embed)\b.*?<\s*/\s*\1\s*>",
+    re.IGNORECASE | re.DOTALL)
+_TAG_RE = re.compile(
+    r"<\s*/?\s*(script|iframe|object|embed)\b[^>]*>", re.IGNORECASE)
+_EVENT_RE = re.compile(
+    r"\son\w+\s*=\s*(\"[^\"]*\"|'[^']*'|[^\s>]+)", re.IGNORECASE)
+_JSURL_RE = re.compile(
+    r"(href|src)\s*=\s*([\"'])\s*javascript:[^\"']*\2", re.IGNORECASE)
+
+ALLOWED_UPLOAD_EXT = {"png", "jpg", "jpeg", "webp", "gif", "pdf", "fig"}
+
+
+def render_md(text):
+    """Markdown → HTML with active content stripped."""
+    if not text:
+        return ""
+    MD.reset()
+    html = MD.convert(text)
+    html = _BLOCK_RE.sub("", html)
+    html = _TAG_RE.sub("", html)
+    html = _EVENT_RE.sub("", html)
+    html = _JSURL_RE.sub(r"\1=\2#\2", html)
+    return html
+
+
+def resolve_within(base, rel):
+    """Resolve base/rel; return the path only if it stays inside base
+    (symlink- and encoding-safe, unlike a '..' substring check)."""
+    try:
+        base_r = Path(base).resolve()
+        full = (base_r / rel).resolve()
+    except (OSError, ValueError):
+        return None
+    if full == base_r or base_r in full.parents:
+        return full
+    return None
+
 
 # --- Jinja2 filters ---
 
 @app.template_filter("md")
 def markdown_filter(text):
-    """Render markdown text to HTML."""
-    if not text:
-        return ""
-    MD.reset()
-    return MD.convert(text)
+    """Render markdown text to HTML (sanitized)."""
+    return render_md(text)
 
 
 # --- Helpers ---
@@ -553,13 +592,13 @@ def artifact_view(pm, name):
     if pm not in USERS:
         abort(404)
     rel_path = request.args.get("path", "")
-    if not rel_path or ".." in rel_path:
+    if not rel_path or ".." in rel_path or "/" in name or ".." in name:
         return jsonify({"error": "Invalid path"}), 400
 
     base_path = pm_root(pm) / name
-    full_path = base_path / rel_path
+    full_path = resolve_within(base_path, rel_path)
 
-    if not full_path.is_file():
+    if full_path is None or not full_path.is_file():
         return jsonify({"error": "File not found"})
 
     try:
@@ -567,8 +606,7 @@ def artifact_view(pm, name):
     except Exception:
         return jsonify({"error": "Error reading file"})
 
-    MD.reset()
-    html = MD.convert(text)
+    html = render_md(text)
 
     # Get file modification date
     try:
@@ -635,6 +673,8 @@ def new_initiative_submit(pm):
     for i, f in enumerate(cjm_files):
         if f and f.filename:
             ext = f.filename.rsplit(".", 1)[-1].lower() if "." in f.filename else "png"
+            if ext not in ALLOWED_UPLOAD_EXT:
+                continue
             label = cjm_labels[i] if i < len(cjm_labels) else f"step-{i + 1}"
             safe_label = re.sub(r"[^a-zA-Z0-9\u0400-\u04ff_-]", "-", label)
             filename = f"{i + 1:02d}_{safe_label}.{ext}"
@@ -772,15 +812,14 @@ def shared_artifact(token):
     rel_path = request.args.get("path", "")
     if not rel_path or ".." in rel_path:
         return jsonify({"error": "bad path"}), 400
-    full_path = Path(base_path) / rel_path
-    if not full_path.is_file():
+    full_path = resolve_within(Path(base_path), rel_path)
+    if full_path is None or not full_path.is_file():
         return jsonify({"error": "not found"})
     try:
         text = full_path.read_text(encoding="utf-8")
     except Exception:
         return jsonify({"error": "read error"})
-    MD.reset()
-    html = MD.convert(text)
+    html = render_md(text)
     try:
         mtime = datetime.fromtimestamp(full_path.stat().st_mtime)
         updated = mtime.strftime("%Y-%m-%d")
@@ -862,8 +901,10 @@ def cjm_upload(pm, name):
     saved = []
     for i, f in enumerate(files):
         if f and f.filename:
-            max_num += 1
             ext = f.filename.rsplit(".", 1)[-1].lower() if "." in f.filename else "png"
+            if ext not in ALLOWED_UPLOAD_EXT:
+                continue
+            max_num += 1
             label = labels[i] if i < len(labels) else f"step-{max_num}"
             safe_label = re.sub(r"[^a-zA-Z0-9\u0400-\u04ff_-]", "-", label)
             filename = f"{max_num:02d}_{safe_label}.{ext}"
@@ -919,6 +960,9 @@ def cjm_file(pm, name, filename):
 
 
 if __name__ == "__main__":
-    import sys
+    # Local viewer by default. Set PIPELINE_HOST=0.0.0.0 only on a trusted
+    # network — the app has no real authentication.
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 5000
-    app.run(host="0.0.0.0", port=port, debug=True)
+    host = os.environ.get("PIPELINE_HOST", "127.0.0.1")
+    debug = os.environ.get("PIPELINE_DEBUG", "") == "1"
+    app.run(host=host, port=port, debug=debug)

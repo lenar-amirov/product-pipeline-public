@@ -12,16 +12,16 @@ Built on [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Powered 
 
 ## Why this, and not a PM skill toolbox?
 
-There are great PM skill marketplaces (e.g. [pm-skills](https://github.com/phuryn/pm-skills)) that give you 60+ skills you can call ad-hoc: `/write-prd`, `/competitive-analysis`, `/personas`. They're excellent for one-shot answers.
+There are great PM skill collections — [pm-skills](https://github.com/phuryn/pm-skills) (60+ skills), [Anthropic's official PM plugin](https://github.com/anthropics/knowledge-work-plugins) (`/write-spec`, `/synthesize-research`, `/competitive-brief`) — that you call ad-hoc. They're excellent for one-shot answers, and stateless by design.
 
 **Product Discovery is different.** It's not a toolbox — it's a journey:
 
-| | PM toolbox (e.g. pm-skills) | Product Discovery (this) |
+| | PM toolbox (pm-skills, Anthropic PM plugin) | Product Discovery (this) |
 |---|---|---|
 | **Unit of work** | One question, one answer | One initiative, many sessions |
 | **State** | Stateless — Claude forgets next time | Persistent: CONTEXT.md, status.json, decisions.md, PRD.md |
 | **PRD** | Generated when you ask | Living document, builds across all 19 steps |
-| **Evidence** | Free-form text | Typed: REAL / SYNTHETIC / INFERRED with confidence 0.0–1.0 |
+| **Evidence** | Free-form text | Typed (REAL / SYNTHETIC / INFERRED, confidence 0.0–1.0) in a machine-readable registry, validated every session |
 | **Continuity** | Each session is a fresh start | Resume exactly where you stopped, with full context |
 | **Best for** | Quick answers on any PM task | Working a real product initiative through to launch |
 
@@ -129,7 +129,9 @@ The work is now persisted. Close Claude, come back tomorrow — the initiative r
 | **CONTEXT.md** | The initiative's frame: metric, segment, baseline, constraints, OKR — never re-explained |
 | **status.json** | Current step, pending tasks, pipeline config — Claude resumes from here |
 | **decisions.md** | Log of every meaningful decision and discussion across sessions |
-| **hypotheses.md** | Problem hypotheses with evidence typing (REAL/SYNTHETIC/INFERRED) |
+| **hypotheses.json** | Machine-readable hypothesis registry: status, evidence type, confidence, sources, full history of every transition. Validated on each session start; `registry.md` is the generated view |
+| **hypotheses.md** | Narrative hypothesis analysis (the registry holds the state) |
+| **.initiatives-digest.md** | Auto-generated cross-initiative summary — Claude spots overlaps between your new problem and past initiatives |
 | **PRD.md** | Living document — sections fill as you progress, not at the end |
 | **Problem Research Report** | Presentation: validated problem + solution sketch (after step 10) |
 | **Solution Research Report** | Presentation: designed solution + AB test plan (after step 15) |
@@ -142,13 +144,17 @@ The work is now persisted. Close Claude, come back tomorrow — the initiative r
 | Component | Role |
 |-----------|------|
 | `CLAUDE.md` | Master prompt — session lifecycle, FIRST LAUNCH flow, intent matching |
-| `.claude/settings.json` | `SessionStart` hook that auto-runs the dashboard at every session |
+| `.claude/settings.json` | `SessionStart` hooks: dashboard, initiatives digest, evidence audit |
 | `.claude/skills/` | 19 specialized skills — discovery, personas, funnels, PRD, design critique, pipeline-steps, etc. |
 | `.claude/rules/` | Path-scoped rules: output formats, evidence typing |
 | `template/` | Initiative scaffold copied for each new initiative |
 | `tools/scripts/status.py` | Branded terminal dashboard with first-launch onboarding |
+| `tools/scripts/scan-initiatives.py` | Regenerates `.initiatives-digest.md` — cross-initiative awareness at every session start |
+| `tools/scripts/hypotheses.py` | Hypothesis registry engine: add / set / validate / render (state + full history) |
+| `tools/scripts/validate-evidence.py` | Session-start evidence audit: confidence ranges, missing sources, unreconciled data |
 | `tools/scripts/new-initiative.sh` | Initiative scaffolder |
 | `tools/scripts/generate-pptx.py` | Markdown → PowerPoint conversion |
+| `tools/web/` | Optional local web dashboard (Flask) + `static_export.py` — dependency-free single-file HTML export of an initiative |
 
 ### Your initiative folder
 
@@ -176,45 +182,21 @@ Pick a template or compose your own. Mandatory steps stay locked.
 
 ## Tracker integration
 
-After Solution Research Report, push tickets to your tracker via MCP. Set the tracker in `CONTEXT.md` → `## Tracker` section, then connect the MCP server:
+After Solution Research Report, push tickets to your tracker via MCP. Set the tracker in `CONTEXT.md` → `## Tracker` section.
 
-### Jira
+### Jira + Confluence
 
-Add to your Claude Code MCP settings (`.claude/settings.local.json`):
+MCP config lives in `.mcp.json` at the repo root — **gitignored**, because it holds your real API token. Never put credentials in `.claude/settings.json` (tracked by git).
 
-```json
-{
-  "mcpServers": {
-    "jira": {
-      "command": "npx",
-      "args": ["@anthropic/mcp-atlassian"],
-      "env": {
-        "JIRA_URL": "https://your-company.atlassian.net",
-        "JIRA_EMAIL": "you@company.com",
-        "JIRA_API_TOKEN": "your-api-token"
-      }
-    }
-  }
-}
-```
-
-Get your API token: https://id.atlassian.com/manage-profile/security/api-tokens
+1. Copy `.mcp.json.example` → `.mcp.json`
+2. Fill in your Jira/Confluence URL and API token
+   (Atlassian Cloud: https://id.atlassian.com/manage-profile/security/api-tokens)
+3. If your company runs a different Jira/Confluence MCP server package, put its `command`/`args` in — the example uses a placeholder package name
+4. Restart Claude Code and approve the servers when prompted
 
 ### Linear
 
-```json
-{
-  "mcpServers": {
-    "linear": {
-      "command": "npx",
-      "args": ["@anthropic/mcp-linear"],
-      "env": { "LINEAR_API_KEY": "your-api-key" }
-    }
-  }
-}
-```
-
-API key: Linear → Settings → API → Personal API keys.
+Add a `linear` entry to the same `.mcp.json` with the MCP server your team uses (API key: Linear → Settings → API → Personal API keys).
 
 ### GitHub Issues
 
@@ -229,8 +211,8 @@ Skip MCP. `/create-tickets` writes `output/tickets.md` for manual copy-paste.
 ## Requirements
 
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — CLI, desktop app, or IDE extension (not web)
-- Python 3.10+
-- `pip3 install rich` — for the terminal dashboard
+- Python 3.9+ (macOS system Python works; no packages required for the core)
+- `pip3 install rich` — optional, prettier terminal dashboard (plain-text fallback works without it)
 
 Optional, install on demand:
 - `pip3 install python-pptx` — when you reach `/create-presentation` (step 10) or `/create-gate2-presentation` (step 15)
@@ -245,10 +227,14 @@ Optional, install on demand:
 ```bash
 pip3 install flask markdown
 PM_USERS=$(cat .pm-local) python3 tools/web/app.py
-# open http://localhost:5000/{your-name}/
+# open http://127.0.0.1:5000/{your-name}/
 ```
 
-Most users don't need this — `tools/scripts/status.py` (auto-run at session start) shows the same info in the terminal.
+It binds to `127.0.0.1` and is a **local viewer** — it has no real authentication. Set `PIPELINE_HOST=0.0.0.0` only on a network you trust.
+
+No Flask? `python3 tools/web/static_export.py <you>/<initiative>` emits a self-contained HTML dashboard for one initiative (no dependencies).
+
+Most users don't need either — `tools/scripts/status.py` (auto-run at session start) shows the same info in the terminal.
 
 ---
 
@@ -282,7 +268,7 @@ Two presentations for stakeholders:
 
 ## Get in touch
 
-Product Discovery is in early version (0.7.x). Real PM feedback shapes the next iterations.
+Product Discovery is in active development (0.7.3 released, 0.8 in progress — see [CHANGELOG](./CHANGELOG.md) and [docs/ROADMAP-0.8.md](./docs/ROADMAP-0.8.md)). Real PM feedback shapes the next iterations.
 
 - 🐛 **Bug?** → [open an issue](https://github.com/lenar-amirov/product-pipeline-public/issues/new?template=bug.yml)
 - 💬 **Tried it? Share how it went** → [feedback issue](https://github.com/lenar-amirov/product-pipeline-public/issues/new?template=feedback.yml)

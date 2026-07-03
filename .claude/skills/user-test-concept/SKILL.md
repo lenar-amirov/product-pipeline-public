@@ -1,3 +1,8 @@
+---
+name: user-test-concept
+description: Generates a 15-minute concept test plan (3-5 users) for validating solution wireframes before high-fidelity design. Use after sketching a solution, when the PM says "concept test", "user test the concept", "validate the wireframes", "test the prototype with users", "проверить концепт на пользователях".
+---
+
 # User Test Concept
 
 Step 8.5 of the PM Pipeline. Generates a concept test plan for validating solution wireframes with real users.

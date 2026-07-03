@@ -47,11 +47,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   ("✅ REAL: … · ❌ … · открыто: N · ⚠️ flags: …") instead of relying
   solely on regex-parsed CONTEXT.md fields.
 
-### Fixed
+### Fixed / Security (E4 — 0.7.x audit debt)
 
 - `tools/web/app.py` failed to import on Python < 3.12 (f-string with a
   backslash escape) — the web dashboard could not start at all on the
   system Python of current macOS.
+- Web dashboard hardening: binds to 127.0.0.1 with debug off by default
+  (`PIPELINE_HOST` / `PIPELINE_DEBUG=1` to override), rendered markdown is
+  sanitized (script/iframe/object/embed, `on*` handlers, `javascript:`
+  URLs), artifact paths are resolved and contained (`resolve()` check
+  instead of a `..` substring test), CJM uploads restricted to an
+  extension whitelist.
+- `generate-pptx.py` looked for initiatives next to the script instead of
+  the repo root — the PPTX step never worked.
+- `setup-initiative` and `user-test-concept` skills had no frontmatter —
+  they could not be triggered by intent, only by exact command.
+- README refreshed: initiatives digest, hypothesis registry, web
+  dashboard + static export documented; tracker integration rewritten for
+  `.mcp.json`; requirement relaxed to Python 3.9+ (core needs no
+  packages); comparison table now covers Anthropic's official PM plugin.
 
 ## [0.7.3] — 2026-07-02
 

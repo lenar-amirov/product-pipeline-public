@@ -1,3 +1,8 @@
+---
+name: setup-initiative
+description: Guides the PM through an initiative alignment checklist — metric, baseline, target, stakeholders, success/kill criteria, pipeline config. Use at the start of a new initiative, when the PM says "setup initiative", "set the target", "define success criteria", "align on goals", "configure the pipeline", or when CONTEXT.md is full of [to be validated] placeholders.
+---
+
 # Setup Initiative
 
 Step 0 of the PM Pipeline. Guides the PM through an alignment checklist before any work begins.

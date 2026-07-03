@@ -188,7 +188,9 @@ def main():
         sys.exit(1)
 
     initiative = sys.argv[1]
-    base = Path(__file__).parent
+    # Initiatives live at {repo_root}/{pm}/{initiative}, resolved from the
+    # repo root regardless of the current working directory
+    base = Path(__file__).resolve().parent.parent.parent
 
     md_path  = base / initiative / "output" / "presentation.md"
     out_path = base / initiative / "output" / "presentation.pptx"
