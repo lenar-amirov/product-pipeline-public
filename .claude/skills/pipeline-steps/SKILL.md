@@ -268,6 +268,12 @@ PM conducts → enters results → hypotheses updated with REAL evidence.
 **Output**: `output/presentation.md` + `output/presentation.pptx`
 **Skills**: `strategic-narrative-generator`
 
+**Gate preconditions (mandatory).** Run
+`python3 tools/scripts/validate-evidence.py --gate <dir>` first. If GATE
+BLOCKED — do not assemble the deck: report blockers (need ≥2 confirmed REAL,
+zero registry violations, Frame complete) and how to clear them. Offer
+`/challenge` for a rehearsal once the deck exists.
+
 Read template: `template/slides/Problem Research Report Template.pptx.pdf` (if exists).
 
 Structure: Title → Context → Problem → AS IS → Hypothesis → Solution → Estimate
@@ -324,6 +330,11 @@ Calculate: baseline, MDE, sample size, duration, segmentation, guardrails, decis
 **Type**: Autonomous
 **Output**: `output/gate2-presentation.md` + `output/gate2-presentation.pptx`
 **Skills**: `strategic-narrative-generator`
+
+**Gate preconditions (mandatory).** Same as step 10:
+`python3 tools/scripts/validate-evidence.py --gate <dir>` must be CLEAR;
+solution hypotheses must be linked to confirmed problems in the registry.
+Offer `/challenge` before the real review.
 
 Read template: `template/slides/Solution Research Report Template.pptx.pdf` (if exists).
 
