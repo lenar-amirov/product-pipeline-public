@@ -5,7 +5,7 @@ All notable changes to Product Discovery will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
-## [Unreleased] — 0.8.0-dev
+## [0.8.0] — 2026-07-03
 
 ### Added (E1 — hypothesis registry, see docs/ROADMAP-0.8.md)
 
