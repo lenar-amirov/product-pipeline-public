@@ -196,8 +196,9 @@ Pyramid principle: data → insight → conclusion → recommendation.
 Record every verdict in the registry — this writes history automatically:
 `hypotheses.py set <id> --status confirmed --type REAL --confidence 0.75
 --add-source "research/analytics-data.md::where exactly"`. Then
-`hypotheses.py validate` (must be clean) and `hypotheses.py render`.
-Narrative reasoning goes to `output/validated-hypotheses.md`.
+`hypotheses.py validate` (must be clean), `hypotheses.py render`, and
+`python3 tools/scripts/render-ost.py <dir>` to refresh the Opportunity
+Solution Tree. Narrative reasoning goes to `output/validated-hypotheses.md`.
 
 **Branching**: confirmed → step 7 | partially → narrow | none → step 1 | insufficient → repeat
 
