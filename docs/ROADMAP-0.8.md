@@ -242,7 +242,7 @@ speaker notes) механически. В README — как гарантия п�
 
 ## 1.0 «Карта и гейты»
 
-### E11. Карта покрытия вместо трека фаз (L)
+### E11. Карта покрытия вместо трека фаз (L) ✅ сделано
 
 Семь фаз (Frame → Evidence → Solution → Bet → Build → Launch → Learn) — не
 маршрут, а **диагностическая карта**, вычисляемая из реестра и зависимостей:
@@ -256,7 +256,7 @@ speaker notes) механически. В README — как гарантия п�
 - MOD `template/output/status.json` — v2: блок phases (derived), миграция
 - DEL понятие pipeline_template из CLAUDE.md и скриптов
 
-### E12. Гейты как рубиконы + `/challenge` (M)
+### E12. Гейты как рубиконы + `/challenge` (M) ✅ сделано
 
 Preconditions (машинные, из валидатора E2): Gate 1 требует ≥2 confirmed REAL,
 0 data_inconsistency, зафиксированный target — иначе сборка презентации
@@ -269,7 +269,7 @@ Preconditions (машинные, из валидатора E2): Gate 1 треб�
 - MOD `.claude/skills/pipeline-steps/SKILL.md` — preconditions и исходы гейтов
 - MOD `tools/scripts/validate-evidence.py` — режим `--gate`
 
-### E13. Opportunity Solution Tree из реестра (S)
+### E13. Opportunity Solution Tree из реестра (S) ✅ сделано
 
 Из `hypotheses.yaml` генерируется OST (mermaid + html в `output/`): outcome →
 проблемные гипотезы (цвет по evidence_type) → решения → эксперименты.
@@ -278,7 +278,7 @@ Preconditions (машинные, из валидатора E2): Gate 1 треб�
 - NEW `tools/scripts/render-ost.py`
 - MOD job `/hypotheses` и `/validate` — предлагают перегенерацию дерева
 
-### E14. Фаза Learn: закрытие петли и knowledge base (M)
+### E14. Фаза Learn: закрытие петли и knowledge base (M) ✅ сделано
 
 `/post-launch-review` (по deadline-зависимости «проверить через 90 дней»):
 факт vs target; вердикты гипотезам в production. `knowledge/facts.yaml` на

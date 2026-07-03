@@ -385,6 +385,11 @@ When the AB test concludes and data is in `research/ab-test-results.md`, analyze
 
 Evidence typing: REAL, confidence 0.7-0.95 (depending on sample size and stat-sig).
 
+**On Ship**: create a `post_launch_review` dependency in status.json
+(owner: PM, deadline: launch + 90 days, blocks: Learn phase) — the
+dashboard will surface it when due; the `post-launch-review` skill closes
+the loop.
+
 **Branching**:
 - Ship → proceed to step 17 `/plan-gtm`
 - Extend (need more power) → wait, re-analyze later

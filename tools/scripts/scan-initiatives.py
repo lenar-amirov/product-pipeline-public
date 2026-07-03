@@ -206,6 +206,16 @@ def render(initiatives: list) -> str:
                 lines.append(f"- **Validated hypotheses**: {vstr}")
             lines.append("")
 
+    facts = load_facts()
+    if facts:
+        lines.append("## Knowledge base (learned across initiatives)")
+        lines.append("")
+        for f in facts[:10]:
+            effect = f" ({f['metric_effect']})" if f.get("metric_effect") else ""
+            src = f" — {f['initiative']}, {f.get('date', '')}" if f.get("initiative") else ""
+            lines.append(f"- {f.get('fact', '')}{effect}{src}")
+        lines.append("")
+
     if archived:
         lines.append("## Completed / Archived")
         lines.append("")
@@ -222,6 +232,18 @@ def render(initiatives: list) -> str:
             lines.append("")
 
     return "\n".join(lines)
+
+
+def load_facts() -> list:
+    """PM-level knowledge base (knowledge/facts.json), newest first."""
+    path = REPO_ROOT / "knowledge" / "facts.json"
+    if not path.exists():
+        return []
+    try:
+        facts = json.loads(path.read_text(encoding="utf-8")).get("facts", [])
+    except (json.JSONDecodeError, OSError):
+        return []
+    return sorted(facts, key=lambda f: f.get("date", ""), reverse=True)
 
 
 def main():

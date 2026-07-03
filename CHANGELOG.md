@@ -5,6 +5,47 @@ All notable changes to Product Discovery will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.0.0] — 2026-07-03
+
+The map-and-gates release completes the redesign started in 0.8: hypotheses
+are machine state, jobs are the interface, and now progress is an evidence
+coverage map with real gates and a closed learning loop.
+
+### Changed (E11 — coverage map)
+
+- **"Step 4/20" is dead.** `tools/scripts/coverage.py` computes seven
+  phases (Frame → Evidence → Solution → Bet → Build → Launch → Learn) from
+  actual state: CONTEXT.md fields, registry verdicts and validation,
+  artifact substance, gate statuses. Dashboard and digest show
+  `Frame 2/4 · Evidence 2/3 · …` plus a focus line naming exactly what's
+  missing. Template labels removed from the dashboard.
+
+### Added (E12 — real gates)
+
+- `validate-evidence.py --gate`: deck assembly is blocked until ≥2
+  hypotheses are confirmed REAL, the registry is violation-free, and Frame
+  is complete — wired as a mandatory precondition into steps 10 and 15.
+- `challenge` skill (`/challenge`): adversarial gate rehearsal by three
+  hostile personas (CFO, VP Product, skeptic engineer) armed with the
+  registry; reports fatal/painful/cosmetic hits with concrete fixes and
+  the three most likely real questions.
+
+### Added (E13 — Opportunity Solution Tree)
+
+- `tools/scripts/render-ost.py`: `output/ost.md` (Mermaid, zero deps) —
+  outcome → tracks → hypotheses colored by status/evidence → linked
+  solutions. Refreshed alongside registry.md by `/validate`.
+
+### Added (E14 — the learning loop)
+
+- `post-launch-review` skill: fact vs the Frame target, production
+  verdicts for hypotheses, INFERRED-calibration, and a retrospective.
+  Ship decision (step 16) now creates a `post_launch_review` dependency
+  (launch + 90 days) so the loop cannot be silently skipped.
+- `knowledge/facts.json` — PM-level knowledge base (personal, gitignored):
+  product truths banked at review time surface in the initiatives digest,
+  so every new initiative starts with what past ones learned.
+
 ## [0.9.0] — 2026-07-03
 
 Jobs-first release: the pipeline stops being the interface and becomes the

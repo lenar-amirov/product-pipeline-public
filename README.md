@@ -268,7 +268,7 @@ Two presentations for stakeholders:
 
 ## Get in touch
 
-Product Discovery is in active development (0.7.3 released, 0.8 in progress — see [CHANGELOG](./CHANGELOG.md) and [docs/ROADMAP-0.8.md](./docs/ROADMAP-0.8.md)). Real PM feedback shapes the next iterations.
+Product Discovery is at **1.0** — hypothesis registry, jobs-first interface, evidence coverage map, real gates with `/challenge` rehearsal, and a closed post-launch learning loop (see [CHANGELOG](./CHANGELOG.md) and [docs/ROADMAP-0.8.md](./docs/ROADMAP-0.8.md)). Real PM feedback shapes the next iterations.
 
 - 🐛 **Bug?** → [open an issue](https://github.com/lenar-amirov/product-pipeline-public/issues/new?template=bug.yml)
 - 💬 **Tried it? Share how it went** → [feedback issue](https://github.com/lenar-amirov/product-pipeline-public/issues/new?template=feedback.yml)
