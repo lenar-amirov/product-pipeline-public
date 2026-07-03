@@ -177,20 +177,37 @@ Never ask the PM to pick a template.
 
 ---
 
-## CONFIRMATION COMMANDS
+## EXTERNAL DEPENDENCIES (replaces confirmation-command bookkeeping)
 
-| PM says | Claude does |
-|---------|------------|
-| "analytics brief sent" | close `pending.analytics_brief`, activate `pending.analytics_results` |
-| "survey brief sent" | close `pending.survey_brief`, activate `pending.survey_results` |
-| "audience brief sent" | close `pending.audience_brief` |
-| "design brief sent" | close `pending.design_brief` |
-| "analytics results: ..." | write to `research/analytics-data.md`, close `pending.analytics_results` |
-| "survey results: ..." | write to `research/survey-results.md`, close `pending.survey_results` |
-| "interview notes: ..." | write to `research/interview-notes.md` |
-| "Problem report passed: ..." | write to `output/decisions.md`, close `pending.gate1_challenge` |
-| "Solution report passed: ..." | write to `output/decisions.md`, close `pending.gate2_challenge` |
-| "support brief sent" | close `pending.support_brief` |
+Any work handed to an external person (analyst, designer, dev lead, survey
+platform, AB test) is a **dependency** in `output/status.json` →
+`dependencies[]`:
+
+```json
+{ "id": "analytics_funnel_split", "kind": "analytics",
+  "owner": "who exactly", "jira": "KEY-123",
+  "created": "YYYY-MM-DD", "deadline": "YYYY-MM-DD",
+  "blocks": ["H5", "H6"], "status": "open" }
+```
+
+Rules:
+- **Creating a brief** (`/brief`, `/tickets`, gate prep) → create the
+  dependency in the same move: ask the PM for owner + deadline (two short
+  questions, defaults allowed: owner "analyst", deadline +7d). List which
+  hypotheses/jobs it blocks.
+- **PM confirms sending** ("analytics brief sent", "бриф ушёл") → set
+  `created` to today if not set; nothing else to do — the dashboard tracks
+  age automatically.
+- **Results arrive** ("analytics results: …", "survey results: …") → write
+  them to `research/…`, set the dependency `status: "done"`, then run the
+  `/validate` job on the blocked hypotheses.
+- **Overdue** (dashboard shows OVERDUE): you MUST offer the PM a choice —
+  chase the owner / move the deadline / switch to synthetic (downgrade the
+  blocked hypotheses' confidence accordingly) / consciously skip
+  (`status: "skipped"`). Record the choice in `output/decisions.md`. Never
+  let a dependency silently ride past its deadline.
+- Legacy `pending.*` keys still render on the dashboard for old
+  initiatives; migrate them to `dependencies[]` when you touch them.
 
 ---
 

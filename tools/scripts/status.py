@@ -36,6 +36,22 @@ from pipeline_constants import (  # noqa: E402
     enabled_total,
     find_current_step,
 )
+try:
+    import hypotheses as _registry
+except ImportError:
+    _registry = None
+
+
+def _count_evidence_issues(status_path: str) -> int:
+    """Registry violations for the /next hint (0 if no registry)."""
+    if _registry is None:
+        return 0
+    try:
+        init_dir = Path(status_path).parent.parent
+        errors, warnings = _registry.validate(_registry.load(str(init_dir)))
+        return len(errors) + len(warnings)
+    except Exception:
+        return 0
 
 
 def find_pm() -> Optional[str]:
@@ -81,11 +97,30 @@ def load_initiatives(pm: str) -> list:
                 continue
             label = PENDING_LABELS.get(key, key)
             try:
-                d = date.fromisoformat(val)
+                # value is either an ISO date or free text starting with one
+                d = date.fromisoformat(str(val)[:10])
                 days = (today - d).days
                 pending_items.append({"label": label, "days": days})
             except (ValueError, TypeError):
                 pending_items.append({"label": label, "days": 0})
+
+        # dependencies[] (E8): external work with owner + deadline
+        deps = []
+        for dep in status.get("dependencies", []):
+            if not isinstance(dep, dict) or dep.get("status") in ("done", "skipped"):
+                continue
+            overdue = 0
+            try:
+                overdue = (today - date.fromisoformat(dep.get("deadline", ""))).days
+            except (ValueError, TypeError):
+                pass
+            deps.append({
+                "id": dep.get("id", "?"),
+                "owner": dep.get("owner", "?"),
+                "jira": dep.get("jira"),
+                "overdue": overdue,
+                "blocks": dep.get("blocks", []),
+            })
 
         initiatives.append({
             "name": name,
@@ -95,6 +130,8 @@ def load_initiatives(pm: str) -> list:
             "current_step": current_step,
             "current_cmd": current_cmd,
             "pending": pending_items,
+            "dependencies": deps,
+            "evidence_issues": _count_evidence_issues(path),
         })
 
     return initiatives
@@ -183,6 +220,26 @@ def render_initiatives(initiatives: list):
             style = "yellow" if p['days'] > 7 else "dim yellow" if p['days'] > 0 else "dim"
             console.print(f"    \u23f3 {p['label']}{days_str}", style=style)
 
+        for d in init.get('dependencies', []):
+            jira = f" {d['jira']}" if d.get('jira') else ""
+            blocks = f", blocks {', '.join(d['blocks'])}" if d.get('blocks') else ""
+            if d['overdue'] > 0:
+                console.print(f"    \u23f0 {d['id']}{jira} ({d['owner']}) \u2014 OVERDUE {d['overdue']}d{blocks}", style="red")
+            else:
+                console.print(f"    \u23f3 {d['id']}{jira} ({d['owner']}){blocks}", style="dim yellow")
+
+        stale = sum(1 for p in init['pending'] if p['days'] >= 7)
+        overdue_deps = sum(1 for d in init.get('dependencies', []) if d['overdue'] > 0)
+        if init.get('evidence_issues') or stale or overdue_deps:
+            parts = []
+            if init.get('evidence_issues'):
+                parts.append(f"{init['evidence_issues']} evidence issue(s)")
+            if stale:
+                parts.append(f"{stale} stale pending")
+            if overdue_deps:
+                parts.append(f"{overdue_deps} overdue dependency(ies)")
+            console.print(f"    ! {', '.join(parts)} \u2014 ask /next", style="red")
+
         console.print()
 
     console.print("  Type a command or say [bold]continue[/bold]", style="dim")
@@ -223,6 +280,22 @@ def render_plain():
         for p in init['pending']:
             days_str = f" ({p['days']}d)" if p['days'] > 0 else ""
             print(f"    [pending] {p['label']}{days_str}")
+        for d in init.get('dependencies', []):
+            jira = f" {d['jira']}" if d.get('jira') else ""
+            blocks = f", blocks {', '.join(d['blocks'])}" if d.get('blocks') else ""
+            mark = f"OVERDUE {d['overdue']}d" if d['overdue'] > 0 else "waiting"
+            print(f"    [dep] {d['id']}{jira} ({d['owner']}) — {mark}{blocks}")
+        stale = sum(1 for p in init['pending'] if p['days'] >= 7)
+        overdue_deps = sum(1 for d in init.get('dependencies', []) if d['overdue'] > 0)
+        if init.get('evidence_issues') or stale or overdue_deps:
+            parts = []
+            if init.get('evidence_issues'):
+                parts.append(f"{init['evidence_issues']} evidence issue(s)")
+            if stale:
+                parts.append(f"{stale} stale pending")
+            if overdue_deps:
+                parts.append(f"{overdue_deps} overdue dependency(ies)")
+            print(f"    ! {', '.join(parts)} — ask /next")
         print()
     print("  (Tip: install `rich` for a nicer dashboard — pip install rich)")
 

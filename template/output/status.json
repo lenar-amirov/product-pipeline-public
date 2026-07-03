@@ -127,6 +127,7 @@
     "gtm_materials_review": null,
     "support_brief": null
   },
+  "dependencies": [],
   "pipeline_config": {
     "template": "custom",
     "steps": {
