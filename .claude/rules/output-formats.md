@@ -5,6 +5,12 @@ paths:
 
 # Output Artifact Formats
 
+> Hypothesis STATE (status, evidence type, confidence, sources, history)
+> lives in `output/hypotheses.json` and is managed via
+> `tools/scripts/hypotheses.py`. The markdown formats below are NARRATIVE
+> views — their Evidence/confidence lines must mirror the registry, never
+> diverge from it.
+
 ## Problem hypotheses (`output/hypotheses.md`)
 
 ```

@@ -94,7 +94,7 @@ a specific source from research and output artifacts.
 - Problem thesis (one sentence)
 - Who's affected: segment + size
 - Signal strength: how many sources confirm this
-- **Sources**: hypotheses.md, validated-hypotheses.md
+- **Sources**: hypotheses.json (registry — statuses/confidence), hypotheses.md/validated-hypotheses.md (narrative)
 
 ## Slide 4: AS IS Scenario
 - Current user behavior (from CJM analysis)
@@ -147,7 +147,7 @@ a specific source from research and output artifacts.
 ## Slide 3: Solution Context (AS IS)
 - Current user journey + pain points (recap)
 - What changed since Problem Research Report (new data, design feedback)
-- **Sources**: validated-hypotheses.md, concept-test-results.md
+- **Sources**: hypotheses.json (registry), concept-test-results.md
 
 ## Slide 4: Solution Design
 - Job-to-be-done

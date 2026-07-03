@@ -13,16 +13,19 @@ replaces.
 
 1. `output/hypotheses.json` — the registry (or `hypotheses.py show <dir>`)
 2. `python3 tools/scripts/validate-evidence.py <dir>` — violations
-3. `output/status.json` — dependencies/pending (age! deadlines!), step states
+3. `python3 tools/scripts/coverage.py <dir>` — phase map + focus
+4. `output/status.json` — `dependencies[]` (ages, deadlines, blocks; legacy
+   `pending.*` values count too) and `steps` statuses
 4. Last 2-3 entries of `output/decisions.md` — what was promised last time
 5. `CONTEXT.md` — is there a target? kill criteria?
 
 ## Diagnosis order (first match wins the top slot; report up to 3)
 
-1. **Stalled external dependency** — a pending/dependency past its deadline
-   or older than 7 days with no owner reaction → recommend: chase the owner
-   / move the deadline / switch to synthetic (downgrading dependent
-   hypotheses) / consciously skip. Name the blocked hypotheses.
+1. **Stalled external dependency** — an entry in `dependencies[]` past its
+   deadline (or a legacy pending older than 7 days) → recommend: chase the
+   owner / move the deadline / switch to synthetic (downgrading dependent
+   hypotheses) / consciously skip (`status: "skipped"`). Name the blocked
+   hypotheses from `blocks`.
 2. **Evidence violations** — flagged `data_inconsistency` held above 0.6,
    confidence outside type range → recommend reconciling before anything
    built on those numbers (especially before a gate).

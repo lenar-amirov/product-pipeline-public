@@ -54,9 +54,10 @@ Count from registry history across initiatives: how often did INFERRED
 hypotheses survive REAL validation? Report the ratio — it calibrates how
 much to trust the next INFERRED batch.
 
-## 5. Record
+## 5. Record and close
 
 `output/post-launch-review.md`: promise vs fact, verdicts, banked facts,
 calibration note, and the one-paragraph retrospective (what discovery step
-earned its keep, what was ceremony). Update decisions.md. This also
+earned its keep, what was ceremony). Update decisions.md. Set the
+`post_launch_review` dependency in status.json to `status: "done"` — this
 completes the Learn phase on the coverage map.

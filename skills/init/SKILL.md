@@ -1,4 +1,5 @@
 ---
+name: init
 description: Scaffold the Product Discovery pipeline into the user's current project directory. Run when the user invokes /product-discovery:init or asks to "scaffold pipeline", "set up product discovery", "initialize discovery". Copies CLAUDE.md, template/, .claude/skills/, .claude/rules/, and tools/scripts/ from the plugin into the user's working directory, so Claude can run the discovery pipeline on every future session.
 ---
 
@@ -14,13 +15,13 @@ Copies the plugin's bundled pipeline files into the user's working directory:
 <user-repo>/
 ├── CLAUDE.md                       # Master prompt — pipeline lifecycle
 ├── .claude/
-│   ├── skills/                     # 19 specialized skills
+│   ├── skills/                     # 23 specialized skills
 │   └── rules/                      # Output formats, evidence typing
 ├── template/                       # Initiative scaffold
-└── tools/scripts/
-    ├── status.py                   # Branded session-start dashboard
-    ├── new-initiative.sh           # Initiative scaffolder
-    └── generate-pptx.py            # Presentation builder
+├── .mcp.json.example               # Jira/Confluence MCP template
+└── tools/scripts/                  # dashboard, hypothesis registry,
+                                    # evidence validators, coverage map,
+                                    # PDF/OST renderers, scaffolder
 ```
 
 Once scaffolded, the user works with the pipeline as a normal local project — Claude reads CLAUDE.md at every session start, runs status.py, and walks them through the discovery flow.
@@ -60,7 +61,11 @@ Default to merge. Skip step 3 if user picks cancel.
 {
   "hooks": {
     "SessionStart": [
-      { "hooks": [ { "type": "command", "command": "python3 tools/scripts/status.py" } ] }
+      { "hooks": [
+        { "type": "command", "command": "python3 tools/scripts/scan-initiatives.py" },
+        { "type": "command", "command": "python3 tools/scripts/status.py" },
+        { "type": "command", "command": "python3 tools/scripts/validate-evidence.py" }
+      ] }
     ]
   }
 }
@@ -83,6 +88,8 @@ cp -r $COPY_FLAG "$PLUGIN_ROOT/CLAUDE.md" "$TARGET/" 2>/dev/null || cp -r "$PLUG
 cp -r $COPY_FLAG "$PLUGIN_ROOT/.claude" "$TARGET/" 2>/dev/null || true
 cp -r $COPY_FLAG "$PLUGIN_ROOT/template" "$TARGET/" 2>/dev/null || true
 cp -r $COPY_FLAG "$PLUGIN_ROOT/tools" "$TARGET/" 2>/dev/null || true
+cp $COPY_FLAG "$PLUGIN_ROOT/.mcp.json.example" "$TARGET/" 2>/dev/null || true
+cp $COPY_FLAG "$PLUGIN_ROOT/.gitignore" "$TARGET/" 2>/dev/null || true
 
 # Verify the copy succeeded
 ls "$TARGET/CLAUDE.md" "$TARGET/template" "$TARGET/.claude/skills" "$TARGET/tools/scripts" >/dev/null && echo "OK" || echo "MISSING"
@@ -182,7 +189,7 @@ After successful copy, show the user this exact set of next steps. **The cd step
 
 NEXT STEPS — run these in your terminal:
 
-  pip3 install rich                          # install dashboard (macOS often only has pip3)
+  pip3 install rich                          # OPTIONAL — prettier dashboard (plain text works without it)
   /exit                                       # exit this Claude Code session
   cd "<ABSOLUTE_PATH>" && claude              # ⚠ MUST cd into the scaffolded dir before launching claude
 

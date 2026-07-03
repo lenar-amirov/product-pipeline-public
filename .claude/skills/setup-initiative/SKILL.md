@@ -1,21 +1,27 @@
 ---
 name: setup-initiative
-description: Guides the PM through an initiative alignment checklist — metric, baseline, target, stakeholders, success/kill criteria, pipeline config. Use at the start of a new initiative, when the PM says "setup initiative", "set the target", "define success criteria", "align on goals", "configure the pipeline", or when CONTEXT.md is full of [to be validated] placeholders.
+description: Guides the PM through an initiative alignment checklist — metric, baseline, target, stakeholders, success/kill criteria. Use before a gate, when the PM says "setup initiative", "set the target", "define success criteria", "align on goals", or when the coverage map shows Frame incomplete. NOT a prerequisite for starting work — jobs run without it.
 ---
 
 # Setup Initiative
 
-Step 0 of the PM Pipeline. Guides the PM through an alignment checklist before any work begins.
+Fills the **Frame phase** of the coverage map. NOT a gatekeeper for starting
+work — jobs run without it (zero-setup principle); this skill earns its
+place before the first gate or whenever the PM asks about targets.
 
 ## Purpose
 
-Ensure explicit alignment on goals, constraints, stakeholders, and success criteria before investing time in research and solution design. Prevents the #1 cause of wasted work: misaligned expectations.
+Explicit alignment on goals, constraints, stakeholders, and success criteria.
+The coverage map (`coverage.py`) shows `Frame N/4` until metric, baseline,
+target and kill criteria are recorded — gates are blocked while Frame is
+incomplete.
 
 ## When to use
 
-- At the very start of a new initiative (after `template/` is copied)
-- When PM says "create initiative" — this runs automatically after scaffolding
-- When PM wants to reconfigure the pipeline mid-initiative
+- Before assembling a Gate presentation (gate preconditions require Frame)
+- When the PM asks about targets / success criteria
+- When `/next` recommends it (Frame gaps + a gate is near)
+- NEVER as a forced first step of a new initiative
 
 ## Checklist
 
@@ -62,8 +68,8 @@ Guide the PM through these 10 areas. For each area, ask a focused question, then
 ### 8. Available Data
 **Ask**: "What do we already know? Analytics, research, customer feedback?"
 - Get: inventory of existing data sources
-- This determines which steps can be accelerated or skipped
-- If rich data exists: suggest `quick` or `solution-only` template
+- If rich data exists: suggest `/ingest` right after the checklist — it will
+  move hypotheses to REAL fastest
 
 ### 9. Tracker
 **Ask**: "Where do you want dev tickets to land — Jira, Linear, GitHub Issues, or none?"
@@ -71,29 +77,17 @@ Guide the PM through these 10 areas. For each area, ask a focused question, then
 - If they say "I'll figure it out later" — set `None`, can be changed before `/create-tickets`
 - Mention: "If you want me to push tickets directly, you'll need to connect the MCP — see Tracker integration section in README.md"
 
-### 10. Pipeline Configuration
-**Ask**: "How thorough should we be?" Then present template options:
-
-```
-Templates:
-1. Quick Discovery (6 steps) — you have data, need structure
-2. Full Discovery (all steps) — new problem space, need research
-3. Problem Only (5 steps) — just understand the problem
-4. Solution Only (7 steps) — problem is known, design the solution
-5. Custom — pick steps yourself
-```
-
-For custom: show all steps with Core/Recommended/Optional labels. Core can't be disabled.
-
-If PM picks a template with disabled recommended steps, show warning for each:
-```
-Note: Competitor research is disabled. Your solution may unknowingly duplicate existing products.
-```
+(Pipeline templates are **deprecated** — do not offer them. The PM runs the
+jobs they need; the coverage map shows what evidence is still missing. If
+the PM explicitly wants to disable an Optional/Recommended step, toggle it
+in `pipeline_config.steps` with a one-line warning about what it costs.)
 
 ## Output
 
 1. **CONTEXT.md** — all checklist answers written to appropriate fields
-2. **pipeline_config in status.json** — template name + per-step enabled/type config
+2. Re-run the coverage check (`python3 tools/scripts/coverage.py <dir>`) and
+   show the PM the Frame line before/after — the visible payoff of 5 minutes
+   of alignment
 
 ## Tips
 

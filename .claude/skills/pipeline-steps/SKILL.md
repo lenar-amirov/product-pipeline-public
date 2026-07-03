@@ -29,10 +29,11 @@ refresh `output/registry.md`. Legacy initiatives: convert once with
 ## STEP 0 — `/setup-initiative` (Core)
 
 **Type**: PM fills with AI guidance
-**Output**: filled `CONTEXT.md` + `pipeline_config` in status.json
+**Output**: filled `CONTEXT.md` (Frame phase of the coverage map)
 **Skills**: `setup-initiative` + `ambiguity-resolver` (if brief is vague)
 
-Guide PM through alignment checklist:
+NOT a prerequisite for starting work — run it before a gate or when the PM
+asks about targets (see setup-initiative skill). Checklist:
 1. Outcome: metric, baseline → target
 2. Stakeholders: decision-maker, influencer, blocker
 3. OKR alignment
@@ -40,11 +41,11 @@ Guide PM through alignment checklist:
 5. Success criteria
 6. Kill criteria
 7. User segment: who, how many, where
-8. Available data: analytics, CJM, research, feedback
+8. Available data: analytics, CJM, research, feedback → suggest `/ingest`
 9. Tracker: Jira/Linear/GitHub/None + project key
-10. Pipeline config: choose template or custom steps
 
-After checklist — write CONTEXT.md and set pipeline_config in status.json.
+After checklist — write CONTEXT.md and show the Frame coverage before/after.
+(Pipeline templates are deprecated — never offer them.)
 
 ---
 
@@ -58,12 +59,14 @@ After checklist — write CONTEXT.md and set pipeline_config in status.json.
 
 ⚠️ Only PROBLEM hypotheses. No solutions.
 
-**Readiness check** — before starting verify CONTEXT.md has:
+**Readiness check** — before starting look at CONTEXT.md for:
 - Metric + baseline (grounds hypotheses)
 - Segment + size (assess Impact)
 - "Why now" (justify Report)
 
-If critical fields empty — ask PM, don't start.
+If fields are empty — do NOT block (zero-setup): run on what the PM gave,
+mark evidence INFERRED with lower confidence, and weave ONE question about
+the weakest missing field into your answer.
 
 **No CJM screenshots? Don't block.** Offer the PM 3 options:
 - (a) "Describe the user journey in the chat — I'll work from your description (mark hypotheses INFERRED, confidence 0.3-0.5)"
@@ -143,7 +146,9 @@ Look for **scenario analogues** — products where similar problem is solved.
 3. `research/survey-questions.md`: screening + problem block, ≤12 questions, sample size
    - Don't ask "would you like feature X"
 
-**Tracking**: activate `pending.analytics_brief` and `pending.survey_brief`.
+**Tracking**: create dependencies in status.json `dependencies[]` — one per
+brief (`kind: analytics` / `kind: survey`): owner + deadline (ask the PM;
+default +7d) + `blocks` = the hypothesis ids this data validates.
 
 ---
 
@@ -157,7 +162,8 @@ Look for **scenario analogues** — products where similar problem is solved.
 1. Translate screening questions into behavioral analytics signals
 2. `research/survey-audience-brief.md`: criteria, period, format, SQL pseudocode
 
-**Tracking**: activate `pending.audience_brief`.
+**Tracking**: create a dependency (`kind: audience`, owner, deadline,
+blocks = the survey dependency id).
 
 ---
 
@@ -167,7 +173,10 @@ Look for **scenario analogues** — products where similar problem is solved.
 **Output**: `research/analytics-data.md` + `research/survey-results.md` + `research/interview-notes.md`
 
 PM conducts real research: analytics, survey, 5-8 interviews (Teresa Torres).
-Dashboard tracks pending items. Resume at step 6 when data arrives.
+The dashboard tracks the `dependencies[]` created at step 4 — ages and
+OVERDUE show every session; on overdue, offer chase / move deadline /
+synthetic / skip. Resume at step 6 (or just `/validate`) when data arrives —
+or `/ingest` anything that comes through the side door earlier.
 
 ---
 
@@ -283,7 +292,9 @@ For each slide: title, bullets, speaker notes, sources.
 After `presentation.md` run `python3 tools/scripts/generate-pptx.py {initiative-folder}`.
 If the script fails (no `python-pptx`), tell PM: "PPTX generation needs `pip install python-pptx`. The markdown is ready at `output/presentation.md` — you can convert it manually or install python-pptx and re-run." Don't block.
 
-**Tracking**: activate `pending.gate1_challenge`.
+**Tracking**: create a dependency (`kind: gate1`, owner = decision-maker
+from CONTEXT.md, deadline = the review date). Offer `/challenge` to
+rehearse before it.
 
 ---
 
@@ -293,7 +304,8 @@ If the script fails (no `python-pptx`), tell PM: "PPTX generation needs `pip ins
 **Output**: `output/design-brief.md` + (optional) `output/ux-research-brief.md`
 **Skills**: `usability-test-plan`
 
-**Tracking**: activate `pending.design_brief`.
+**Tracking**: create a dependency (`kind: design`, owner = designer,
+deadline, blocks = step 8/9 artifacts).
 
 ---
 
@@ -341,7 +353,8 @@ Read template: `template/slides/Solution Research Report Template.pptx.pdf` (if 
 
 Structure: Title → Hypothesis → Solution context → Solution → Demo → UX test → Experiment → Estimate
 
-**Tracking**: activate `pending.gate2_challenge`.
+**Tracking**: create a dependency (`kind: gate2`, owner = decision-maker,
+deadline = the review date). Offer `/challenge` to rehearse before it.
 
 ---
 
@@ -396,7 +409,8 @@ the loop.
 - Iterate (partial signal) → back to step 7 with refined hypothesis
 - Stop → write retrospective to `output/decisions.md`, mark initiative as `archived` in status.json
 
-**Tracking**: close `pending.ab_test_analysis` if active.
+**Tracking**: set the AB-test dependency `status: "done"`; on Ship the
+post_launch_review dependency is created (see above).
 
 ---
 
@@ -476,7 +490,8 @@ Each material:
 - References screenshots/assets needed (placeholders if not yet produced)
 - Notes who owns the asset (PM, marketing, design, support)
 
-**Tracking**: activate `pending.gtm_materials_review` until PM signs off.
+**Tracking**: create a dependency (`kind: gtm_review`, owner = PM,
+deadline) until the PM signs off, then mark it done.
 
 ---
 
@@ -488,4 +503,5 @@ Each material:
 
 Create support brief: what's changing, who's affected, support scenarios (5-10), FAQ, limitations, timeline, PM contact.
 
-**Tracking**: activate `pending.support_brief`.
+**Tracking**: create a dependency (`kind: support`, owner = support lead,
+deadline).
