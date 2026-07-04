@@ -4,7 +4,6 @@
 import json
 import os
 import re
-import secrets
 import shutil
 import sys
 from datetime import date, datetime
@@ -93,8 +92,6 @@ _EVENT_RE = re.compile(
     r"\son\w+\s*=\s*(\"[^\"]*\"|'[^']*'|[^\s>]+)", re.IGNORECASE)
 _JSURL_RE = re.compile(
     r"(href|src)\s*=\s*([\"'])\s*javascript:[^\"']*\2", re.IGNORECASE)
-
-ALLOWED_UPLOAD_EXT = {"png", "jpg", "jpeg", "webp", "gif", "pdf", "fig"}
 
 
 def render_md(text):
@@ -326,56 +323,6 @@ def get_screens(base_path):
             })
     return screens
 
-def find_template_dir(pm):
-    """Find template directory — PM-specific first, then repo root."""
-    pm_tmpl = pm_root(pm) / "template"
-    if pm_tmpl.is_dir():
-        return pm_tmpl
-    root_tmpl = PIPELINE_ROOT / "template"
-    if root_tmpl.is_dir():
-        return root_tmpl
-    return None
-
-
-def create_initiative(pm, name):
-    """Create a new initiative by copying template and initializing files."""
-    tmpl = find_template_dir(pm)
-    if not tmpl:
-        raise FileNotFoundError("Template directory not found")
-
-    target = pm_root(pm) / name
-    shutil.copytree(str(tmpl), str(target))
-
-    # Update CONTEXT.md placeholders
-    ctx_path = target / "CONTEXT.md"
-    if ctx_path.is_file():
-        text = ctx_path.read_text(encoding="utf-8")
-        text = text.replace("[NAME]", name, 1).replace("[NAME]", pm, 1)
-        ctx_path.write_text(text, encoding="utf-8")
-
-    # Ensure output directory
-    output_dir = target / "output"
-    output_dir.mkdir(exist_ok=True)
-
-    # Initialize status.json with all pipeline steps
-    status = {"steps": {}, "pending": {}}
-    for num, cmd, phase, label in PIPELINE_STEPS:
-        status["steps"][str(num)] = {
-            "status": "pending", "date": None, "summary": None,
-        }
-    (output_dir / "status.json").write_text(
-        json.dumps(status, ensure_ascii=False, indent=2), encoding="utf-8",
-    )
-
-    # Initialize decisions.md
-    dec_path = output_dir / "decisions.md"
-    if not dec_path.is_file():
-        dec_path.write_text("# Decision Log\n\n", encoding="utf-8")
-
-    # Create CJM directory
-    (target / "CJM").mkdir(exist_ok=True)
-
-    return target
 
 
 def generate_context_md(name, pm, fields):
@@ -535,12 +482,6 @@ def pm_static(pm, filename):
     return send_from_directory(app.static_folder, filename)
 
 
-@app.route("/share/static/<path:filename>")
-def share_static(filename):
-    """Serve static files for shared pages."""
-    return send_from_directory(app.static_folder, filename)
-
-
 @app.route("/<pm>/")
 def dashboard(pm):
     if pm not in USERS:
@@ -618,73 +559,6 @@ def artifact_view(pm, name):
     return jsonify({"html": html, "updated": updated})
 
 
-@app.route("/<pm>/new", methods=["GET"])
-def new_initiative_form(pm):
-    if pm not in USERS:
-        abort(404)
-    return render_template("new.html", pm=pm, error=None)
-
-
-@app.route("/<pm>/new", methods=["POST"])
-def new_initiative_submit(pm):
-    if pm not in USERS:
-        abort(404)
-
-    name = request.form.get("name", "").strip()
-
-    if not name:
-        return render_template("new.html", pm=pm,
-                               error="Please enter an initiative name.")
-    if not re.match(r"^[a-z0-9-]+$", name):
-        return render_template("new.html", pm=pm,
-                               error="Only lowercase letters, digits, and dashes.")
-
-    target = pm_root(pm) / name
-    if target.exists():
-        return render_template("new.html", pm=pm,
-                               error=f"Initiative \"{name}\" already exists.")
-
-    try:
-        create_initiative(pm, name)
-    except Exception as e:
-        return render_template("new.html", pm=pm, error=f"Creation error: {e}")
-
-    # Context fields
-    ctx_fields = {}
-    for key in ("title", "description", "metric", "baseline", "target",
-                "horizon", "segment", "segment_size", "platform", "scenario",
-                "why_now", "tried", "constraints", "links"):
-        val = request.form.get(key, "").strip()
-        if val:
-            ctx_fields[key] = val
-    if ctx_fields:
-        ctx_text = generate_context_md(name, pm, ctx_fields)
-        (target / "CONTEXT.md").write_text(ctx_text, encoding="utf-8")
-
-    # CJM files
-    cjm_files = request.files.getlist("cjm_files")
-    cjm_labels_raw = request.form.get("cjm_labels", "")
-    try:
-        cjm_labels = json.loads(cjm_labels_raw) if cjm_labels_raw else []
-    except json.JSONDecodeError:
-        cjm_labels = []
-
-    cjm_dir = target / "CJM"
-    for i, f in enumerate(cjm_files):
-        if f and f.filename:
-            ext = f.filename.rsplit(".", 1)[-1].lower() if "." in f.filename else "png"
-            if ext not in ALLOWED_UPLOAD_EXT:
-                continue
-            label = cjm_labels[i] if i < len(cjm_labels) else f"step-{i + 1}"
-            safe_label = re.sub(r"[^a-zA-Z0-9\u0400-\u04ff_-]", "-", label)
-            filename = f"{i + 1:02d}_{safe_label}.{ext}"
-            f.save(str(cjm_dir / filename))
-
-    return redirect(f"/{pm}/initiative/{name}")
-
-
-
-
 @app.route("/<pm>/archive")
 def archive_page(pm):
     """Show archived initiatives."""
@@ -730,218 +604,7 @@ def restore_initiative(pm, name):
 
 # --- Share (read-only public link) ---
 
-def _find_shared(token):
-    """Find initiative by share token. Returns (pm, name, base_path) or None."""
-    for user in USERS:
-        root = pm_root(user)
-        if not root.is_dir():
-            continue
-        for entry in os.listdir(root):
-            if entry in EXCLUDED_DIRS or entry.startswith(".") or entry.startswith("_"):
-                continue
-            status_path = root / entry / "output" / "status.json"
-            if not status_path.is_file():
-                continue
-            try:
-                with open(status_path, "r", encoding="utf-8") as f:
-                    data = json.load(f)
-                if data.get("share_token") == token:
-                    return user, entry, str(root / entry)
-            except (json.JSONDecodeError, OSError):
-                continue
-    return None
-
-
-@app.route("/<pm>/initiative/<name>/share", methods=["POST"])
-def toggle_share(pm, name):
-    """Generate or revoke share token."""
-    if pm not in USERS:
-        abort(404)
-    status_path = pm_root(pm) / name / "output" / "status.json"
-    if not status_path.is_file():
-        abort(404)
-    with open(status_path, "r", encoding="utf-8") as f:
-        data = json.load(f)
-
-    action = request.args.get("action", "create")
-    if action == "revoke":
-        data.pop("share_token", None)
-        token = None
-    else:
-        token = data.get("share_token") or secrets.token_urlsafe(16)
-        data["share_token"] = token
-
-    with open(status_path, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-
-    return jsonify({"ok": True, "token": token})
-
-
-@app.route("/share/<token>")
-def shared_initiative(token):
-    """Public read-only view of a shared initiative."""
-    result = _find_shared(token)
-    if not result:
-        abort(404)
-    owner, name, base_path = result
-    data = get_initiative_data(owner, base_path)
-    decisions = parse_decisions(base_path)
-    screens = get_screens(base_path)
-    cjm_files = get_cjm_files(base_path)
-    context_full = parse_context_full(base_path)
-    return render_template(
-        "initiative.html",
-        pm=owner,
-        initiative=data,
-        decisions=decisions,
-        screens=screens,
-        cjm_files=cjm_files,
-        context_full=context_full,
-        readonly=True,
-        shared=True,
-        share_base="/share/" + token,
-    )
-
-
-@app.route("/share/<token>/artifact")
-def shared_artifact(token):
-    result = _find_shared(token)
-    if not result:
-        abort(404)
-    owner, name, base_path = result
-    rel_path = request.args.get("path", "")
-    if not rel_path or ".." in rel_path:
-        return jsonify({"error": "bad path"}), 400
-    full_path = resolve_within(Path(base_path), rel_path)
-    if full_path is None or not full_path.is_file():
-        return jsonify({"error": "not found"})
-    try:
-        text = full_path.read_text(encoding="utf-8")
-    except Exception:
-        return jsonify({"error": "read error"})
-    html = render_md(text)
-    try:
-        mtime = datetime.fromtimestamp(full_path.stat().st_mtime)
-        updated = mtime.strftime("%Y-%m-%d")
-    except Exception:
-        updated = ""
-    return jsonify({"html": html, "updated": updated})
-
-
-@app.route("/share/<token>/cjm/<filename>")
-def shared_cjm(token, filename):
-    result = _find_shared(token)
-    if not result or ".." in filename:
-        abort(404)
-    owner, name, base_path = result
-    cjm_dir = Path(base_path) / "CJM"
-    if not (cjm_dir / filename).is_file():
-        abort(404)
-    return send_from_directory(str(cjm_dir), filename)
-
-
-@app.route("/share/<token>/screen/<filename>")
-def shared_screen(token, filename):
-    result = _find_shared(token)
-    if not result or ".." in filename:
-        abort(404)
-    owner, name, base_path = result
-    screens_dir = Path(base_path) / "output" / "screens"
-    if not (screens_dir / filename).is_file():
-        abort(404)
-    return send_from_directory(str(screens_dir), filename)
-
-
-@app.route("/<pm>/initiative/<name>/context", methods=["POST"])
-def update_context(pm, name):
-    """Update CONTEXT.md from form fields."""
-    if pm not in USERS:
-        abort(404)
-    base_path = pm_root(pm) / name
-    if not base_path.is_dir():
-        abort(404)
-    fields = {}
-    for key in ("title", "description", "metric", "baseline", "target",
-                "horizon", "segment", "segment_size", "platform", "scenario",
-                "why_now", "tried", "constraints", "links"):
-        val = request.form.get(key, "").strip()
-        if val:
-            fields[key] = val
-    ctx_text = generate_context_md(name, pm, fields)
-    (base_path / "CONTEXT.md").write_text(ctx_text, encoding="utf-8")
-    return jsonify({"ok": True, "context": parse_context(str(base_path))})
-
-
-@app.route("/<pm>/initiative/<name>/cjm/upload", methods=["POST"])
-def cjm_upload(pm, name):
-    """Upload CJM files."""
-    if pm not in USERS:
-        abort(404)
-    base_path = pm_root(pm) / name
-    if not base_path.is_dir():
-        abort(404)
-    cjm_dir = base_path / "CJM"
-    cjm_dir.mkdir(exist_ok=True)
-
-    # Find current max number
-    max_num = 0
-    if cjm_dir.is_dir():
-        for fn in os.listdir(str(cjm_dir)):
-            m = re.match(r"^(\d+)_", fn)
-            if m:
-                max_num = max(max_num, int(m.group(1)))
-
-    files = request.files.getlist("files")
-    labels_raw = request.form.get("labels", "")
-    try:
-        labels = json.loads(labels_raw) if labels_raw else []
-    except json.JSONDecodeError:
-        labels = []
-
-    saved = []
-    for i, f in enumerate(files):
-        if f and f.filename:
-            ext = f.filename.rsplit(".", 1)[-1].lower() if "." in f.filename else "png"
-            if ext not in ALLOWED_UPLOAD_EXT:
-                continue
-            max_num += 1
-            label = labels[i] if i < len(labels) else f"step-{max_num}"
-            safe_label = re.sub(r"[^a-zA-Z0-9\u0400-\u04ff_-]", "-", label)
-            filename = f"{max_num:02d}_{safe_label}.{ext}"
-            f.save(str(cjm_dir / filename))
-            saved.append({"filename": filename, "label": label})
-    return jsonify({"ok": True, "files": saved})
-
-
-@app.route("/<pm>/initiative/<name>/cjm/reorder", methods=["POST"])
-def cjm_reorder(pm, name):
-    """Reorder CJM files."""
-    if pm not in USERS:
-        abort(404)
-    base_path = pm_root(pm) / name
-    if not base_path.is_dir():
-        abort(404)
-    cjm_dir = base_path / "CJM"
-    data = request.get_json()
-    order = data.get("order", [])
-
-    # Rename with temp prefix to avoid collisions
-    for i, fname in enumerate(order):
-        src = cjm_dir / fname
-        if src.is_file():
-            ext = fname.rsplit(".", 1)[-1] if "." in fname else ""
-            label_part = re.sub(r"^\d+_", "", fname.rsplit(".", 1)[0])
-            tmp_name = f"_tmp_{i + 1:02d}_{label_part}.{ext}"
-            src.rename(cjm_dir / tmp_name)
-
-    # Rename from temp to final
-    for fn in sorted(os.listdir(str(cjm_dir))):
-        if fn.startswith("_tmp_"):
-            (cjm_dir / fn).rename(cjm_dir / fn[5:])
-    return jsonify({"ok": True, "files": get_cjm_files(str(base_path))})
-
-
-@app.route("/<pm>/initiative/<name>/cjm/<filename>", methods=["GET", "DELETE"])
+@app.route("/<pm>/initiative/<name>/cjm/<filename>")
 def cjm_file(pm, name, filename):
     """Serve or delete a CJM file."""
     if pm not in USERS:
@@ -950,10 +613,6 @@ def cjm_file(pm, name, filename):
         abort(400)
     cjm_dir = pm_root(pm) / name / "CJM"
     path = cjm_dir / filename
-    if request.method == "DELETE":
-        if path.is_file():
-            path.unlink()
-        return jsonify({"ok": True})
     if not path.is_file():
         abort(404)
     return send_from_directory(str(cjm_dir), filename)

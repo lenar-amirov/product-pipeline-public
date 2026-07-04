@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Onest:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/{{ 'share' if shared|default(false) else pm }}/static/style.css">
+  <link rel="stylesheet" href="/{{ pm }}/static/style.css">
 </head>
 <body>
 
@@ -15,10 +15,8 @@
   <div class="header__inner">
     <a href="/{{ pm }}/" class="header__logo">Pipeline</a>
     <div class="header__right">
-      {% if not shared|default(false) %}
-        <a href="/{{ pm }}/archive" class="header__link" title="Archive">Archive</a>
-        <span class="header__pm">{{ pm }}</span>
-      {% endif %}
+      <a href="/{{ pm }}/archive" class="header__link" title="Archive">Archive</a>
+      <span class="header__pm">{{ pm }}</span>
       <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">◐</button>
     </div>
   </div>

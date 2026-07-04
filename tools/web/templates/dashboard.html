@@ -6,7 +6,6 @@
 {% block content %}
 <div class="top-row">
   <h1 class="page-title">Initiatives</h1>
-  <a href="/{{ pm }}/new" class="link-new">+ New</a>
 </div>
 
 {% if initiatives %}
@@ -41,9 +40,7 @@
 {% else %}
   {{ empty_state(
     "No initiatives",
-    "Create your first initiative to start working with the pipeline.",
-    "+ Create initiative",
-    "/" ~ pm ~ "/new"
+    "Describe your product problem in a Claude Code session — the initiative is created from the chat."
   ) }}
 {% endif %}
 
