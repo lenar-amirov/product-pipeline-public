@@ -67,23 +67,38 @@ zero-dep `static_export.py`.
 **Приёмка**: app.py — read-only просмотрщик (дашборд, инициатива,
 артефакты, архив); README обновлён; grep по new/share-роутам пуст.
 
-## P3. Вынос consulting-problem-solving (S в репо, решение — за PM)
+## P3. consulting-problem-solving: интеграция по органам (M)
 
-**Что**: убрать из `.claude/skills/` скилл + 10 references (11 файлов,
-~1360 строк — 35% объёма всего слоя скиллов).
+**Что**: не выносить целиком, а пересадить уникальные органы в наши
+структуры и удалить дублирующую оболочку. Его 8 стадий — параллельная
+вселенная нашего же цикла (define↔FIRST LAUNCH, MECE↔problem-structuring,
+analyze↔/validate, communicate↔strategic-narrative …) — но три вещи
+уникальны и потребляемы:
 
-**Почему**: после выноса MECE/пирамиды/80-20 в `problem-structuring` ни
-один шаг пайплайна его не вызывает. Это добротный, но другой продукт:
-автономный консалтинг-режим (партнёр/ассоциат, deliverables в PPT/Word,
-Strunk & White) — не PM-джоб с состоянием.
+1. **`writing-style.md`** (Strunk & White) → `.claude/rules/writing-style.md`;
+   пункт в anti-generic self-check: «прогони прозу артефакта по
+   writing-style». Потребители — все генераторы документов (PRD, нарратив,
+   брифы, GTM).
+2. **`mckinsey.md` + `08-communicate.md`** (storylining, структура деков,
+   «so what») → `strategic-narrative-generator/references/` с указателем
+   «читай при сборке гейт-презентации» — прогрессивное раскрытие, вес
+   грузится только при работе над деком.
+3. **Партнёрская модель взаимодействия** → новый тонкий job **`/deep-think`**
+   (~40 строк): фасилитируемая сессия структурного мышления для проблем,
+   которые ЕЩЁ НЕ инициативы (стратегические/организационные вопросы без
+   метрики). PM ведёт, Claude исполняет; движки — наши (problem-structuring
+   для дерева, narrative-references для итога); финал — мост «превратить в
+   инициативу? → Frame + /hypotheses». Не 8 своих стадий, а оркестрация
+   существующих. Jobs-каталог в CLAUDE.md растёт до 10.
 
-**Варианты** (выбор владельца): (а) отдельный репозиторий
-`consulting-skill` + строка в README «works great alongside»; (б) простое
-удаление — история git хранит. Рекомендация: (а), контент жалко терять.
+**Удаляется**: оболочка SKILL.md и references 01–07 (define, structure,
+prioritize, work-plan, analyze, synthesize, recommend) — дублируют
+пайплайн. Из ~1360 строк выживает ~400 — там, где они реально потребляются.
 
-**Приёмка**: `.claude/skills/` без consulting; problem-structuring не
-ссылается на него (поправить строку «use consulting-problem-solving
-instead»); README упоминает вынесенный скилл.
+**Приёмка**: consulting-папки нет; writing-style в rules и в self-check;
+narrative-references читаются из strategic-narrative-generator; `/deep-think`
+в JOBS CATALOG и работает без инициативы; problem-structuring больше не
+ссылается на consulting.
 
 ## P4. Step 18: фабрика GTM-материалов → Optional и сжатие (S)
 
@@ -123,12 +138,13 @@ pending (status.py), «legacy pending counts too» (next-advisor) коммент
 |---|---|---|
 | P1 template | S (~час) | — |
 | P2 web read-only | M (~2 ч, аккуратно с app.py) | — |
+| P3 consulting → органы + /deep-think | M (~2 ч) | — |
 | P4 step 18 | S | — |
 | P5 legacy-метки | S | — |
-| P3 вынос consulting | S + решение PM (куда) | ждёт выбора (а)/(б) |
 | P6 микро-хвосты | S | — |
 
-Всё вместе — релиз **1.3.0 «Прунинг»**: примерно −35 файлов / −3000 строк
+Всё вместе — релиз **1.3.0 «Прунинг»**: примерно −30 файлов / −2500 строк,
+плюс один новый job (`/deep-think`) и качество прозы во всех артефактах —
 без потери ни одной функции из манифеста.
 
 ## Чего НЕ делаем (проверено и оставлено)
