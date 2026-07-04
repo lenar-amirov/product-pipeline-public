@@ -5,6 +5,51 @@ All notable changes to Product Discovery will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.3.0] — 2026-07-04
+
+The pruning release: the repository now matches its manifesto 1:1
+(see docs/CLEANUP-1.3.md). ~30 files / ~2500 lines removed, one job added.
+
+### Removed
+
+- **19 template content stubs** (13 output + 6 research): jobs create
+  artifacts when they run; formats are canonical in output-formats.md.
+  Stubs also made the web viewer report empty placeholders as existing
+  artifacts. Template: 28 → 11 files; forms filled by external humans
+  (design-comments, dev-estimate) stay.
+- **Web dashboard mutations**: initiative-creation form (the
+  upfront-questionnaire anti-pattern), share machinery (multi-user seed
+  from the anti-scope; use static_export.py to share), CJM upload/reorder/
+  delete, CONTEXT.md web editing. app.py 940 → ~610 lines; the dashboard
+  is a read-only viewer.
+- **consulting-problem-solving shell** (8-stage framework + references
+  01-07 duplicating the pipeline): ~960 of 1360 lines deleted.
+
+### Added
+
+- **`/deep-think`** — 10th job: facilitated partner-led session for
+  problems that are not initiatives yet (strategy, org, build-vs-buy),
+  running on problem-structuring + pyramid + writing-style, with an
+  always-offered bridge into Frame + /hypotheses.
+- **`.claude/rules/writing-style.md`** (Strunk & White, transplanted) —
+  path-scoped to artifacts; item 6 of the anti-generic self-check.
+- **strategic-narrative-generator/references/** — mckinsey.md +
+  exec-communication.md (transplanted), loaded only when assembling gate
+  decks.
+- Micro-examples: PRD living-doc versioning, tech-spec behavior contract,
+  multi-source worked insight.
+
+### Changed
+
+- STEP 18 (GTM materials) Recommended → **Optional**, rewritten from a
+  10-file batch factory to per-channel on-request artifacts (anti-scope:
+  document generation is commoditized).
+- Legacy `pending.*` support marked **REMOVE IN 2.0** in
+  pipeline_constants.py, status.py and next-advisor — migrations get
+  deadlines like dependencies do.
+- ux-research-brief unified to `research/`; `template/slides/` turned into
+  an explicit corporate-deck-template option.
+
 ## [1.2.1] — 2026-07-03
 
 Skill audit against the canonical skill-creator checklist + domain-expert

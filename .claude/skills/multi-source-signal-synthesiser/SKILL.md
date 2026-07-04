@@ -104,6 +104,16 @@ Every signal must be tagged with evidence type and confidence score:
 | P2: ... | Synthetic only | 0.35 | Needs validation |
 | P3: ... | Analytics + contradicts Survey | 0.55 | Investigate segment split |
 
+## Worked example (one insight)
+
+> **Insight**: users abandon at payment because they distrust the embedded
+> form, not because of price.
+> **Converges**: survey Q7 (41% "не доверяю оплате", n=380, REAL) +
+> 6 of 8 interviews (REAL) + session recordings show form hesitation
+> (REAL). **Diverges**: NPS verbatims mention price (12 mentions) — likely
+> a different segment (new vs returning); flag for segmentation.
+> **Verdict**: H3 confirmed, REAL 0.8, three sources.
+
 ## Output to the registry (mandatory)
 
 Every verdict this synthesis produces MUST land in the hypothesis registry —

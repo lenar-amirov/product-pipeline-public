@@ -111,6 +111,7 @@ def load_initiatives(pm: str) -> list:
         if current_step is not None and current_step in PIPELINE_STEPS:
             current_cmd = PIPELINE_STEPS[current_step]
 
+        # Legacy pending.* rendering — REMOVE IN 2.0 (dependencies[] is canon)
         pending_items = []
         today = date.today()
         for key, val in pending.items():

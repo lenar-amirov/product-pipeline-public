@@ -1,7 +1,7 @@
 {
   "name": "product-discovery",
   "description": "Run a product initiative as a tracked journey — not a toolbox of one-shot answers. Persistent state across sessions: living PRD, evidence-typed hypotheses (REAL/SYNTHETIC/INFERRED), decision log. From one-sentence problem to PRD, AB test analysis, and GTM rollout to existing users — 19 configurable steps.",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "author": {
     "name": "Lenar Amirov",
     "url": "https://github.com/lenar-amirov"

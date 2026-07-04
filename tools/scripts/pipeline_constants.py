@@ -46,6 +46,8 @@ MAX_STEP = 19
 DEFAULT_TOTAL = len(MAIN_STEPS)  # 20
 
 
+# Legacy pending.* support — dependencies[] replaced it in 0.9.
+# REMOVE IN 2.0 together with the legacy render in status.py.
 PENDING_LABELS = {
     "analytics_brief": "Send brief to analyst",
     "survey_brief": "Send survey brief",

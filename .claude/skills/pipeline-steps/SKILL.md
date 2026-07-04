@@ -55,7 +55,7 @@ other steps, they aren't needed).
 | — | `/create-tickets` | after Gate 2 | push to tracker via MCP |
 | 16 | `/analyze-ab-test` | Recommended | |
 | 17 | `/plan-gtm` | Core | |
-| 18 | `/create-gtm-materials` | Recommended | |
+| 18 | `/create-gtm-materials` | Optional | |
 | 19 | `/support-task` | Optional | |
 
 Gates (steps 10, 15) have machine preconditions — `validate-evidence.py

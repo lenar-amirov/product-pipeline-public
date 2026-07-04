@@ -22,7 +22,7 @@ replaces.
 ## Diagnosis order (first match wins the top slot; report up to 3)
 
 1. **Stalled external dependency** — an entry in `dependencies[]` past its
-   deadline (or a legacy pending older than 7 days) → recommend: chase the
+   deadline (or a legacy pending older than 7 days — legacy support ends in 2.0) → recommend: chase the
    owner / move the deadline / switch to synthetic (downgrading dependent
    hypotheses) / consciously skip (`status: "skipped"`). Name the blocked
    hypotheses from `blocks`.

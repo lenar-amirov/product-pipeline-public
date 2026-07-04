@@ -182,6 +182,13 @@ For agile environments, create living documents:
 - **Story-level details**: Specific implementation requirements
 - **Regular updates**: Reflect learnings and changes
 - **Version control**: Track changes and decisions over time
+## Living document versioning
+
+Every substantive update gets a changelog line at the top of PRD.md, e.g.:
+`## v1.2 (2026-06-15) — §4: P4b confirmed REAL (payment connection), §6
+solution S2 re-scoped after concept test`. A PRD whose sections silently
+mutate cannot be trusted at a gate.
+
 ## Mandatory self-check before delivering
 
 Run the anti-generic checklist from `.claude/rules/output-formats.md`

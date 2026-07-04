@@ -220,8 +220,8 @@
         "type": "core"
       },
       "create_gtm_materials": {
-        "enabled": true,
-        "type": "recommended"
+        "enabled": false,
+        "type": "optional"
       },
       "support_task": {
         "enabled": false,

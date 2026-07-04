@@ -467,52 +467,30 @@ Show plan to PM for review. After approval, proceed to step 18.
 
 ---
 
-## STEP 18 — `/create-gtm-materials` (Recommended)
+## STEP 18 — `/create-gtm-materials` (Optional)
 
-**Type**: Autonomous → PM reviews each artifact
-**Input**: `output/gtm-plan.md` + `output/PRD.md` + `output/solution-sketch.md`
-**Output**: `output/gtm-materials.md` (index) + individual material files in `output/materials/`
-**Skills**: `user-persona-builder` (to tailor copy per segment)
+**Type**: On PM request, per channel
+**Input**: `output/gtm-plan.md` + `output/PRD.md`
+**Output**: one artifact per requested channel in `output/materials/`
+**Skills**: `user-persona-builder` (tailor copy per segment)
 
-**External dependency** (optional): if PM has [pm-skills](https://github.com/phuryn/pm-skills) installed, leverage `pm-marketing-growth:value-prop-statements`, `positioning-ideas` for richer copy variants.
+Materials are made ON REQUEST, channel by channel — not as a batch. The
+GTM plan (step 17) names the channels; when the PM asks for one, produce
+ONE ready-to-publish artifact for it (in-app copy, email, changelog/blog
+entry, support FAQ, sales talking points…), tailored to the activation
+segment, with A/B copy variants where relevant. Every claim traces to the
+registry (anti-generic self-check applies; prose per writing-style.md).
 
-**Internal announcement structure** (AB test launch or release — for team
-channels): 1 what's happening (one sentence) · 2 what changes for users
-(test vs control, screenshot) · 3 hypothesis (test) / measured results
-(release) · 4 context: problem + evidence from the registry · 5 expected /
-actual metric movement + guardrails · 6 rollout details (platforms,
-segments, dates) · 7 experiment IDs / feature flags · 8 contacts.
-Tone: informative not promotional; reader has 30 seconds; lead with what
-changed. Missing data → `[placeholder]` + a "Needs clarification" checklist.
-Releasing without an AB test → say so explicitly ("based on <research>
-validation, no AB test") + monitoring plan.
+Internal announcement (AB test launch / release) structure: 1 what's
+happening (one sentence) · 2 what changes for users · 3 hypothesis (test)
+/ measured results (release) · 4 context: problem + evidence from the
+registry · 5 expected/actual metric movement + guardrails · 6 rollout
+details · 7 experiment IDs / flags · 8 contacts. Tone: informative, reader
+has 30 seconds. Releasing without an AB test → say so explicitly +
+monitoring plan.
 
-Generate the actual materials referenced in the GTM plan. For each channel in the plan, produce one ready-to-publish artifact:
-
-1. **In-app**:
-   - `output/materials/in-app-notification.md` — first-touch notification (1 line, 1 CTA)
-   - `output/materials/in-app-feature-banner.md` — banner copy with persistent display
-   - `output/materials/in-app-empty-state.md` — empty-state copy if feature has one
-2. **Lifecycle**:
-   - `output/materials/email-announcement.md` — subject lines (3 variants), body, CTA
-   - `output/materials/push-notification.md` — push copy if applicable
-3. **Owned**:
-   - `output/materials/blog-post.md` — full blog/changelog entry with screenshots placeholders
-   - `output/materials/help-center-article.md` — help doc explaining the feature
-4. **Internal enablement**:
-   - `output/materials/sales-enablement.md` — talking points for sales/CSM
-   - `output/materials/support-faq.md` — anticipated questions + answers (subset of step 19 support brief)
-5. **Press/External** (if applicable):
-   - `output/materials/press-release.md` — only if this is a notable launch
-
-Each material:
-- Tailored to the segment from the GTM plan
-- Includes alternative versions where relevant (A/B copy)
-- References screenshots/assets needed (placeholders if not yet produced)
-- Notes who owns the asset (PM, marketing, design, support)
-
-**Tracking**: create a dependency (`kind: gtm_review`, owner = PM,
-deadline) until the PM signs off, then mark it done.
+**Tracking**: only if the PM wants review discipline — a dependency
+(`kind: gtm_review`, owner: PM).
 
 ---
 

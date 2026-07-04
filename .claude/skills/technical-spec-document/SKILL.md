@@ -21,7 +21,10 @@ without acceptance criteria.
    (the out-of-scope list prevents estimate creep).
 2. **Contracts at behavior level** — new/changed interfaces described as
    inputs → outputs → errors. Enough for the dev team to design against;
-   not pretending to be their design.
+   not pretending to be their design. Example:
+   `submit_order(cart, payment_method) → order_id + confirmation event;
+   errors: payment_declined (retryable), out_of_stock (per item, cart
+   preserved)` — behavior, not schemas.
 3. **Acceptance mapping** — every user story from PRD §8 → which
    component(s) deliver it → how we verify (feeds `/tickets`
    Given/When/Then directly).
