@@ -1,6 +1,15 @@
-# Writing Style Guide: Consulting-Grade Prose
+---
+paths:
+  - "*/output/**"
+  - "*/research/**"
+---
 
-The writing standard for all deliverables. Principles drawn from Strunk & White, adapted for consulting. The goal: clear, tight, forceful prose where every sentence earns its place.
+# Writing Style Guide
+
+The writing standard for every generated artifact (PRD, presentations,
+briefs, GTM copy). Principles drawn from Strunk & White. The goal: clear,
+tight, forceful prose where every sentence earns its place — enforced by
+the anti-generic self-check in output-formats.md.
 
 ## The 10 Core Principles
 

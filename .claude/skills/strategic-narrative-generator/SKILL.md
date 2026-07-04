@@ -186,6 +186,13 @@ Every claim in a Gate presentation must include a source:
 - **No unsourced claims**: If you can't trace a claim to a file, either find the source or remove the claim
 - Qualitative data (interviews, synthetic) is illustration only — don't present as proof without quantitative backing
 
+## References (read when assembling a gate deck)
+
+- `references/mckinsey.md` — storylining, horizontal/vertical logic, slide
+  craft. Read when structuring Problem/Solution Research Report decks.
+- `references/exec-communication.md` — executive audience rules, answer-first
+  delivery, objection handling. Read before high-stakes presentations.
+
 ## Mandatory self-check before delivering
 
 Run the anti-generic checklist from `.claude/rules/output-formats.md`

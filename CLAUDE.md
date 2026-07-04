@@ -147,6 +147,7 @@ chat context (mark evidence INFERRED) and offer to persist afterwards.
 | `/challenge` | "завтра защита", "порепетируем гейт", "attack my deck" | — (adversarial review of the gate deck against the registry) | список пробоин |
 | `/tickets` | "разбей на задачи", "create tickets" | create-tickets | tickets.md + tracker via MCP |
 | `/next` | "что дальше?", "continue", "где мы" | — (skill `next-advisor`) | рекомендация по состоянию |
+| `/deep-think` | "давай подумаем стратегически", "стоит ли нам…", вопрос без метрики | — (skill `deep-think`) | одностраничный вывод, мост в инициативу |
 | "what do competitors do" | конкурентный анализ | 3 | competitive-analysis.md, PRD §5 |
 | "show my initiatives", "is this similar to before?" | — | — | read `.initiatives-digest.md`, detect overlaps |
 

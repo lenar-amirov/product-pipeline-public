@@ -288,7 +288,9 @@ BLOCKED — do not assemble the deck: report blockers (need ≥2 confirmed REAL,
 zero registry violations, Frame complete) and how to clear them. Offer
 `/challenge` for a rehearsal once the deck exists.
 
-Read template: `template/slides/Problem Research Report Template.pptx.pdf` (if exists).
+Corporate deck template: if the PM has dropped one into `template/slides/`
+(any .pdf/.pptx export), read it and mirror its structure/tone; otherwise use
+the default structure below.
 
 Structure: Title → Context → Problem → AS IS → Hypothesis → Solution → Estimate
 
@@ -305,7 +307,7 @@ rehearse before it.
 ## STEP 11 — `/create-design-brief` (Recommended)
 
 **Type**: Autonomous → Pause
-**Output**: `output/design-brief.md` + (optional) `output/ux-research-brief.md`
+**Output**: `output/design-brief.md` + (optional) `research/ux-research-brief.md` (see user-testing study mode)
 **Skills**: `user-testing` (study mode)
 
 **Tracking**: create a dependency (`kind: design`, owner = designer,
@@ -353,7 +355,8 @@ Calculate: baseline, MDE, sample size, duration, segmentation, guardrails, decis
 solution hypotheses must be linked to confirmed problems in the registry.
 Offer `/challenge` before the real review.
 
-Read template: `template/slides/Solution Research Report Template.pptx.pdf` (if exists).
+Corporate deck template: same rule as step 10 — `template/slides/` if the
+PM provided one, default structure otherwise.
 
 Structure: Title → Hypothesis → Solution context → Solution → Demo → UX test → Experiment → Estimate
 

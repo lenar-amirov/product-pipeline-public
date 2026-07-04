@@ -106,3 +106,5 @@ verify against this checklist and fix violations — do not show the draft:
    synthetic persona is not "users".
 5. **Numbers cross-check.** If two numbers in the artifact disagree with
    each other or with the registry — stop and reconcile before delivering.
+6. **Prose passes writing-style.md.** Needless words cut, active voice,
+   claims lead paragraphs — see `.claude/rules/writing-style.md`.

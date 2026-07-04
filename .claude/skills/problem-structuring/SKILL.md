@@ -6,9 +6,8 @@ description: MECE issue trees, pyramid principle and 80/20 prioritization for br
 # Problem Structuring (MECE for the pipeline)
 
 The structuring engine of `/hypotheses` (step 1) and the synthesis logic of
-`/validate` (step 6). Extracted from the full consulting framework — for a
-partner-led, deliverable-heavy consulting engagement use
-`consulting-problem-solving` instead.
+`/validate` (step 6). For a facilitated partner-led thinking session on a
+problem that is not an initiative yet, use `/deep-think`.
 
 ## MECE issue tree
 
