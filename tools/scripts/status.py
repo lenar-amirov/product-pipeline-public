@@ -214,6 +214,10 @@ def render_onboarding():
     # CTA
     console.print("  [bold]What product problem are you working on?[/bold]")
     console.print()
+    console.print("  Or start with a job right away:", style="dim")
+    console.print('    "read this deck"  ·  "I need an analyst brief"  ·  "break down problem X"',
+                  style="dim italic")
+    console.print()
 
 
 def render_initiatives(initiatives: list):
@@ -283,6 +287,9 @@ def render_plain():
         print('    Product Discovery creates: initiative + 5 problem hypotheses + research plan')
         print()
         print("  What product problem are you working on?")
+        print()
+        print('  Or start with a job right away:')
+        print('    "read this deck"  ·  "I need an analyst brief"  ·  "break down problem X"')
         print()
         print("  (Tip: install `rich` for a nicer dashboard — pip install rich)")
         return

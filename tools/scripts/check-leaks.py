@@ -27,8 +27,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
-TOOL_DIRS = {"template", "tools", "skills", "docs",
-             ".claude", ".claude-plugin", ".github"}
+TOOL_DIRS = {"template", "tools", "docs", ".claude", ".github"}
 ROOT_FILES_OK = {"CLAUDE.md", "README.md", "CHANGELOG.md", "LICENSE",
                  "PRIVACY.md", ".gitignore", ".mcp.json.example"}
 FORBIDDEN = re.compile(
@@ -62,8 +61,9 @@ def load_personal_patterns() -> list:
 def check_range(rng: str) -> list:
     problems = []
 
-    # 1+2: files touched in the range
-    names = git("diff", "--name-only", rng).splitlines()
+    # 1+2: files touched in the range (deletions excluded — removing an
+    # old path is not a leak, and blocking it would freeze cleanups)
+    names = git("diff", "--diff-filter=d", "--name-only", rng).splitlines()
     for name in names:
         top = name.split("/", 1)[0]
         if "/" in name and top not in TOOL_DIRS:

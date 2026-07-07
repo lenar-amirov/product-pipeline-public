@@ -5,6 +5,41 @@ All notable changes to Product Discovery will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.4.0] — 2026-07-06
+
+One path (docs/ONE-PATH-1.4.md): a single distribution channel and a
+60-second start.
+
+### Removed — the plugin contour
+
+- `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json` and the
+  `init` installer skill are gone. The plugin was a wrapper around "copy
+  files": Claude Code doesn't load a plugin's CLAUDE.md into your project,
+  so init copied files anyway — and marketplace auto-updates never reached
+  scaffolded projects. `git clone` does the same job in one command with
+  none of the ceremony.
+- **Migration note for plugin users**: your scaffolded project is
+  self-contained — it keeps working forever, nothing to do. For updates,
+  clone this repository and move your `{pm}/` folders in (or keep working
+  as is). `/plugin uninstall product-discovery` at your leisure.
+
+### Changed
+
+- README: one install path — `git clone … && claude` (no questions, no
+  restart, no required dependencies) + Download ZIP for the git-less +
+  `git pull` updates; explicit note that initiatives are created inside
+  the clone and never conflict with updates. The "what happens next"
+  section now describes the value-first flow (job first, initiative
+  offered after).
+- Welcome screen (both rich and plain) now shows the point-entry jobs:
+  "read this deck" · "I need an analyst brief" · "break down problem X".
+- Versioning lives in CHANGELOG headings only (plugin.json was the second
+  copy and a recurring desync source).
+- PRIVACY.md rewritten tool-first (install = clone/ZIP; marketplace
+  paragraph removed); REPO-MAP updated (tree 80 → 77 files).
+- check-leaks.py: deletions no longer trip the path check (removing an
+  old path is not a leak).
+
 ## [1.3.0] — 2026-07-04
 
 The pruning release: the repository now matches its manifesto 1:1

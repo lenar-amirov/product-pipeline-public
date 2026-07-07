@@ -34,41 +34,25 @@ There are great PM skill collections — [pm-skills](https://github.com/phuryn/p
 
 ## Get started in 30 seconds
 
-### 1. Install the plugin
-
-In Claude Code:
-
-```
-/plugin marketplace add https://github.com/lenar-amirov/product-pipeline-public.git
-/plugin install product-discovery
-```
-
-(Use the full HTTPS URL — the GitHub shorthand `lenar-amirov/product-pipeline-public` may try SSH and fail if your git is configured for SSH-only.)
-
-Then in any project where you want to start a discovery:
-
-```
-/product-discovery:init
-```
-
-The plugin scaffolds `CLAUDE.md`, `template/`, and `.claude/` into your repo. After scaffolding:
+### 1. Get the tool
 
 ```bash
-pip3 install rich        # for the status dashboard (use pip3 on macOS)
+git clone https://github.com/lenar-amirov/product-pipeline-public.git pm-copilot
+cd pm-copilot && claude
 ```
 
-Restart Claude Code in the scaffolded directory so the new `CLAUDE.md` loads.
+That's it. No questions, no restart, no required dependencies — bare
+`python3` is enough (`pip3 install rich` is optional, for a prettier
+dashboard).
 
-### Alternative: clone the repo
+**No git?** [Download ZIP](https://github.com/lenar-amirov/product-pipeline-public/archive/refs/heads/main.zip), unpack, open the folder in [Claude Code](https://docs.anthropic.com/en/docs/claude-code).
 
-If you don't want the plugin, clone directly:
+**Where your work lives**: initiatives are created by the tool itself
+inside this folder (`{your-name}/{initiative}/`) — gitignored by design,
+so they never enter the public repo and never conflict with updates.
 
-```bash
-git clone https://github.com/lenar-amirov/product-pipeline-public.git my-discovery
-cd my-discovery && pip3 install rich
-```
-
-Open in [Claude Code](https://docs.anthropic.com/en/docs/claude-code).
+**Updates**: `git pull`. Your initiatives are untouched; if you've
+customized `CLAUDE.md`, stash your changes first or work in a fork.
 
 ### 2. Describe your problem
 
@@ -83,21 +67,27 @@ You'll see:
 ╰────────────────────────────────────────╯
 
   What product problem are you working on?
+
+  Or start with a job right away:
+    "read this deck"  ·  "I need an analyst brief"  ·  "break down problem X"
 ```
 
 Type one sentence. For example:
 
 > Users add items to cart but never complete checkout on mobile
 
-### 3. Claude drills down — then creates an initiative
+### 3. Value first — the initiative is created after
 
-Claude won't immediately give you a polished consulting answer. Instead it asks 2–3 sharp follow-up questions to force specificity:
+Claude runs the matching job immediately: for a problem statement you get
+3–5 problem hypotheses (typed `INFERRED` until validated) with ONE sharp
+challenge question woven in; for "here's a deck from the analyst" it
+ingests the deck; for "I need an analyst brief" it writes the brief.
 
-> "Where exactly do they drop — payment, address, cart? Which segment — new vs returning? What metric should move?"
-
-Then it scaffolds an initiative folder, generates 3–5 problem hypotheses (marked `INFERRED` until validated), drafts a research plan, and shows you what's next.
-
-The work is now persisted. Close Claude, come back tomorrow — the initiative resumes exactly where you left off.
+Only then it offers: *"Save this as initiative `<slug>`?"* — say yes and
+the folder appears with a hypothesis registry, status and a decision log.
+Close Claude, come back next week — the session resumes exactly where you
+stopped, with the dashboard showing coverage, overdue dependencies and
+evidence issues.
 
 ---
 
@@ -268,7 +258,7 @@ Two presentations for stakeholders:
 
 ## Get in touch
 
-Product Discovery is at **1.0** — hypothesis registry, jobs-first interface, evidence coverage map, real gates with `/challenge` rehearsal, and a closed post-launch learning loop (see [CHANGELOG](./CHANGELOG.md) and [docs/ROADMAP-0.8.md](./docs/ROADMAP-0.8.md)). Real PM feedback shapes the next iterations.
+Product Discovery ships continuously — see [CHANGELOG](./CHANGELOG.md) for what's new and [docs/](./docs/) for the design decisions behind the tool. Real PM feedback shapes the next iterations.
 
 - 🐛 **Bug?** → [open an issue](https://github.com/lenar-amirov/product-pipeline-public/issues/new?template=bug.yml)
 - 💬 **Tried it? Share how it went** → [feedback issue](https://github.com/lenar-amirov/product-pipeline-public/issues/new?template=feedback.yml)

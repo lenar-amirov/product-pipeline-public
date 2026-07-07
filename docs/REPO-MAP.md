@@ -1,13 +1,13 @@
 # Repository Map
 
 > Every tracked file and why it exists. If a file can't justify its line
-> here, it gets pruned (see docs/CLEANUP-1.3.md). Updated for 1.3.0.
+> here, it gets pruned (see docs/CLEANUP-1.3.md). Updated for 1.4.0.
 
 ## Root — the front door
 
 | File | Why it exists |
 |---|---|
-| `README.md` | Onboarding: what the tool is, install (plugin or clone), jobs, tracker setup, FAQ |
+| `README.md` | Onboarding: what the tool is, install (clone/ZIP — the one path), jobs, tracker setup, FAQ |
 | `CLAUDE.md` | **The master prompt.** Session lifecycle (SESSION START/END), FIRST LAUNCH value-first flow, JOBS CATALOG, external dependencies + two-way Jira loop. Loaded by Claude Code every session — this file IS the product's behavior |
 | `CHANGELOG.md` | Release history 0.1 → 1.3; the honest record of what changed and why |
 | `PRIVACY.md` | Local-first promise: what stays on the user's machine (enforced by .gitignore + leak guard) |
@@ -24,7 +24,7 @@
 | `rules/output-formats.md` | Canonical artifact formats + the anti-generic self-check every generated document must pass |
 | `rules/writing-style.md` | Strunk & White prose discipline, path-scoped to artifacts; item 6 of the self-check |
 
-## `.claude/skills/` — 22 skills, one clear role each
+## `.claude/skills/` — 23 skills, one clear role each
 
 ### Jobs (the primary interface)
 
@@ -63,12 +63,6 @@
 | `ui-pattern-library` | `/sketch`: pattern selection from the hypothesis mechanism, platform conventions |
 | `system-design-doc` | PM feasibility view: affected components, dependencies, constraining NFRs (→ PRD §9-10) |
 | `technical-spec-document` | Implementation blueprint: scope by component, behavior contracts, acceptance mapping |
-
-## `skills/init/` — plugin bootstrap
-
-| File | Why it exists |
-|---|---|
-| `SKILL.md` | `/product-discovery:init` — scaffolds CLAUDE.md, .claude/, template/, tools/, .mcp.json.example into the user's project. Lives outside `.claude/skills/` because it runs from the PLUGIN context before the project exists |
 
 ## `template/` — what a new initiative starts with (11 files)
 
@@ -115,18 +109,17 @@
 | `templates/_macros.html` | Shared partials (progress segments, step rows, cards) |
 | `static/style.css` | The one stylesheet |
 
-## `.claude-plugin/` + `.github/` — distribution
+## `.github/` — feedback intake
 
 | File | Why it exists |
 |---|---|
-| `plugin.json` | Plugin manifest (name, version, description) for `/plugin install` |
-| `marketplace.json` | Marketplace manifest for `/plugin marketplace add <repo>` |
 | `ISSUE_TEMPLATE/bug.yml`, `feedback.yml`, `config.yml` | Structured bug reports and PM feedback — the tool's own evidence intake |
 
 ## `docs/` — decision record
 
 | File | Why it exists |
 |---|---|
+| `ONE-PATH-1.4.md` | The single-distribution-path decision: why the plugin contour died |
 | `ROADMAP-0.8.md` | The redesign design-doc (0.8 → 1.0): principles, epics E1–E14, acceptance criteria — why the tool is shaped this way |
 | `CLEANUP-1.3.md` | The pruning plan: what was removed and the reasoning |
 | `REPO-MAP.md` | This file |
