@@ -11,7 +11,8 @@ Navigation layer: jobs map + registry rules here, per-step details in
 **Jobs → steps.** Jobs are the primary interface (CLAUDE.md → JOBS CATALOG):
 `/hypotheses` → steps 1–2 · `/brief` → 4/5/11 · `/validate` → 6 ·
 `/solutions` → 7 · `/sketch` → 8 · `/tickets` → create-tickets ·
-`/ingest` → skill `ingest` · `/next` → skill `next-advisor`.
+`/ingest` → skill `ingest` · `/next` → skill `next-advisor` ·
+`/challenge` → skill `challenge` · `/deep-think` → skill `deep-think`.
 Every job runs standalone: no initiative → work on chat context, type
 evidence INFERRED, offer to persist afterwards; initiative exists → read and
 write its registry and artifacts as described per step.

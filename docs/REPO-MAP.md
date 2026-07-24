@@ -9,7 +9,7 @@
 |---|---|
 | `README.md` | Onboarding: what the tool is, install (clone/ZIP — the one path), jobs, tracker setup, FAQ |
 | `CLAUDE.md` | **The master prompt.** Session lifecycle (SESSION START/END), FIRST LAUNCH value-first flow, JOBS CATALOG, external dependencies + two-way Jira loop. Loaded by Claude Code every session — this file IS the product's behavior |
-| `CHANGELOG.md` | Release history 0.1 → 1.3; the honest record of what changed and why |
+| `CHANGELOG.md` | Release history from 0.1 to the current version — the honest record of what changed and why; also the only carrier of the version number |
 | `PRIVACY.md` | Local-first promise: what stays on the user's machine (enforced by .gitignore + leak guard) |
 | `LICENSE` | MIT |
 | `.gitignore` | Two jobs: ignore secrets/personal files AND whitelist-ignore every non-tool top-level dir — initiative data physically can't be committed |
@@ -64,7 +64,7 @@
 | `system-design-doc` | PM feasibility view: affected components, dependencies, constraining NFRs (→ PRD §9-10) |
 | `technical-spec-document` | Implementation blueprint: scope by component, behavior contracts, acceptance mapping |
 
-## `template/` — what a new initiative starts with (11 files)
+## `template/` — what a new initiative starts with (12 files)
 
 | File | Why it exists |
 |---|---|
