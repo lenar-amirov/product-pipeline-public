@@ -5,6 +5,31 @@ All notable changes to Product Discovery will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.4.1] — 2026-07-20
+
+Docs sync: the README had drifted to the pre-redesign product (linear
+19-step pipeline + workflow templates) while the tool became jobs-first
+with a coverage map. A consistency audit found 1 hard contradiction +
+several gaps; all fixed.
+
+### Changed (README now describes the actual pipeline)
+
+- "The pipeline" section → "How it works — jobs, not steps": a jobs table
+  (10 jobs), the 7-phase coverage map (Frame→Learn) as the progress model,
+  gate preconditions, and the post-launch Learn loop — none of which the
+  README previously mentioned.
+- Removed the workflow-template table (Quick/Full/Problem/Solution/Custom)
+  and the FAQ "switch to quick template" — templates were deprecated in
+  0.9 and CLAUDE.md forbids offering them; the README was promising a
+  feature the tool refuses.
+- "What you accumulate": status.json described via `dependencies[]` (not
+  legacy "pending tasks"); registry views (`registry.md`, `ost.md`) and
+  banked knowledge facts surfaced.
+- "What's bundled": added coverage.py, render-ost/render-pdf, check-leaks;
+  "intent matching" → "JOBS CATALOG"; link to REPO-MAP.
+- steps.md table of contents: STEP 18 marked Optional (matched its header;
+  a leftover from the 1.3.0 GTM-materials downgrade).
+
 ## [1.4.0] — 2026-07-06
 
 One path (docs/ONE-PATH-1.4.md): a single distribution channel and a

@@ -25,7 +25,7 @@
 - `/create-tickets` (after Solution Research Report)
 - STEP 16 — `/analyze-ab-test` (Recommended)
 - STEP 17 — `/plan-gtm` (Core)
-- STEP 18 — `/create-gtm-materials` (Recommended)
+- STEP 18 — `/create-gtm-materials` (Optional)
 - STEP 19 — `/support-task` (Optional)
 
 ---

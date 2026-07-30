@@ -18,9 +18,9 @@ There are great PM skill collections — [pm-skills](https://github.com/phuryn/p
 
 | | PM toolbox (pm-skills, Anthropic PM plugin) | Product Discovery (this) |
 |---|---|---|
-| **Unit of work** | One question, one answer | One initiative, many sessions |
-| **State** | Stateless — Claude forgets next time | Persistent: CONTEXT.md, status.json, decisions.md, PRD.md |
-| **PRD** | Generated when you ask | Living document, builds across all 19 steps |
+| **Unit of work** | One question, one answer | Point-entry jobs that accumulate into one tracked initiative |
+| **State** | Stateless — Claude forgets next time | Persistent: hypothesis registry, decision log, living PRD, coverage map |
+| **PRD** | Generated when you ask | Living document, sections fill as evidence arrives |
 | **Evidence** | Free-form text | Typed (REAL / SYNTHETIC / INFERRED, confidence 0.0–1.0) in a machine-readable registry, validated every session |
 | **Continuity** | Each session is a fresh start | Resume exactly where you stopped, with full context |
 | **Best for** | Quick answers on any PM task | Working a real product initiative through to launch |
@@ -91,40 +91,61 @@ evidence issues.
 
 ---
 
-## The pipeline
+## How it works — jobs, not steps
 
-19 steps across 3 phases. Each step produces a concrete artifact and updates the living PRD.
+You don't march through a checklist. You come with a moment — "read this
+deck", "which hypotheses hold?", "tomorrow's the gate" — and call the
+matching **job**. Each job works standalone and quietly records what it
+learned into the initiative's state.
+
+| Job | When you reach for it |
+|---|---|
+| `/hypotheses` | break a problem into testable hypotheses (MECE) |
+| `/ingest` | you were handed a deck / export / wiki page — pull the numbers in |
+| `/brief` | you need a brief for an analyst or designer |
+| `/validate` | data arrived — confirm, refute or flag hypotheses against it |
+| `/solutions` | turn confirmed problems into scored solution bets |
+| `/sketch` | draw the screens for a solution |
+| `/challenge` | rehearse a gate — three hostile stakeholders attack your deck |
+| `/tickets` | break the solution into Jira/Linear/GitHub tickets |
+| `/next` | "what's the most valuable thing to do now?" |
+| `/deep-think` | a strategy question that isn't an initiative yet |
+
+Legacy step commands (`/analyze-cjm`, `/validate-problems`, …) still work as
+aliases — the numbered pipeline (steps 0–19) is the internal structure the
+jobs draw on, not something you navigate by hand.
+
+### Progress is evidence coverage, not "step N of 20"
+
+The dashboard shows a **coverage map** of seven phases, computed from your
+actual state — the registry, the artifacts, the gate checks — not from how
+many commands you've run:
 
 ```
-   Problem Research              Solution Design + Validate         Launch
-┌─────────────────────────┐  ┌──────────────────────────────┐  ┌──────────────┐
-│ CJM Analysis            │  │ Design Brief                 │  │ GTM Plan     │
-│ Synthetic Research      │  │ Dev Estimate                 │  │ GTM Materials│
-│ Competitor Research     │  │ Finalize PRD                 │  │ Support Brief│
-│ Research Briefs         │  │ AB Test Design               │  └──────────────┘
-│ Validate Problems       │  │ Solution Research Report ▶   │
-│ Solution Hypotheses     │  │ AB Test Analysis             │
-│ Sketch Solution         │  │  → Ship / Extend / Iterate   │
-│ Design Review           │  └──────────────────────────────┘
-│                         │
-│   Problem Research      │
-│       Report ▶          │
-└─────────────────────────┘
+Frame 2/4 · Evidence 3/3 · Solution 0/2 · Bet 0/1 · Build 0/2 · Launch 0/3 · Learn 0/1
+focus → Solution: no solutions linked to confirmed hypotheses yet
 ```
+
+Gates (Problem Research Report, Solution Research Report) have **machine
+preconditions**: you can't assemble the deck until ≥2 hypotheses are
+confirmed REAL, the registry has no unreconciled contradictions, and the
+frame (metric / target / kill criteria) is set. After launch, the **Learn**
+phase closes the loop — actual vs target, production verdicts on each
+hypothesis, and reusable facts banked for your next initiative.
 
 ### What you accumulate over the journey
 
 | Artifact | What it is |
 |----------|-----------|
 | **CONTEXT.md** | The initiative's frame: metric, segment, baseline, constraints, OKR — never re-explained |
-| **status.json** | Current step, pending tasks, pipeline config — Claude resumes from here |
+| **hypotheses.json** | Machine-readable hypothesis registry: status, evidence type, confidence, sources, full history of every transition. Validated on each session start; `registry.md` and `ost.md` (Opportunity Solution Tree) are generated views |
+| **status.json** | Machine state: step statuses, `dependencies[]` (external work with owner + deadline, flagged OVERDUE on the dashboard), pipeline config — Claude resumes from here |
 | **decisions.md** | Log of every meaningful decision and discussion across sessions |
-| **hypotheses.json** | Machine-readable hypothesis registry: status, evidence type, confidence, sources, full history of every transition. Validated on each session start; `registry.md` is the generated view |
-| **hypotheses.md** | Narrative hypothesis analysis (the registry holds the state) |
-| **.initiatives-digest.md** | Auto-generated cross-initiative summary — Claude spots overlaps between your new problem and past initiatives |
-| **PRD.md** | Living document — sections fill as you progress, not at the end |
-| **Problem Research Report** | Presentation: validated problem + solution sketch (after step 10) |
-| **Solution Research Report** | Presentation: designed solution + AB test plan (after step 15) |
+| **hypotheses.md** | Narrative hypothesis analysis (the registry holds the machine state) |
+| **.initiatives-digest.md** | Auto-generated cross-initiative summary + banked knowledge facts — Claude spots overlaps with past initiatives |
+| **PRD.md** | Living document — sections fill as evidence arrives, not at the end |
+| **Problem Research Report** | Gate deck: validated problem + solution sketch (gate-checked before assembly) |
+| **Solution Research Report** | Gate deck: designed solution + AB test plan (gate-checked before assembly) |
 | **tickets.md** | Dev tickets — pushed to Jira/Linear/GitHub via MCP if connected |
 
 ---
@@ -133,18 +154,21 @@ evidence issues.
 
 | Component | Role |
 |-----------|------|
-| `CLAUDE.md` | Master prompt — session lifecycle, FIRST LAUNCH flow, intent matching |
+| `CLAUDE.md` | Master prompt — session lifecycle, FIRST LAUNCH value-first flow, JOBS CATALOG |
 | `.claude/settings.json` | `SessionStart` hooks: dashboard, initiatives digest, evidence audit |
-| `.claude/skills/` | 23 specialized skills — problem structuring, ingestion, validation, scoring, gates rehearsal, PRD, post-launch review, etc. |
-| `.claude/rules/` | Path-scoped rules: output formats, evidence typing |
+| `.claude/skills/` | 23 specialized skills — problem structuring, ingestion, validation, scoring, gate rehearsal, PRD, post-launch review, etc. |
+| `.claude/rules/` | Path-scoped rules: output formats, evidence typing, writing style |
 | `template/` | Initiative scaffold copied for each new initiative |
-| `tools/scripts/status.py` | Branded terminal dashboard with first-launch onboarding |
-| `tools/scripts/scan-initiatives.py` | Regenerates `.initiatives-digest.md` — cross-initiative awareness at every session start |
+| `tools/scripts/status.py` | Terminal dashboard: coverage map, OVERDUE dependencies, `/next` hint |
 | `tools/scripts/hypotheses.py` | Hypothesis registry engine: add / set / validate / render (state + full history) |
-| `tools/scripts/validate-evidence.py` | Session-start evidence audit: confidence ranges, missing sources, unreconciled data |
-| `tools/scripts/new-initiative.sh` | Initiative scaffolder |
-| `tools/scripts/generate-pptx.py` | Markdown → PowerPoint conversion |
-| `tools/web/` | Optional local web dashboard (Flask) + `static_export.py` — dependency-free single-file HTML export of an initiative |
+| `tools/scripts/validate-evidence.py` | Evidence audit + `--gate` preconditions that block deck assembly |
+| `tools/scripts/coverage.py` | The coverage map: 7 phases with exit criteria computed from actual state |
+| `tools/scripts/scan-initiatives.py` | Regenerates `.initiatives-digest.md` — cross-initiative awareness at every session start |
+| `tools/scripts/render-ost.py` · `render-pdf.py` · `generate-pptx.py` | Opportunity Solution Tree, PDF→PNG for `/ingest`, gate decks → .pptx |
+| `tools/scripts/check-leaks.py` + `install-hooks.sh` | Pre-push guard against committing personal data (see Privacy) |
+| `tools/web/` | Optional read-only web dashboard (Flask) + `static_export.py` — dependency-free single-file HTML export |
+
+(Full inventory with the "why" of every file: [docs/REPO-MAP.md](./docs/REPO-MAP.md).)
 
 ### Your initiative folder
 
@@ -156,17 +180,15 @@ you/my-initiative/
 └── output/                 ← hypotheses, PRD, presentations, decision log
 ```
 
-### Configurable pipeline
+### No templates to choose — you run the jobs you need
 
-Pick a template or compose your own. Mandatory steps stay locked.
-
-| Template | Steps | Best for |
-|----------|-------|----------|
-| **Quick Discovery** | ~6 core steps | PM with existing data, tight timeline |
-| **Full Discovery** | All steps | New problem space, full research |
-| **Problem Only** | 5 steps | Just understand the problem |
-| **Solution Only** | 7 steps | Problem known, design solution |
-| **Custom** | Your choice | You know what's needed |
+There's no "pick a workflow" step. A new initiative starts with everything
+available; you call the jobs your situation calls for, and the coverage map
+shows what evidence is still missing. Got rich data already? Go straight to
+`/ingest` and `/validate`. Fuzzy problem? Start with `/hypotheses`. Only a
+strategy question? `/deep-think`. Each step carries a Core / Recommended /
+Optional weight so `/next` knows what's safe to skip — but the choice of
+what to do is always the job in front of you, never a template up front.
 
 ---
 
@@ -233,8 +255,8 @@ Most users don't need either — `tools/scripts/status.py` (auto-run at session 
 **How do I continue working?**
 Open Claude Code in the project directory. The SessionStart hook runs `status.py` which loads your last state. Type "continue" and Claude picks up where you stopped.
 
-**How do I change the pipeline configuration?**
-Tell Claude: "reconfigure pipeline" or "switch to quick template" or "enable competitor research". The config lives in `output/status.json` → `pipeline_config`.
+**Do I have to run every step?**
+No. Run the jobs your situation needs; the coverage map shows what evidence is still missing, and `/next` recommends the most valuable action from your actual state. If you want to switch a specific step off, tell Claude "disable competitor research" — the per-step config lives in `output/status.json` → `pipeline_config`. (There are no workflow templates to pick — that model was retired.)
 
 **Can I work on multiple initiatives in parallel?**
 Yes. Each initiative is a separate folder with its own `CONTEXT.md`, `status.json`, `decisions.md`. Claude shows all initiatives at session start; you select one.
